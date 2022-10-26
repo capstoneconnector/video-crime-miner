@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc --watch",
-    "build": "tsc",
+    "build": "tsc --watch",
     "test": "jest --watch",
     "cover": "jest --coverage",
     "typecheck": "tsc"
