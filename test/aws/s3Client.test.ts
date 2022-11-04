@@ -20,7 +20,7 @@ describe('listObjects function', () => {
 	})
 })
 
-/** 
+
 describe("listBucket function", () => {
 
 	it("Should return a list of buckets", async() => {
@@ -29,7 +29,7 @@ describe("listBucket function", () => {
 		expect(res).toBeTruthy()
 	})
 })
-*/
+
 
 
 test.todo("upload function")

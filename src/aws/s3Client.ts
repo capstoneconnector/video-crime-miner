@@ -16,7 +16,17 @@ const S3 = require('aws-sdk/clients/s3')
 
 }
 
- async function listBuckets(){}
+
+ async function listBuckets(){
+	try {
+		const response = await connect().listBuckets().promise()
+		return response.Buckets
+		
+	} catch (e) {
+
+		console.log('error')
+	}
+ }
 
  async function listObjects(bucket:string) {
 
@@ -28,12 +38,12 @@ const S3 = require('aws-sdk/clients/s3')
 		return response
 	
 	} catch (e) {
-		console.log('our error' , e);
+		console.log('error' , e);
 	}
 }
 
  async function upload(){}
 
- console.log(connect())
+
 
 export {listBuckets, listObjects, upload, connect}
