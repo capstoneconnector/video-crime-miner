@@ -1,4 +1,4 @@
-import {listObjects, listBuckets, connect} from "../../src/aws/s3Client";
+import {listObjects, listBuckets, connect, upload} from "../../src/aws/s3Client";
 
 
 describe("connect function", () => {
@@ -30,6 +30,11 @@ describe("listBucket function", () => {
 	})
 })
 
+describe("upload function", () => {
+	it("Should return successfull response after uploading video/image file", async() => {
+		const res = await upload()
+		console.log(res)
+		expect(res).toBeTruthy()
+	})
+})
 
-
-test.todo("upload function")
