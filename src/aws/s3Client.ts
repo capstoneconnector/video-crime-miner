@@ -11,6 +11,8 @@ const secretAccessKey = process.env.AWS_SECRET_KEY
 		secretAccessKey
 	})
 
+	async function listBuckets(){}
+
 	export async function listObjects(bucket:string) {
 		try {
 			const response = await s3.listObjectsV2({
@@ -23,4 +25,6 @@ const secretAccessKey = process.env.AWS_SECRET_KEY
 			console.log('our error' , e);
 		}
 	}
+
+async function upload(){}
 	
