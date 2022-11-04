@@ -1,9 +1,10 @@
 require("dotenv").config()
 const S3 = require('aws-sdk/clients/s3')
 
-const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
+  function connect() {
+	const region = process.env.AWS_BUCKET_REGION
+	const accessKeyId = process.env.AWS_ACCESS_KEY
+	const secretAccessKey = process.env.AWS_SECRET_KEY
 
 	const s3 = new S3({
 		region,
@@ -11,20 +12,28 @@ const secretAccessKey = process.env.AWS_SECRET_KEY
 		secretAccessKey
 	})
 
-	async function listBuckets(){}
+	return s3
 
-	export async function listObjects(bucket:string) {
-		try {
-			const response = await s3.listObjectsV2({
-				Bucket: bucket
-			}).promise();
+}
+
+ async function listBuckets(){}
+
+ async function listObjects(bucket:string) {
+
+	try {
+		const response = await connect().listObjectsV2({
+		Bucket: bucket
+		}).promise();
 	
-			return response
+		return response
 	
-		} catch (e) {
-			console.log('our error' , e);
-		}
+	} catch (e) {
+		console.log('our error' , e);
 	}
+}
 
-async function upload(){}
-	
+ async function upload(){}
+
+ console.log(connect())
+
+export {listBuckets, listObjects, upload, connect}

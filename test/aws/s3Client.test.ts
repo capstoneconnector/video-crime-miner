@@ -1,10 +1,17 @@
-import {listObjects} from "../../src/aws/s3Client";
+import {listObjects, listBuckets, connect} from "../../src/aws/s3Client";
+
+
+describe("connect function", () => {
+
+	test("Should return a response from aws after sending required params", () => {
+		const res = connect()
+		console.log(connect)
+		expect(res).toBeTruthy()
+	})
+})
+
 
 describe('listObjects function', () => {
-	it('Should return a response from aws', async() => {
-		const res = await listObjects("mt-test-uploads")
-		expect(res).not.toBeNull()
-	})
 
 	it('Should return a response in dictionary format', async() => {
 		const res = await listObjects("mt-test-uploads")
@@ -13,5 +20,16 @@ describe('listObjects function', () => {
 	})
 })
 
-test.todo("listBucket function")
+/** 
+describe("listBucket function", () => {
+
+	it("Should return a list of buckets", async() => {
+		const res = await listBuckets()
+		console.log(res)
+		expect(res).toBeTruthy()
+	})
+})
+*/
+
+
 test.todo("upload function")
