@@ -9,7 +9,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc --watch",
-    "test": "jest --watch",
+    "test": "jest",
     "cover": "jest --coverage",
     "typecheck": "tsc"
   },
