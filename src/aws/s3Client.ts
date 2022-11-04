@@ -1,5 +1,7 @@
 require("dotenv").config()
 const S3 = require('aws-sdk/clients/s3')
+const fs = require('fs')
+const path = require('path')
 
   function connect() {
 	const region = process.env.AWS_BUCKET_REGION
@@ -38,11 +40,33 @@ const S3 = require('aws-sdk/clients/s3')
 		return response
 	
 	} catch (e) {
-		console.log('error' , e);
+		console.log('error' , e)
 	}
 }
 
- async function upload(){}
+ function upload(bucket:string, file:string) {
+
+	var uploadParams = {Bucket: bucket, Key: "", Body:""}
+	var fileStream = fs.createReadStream(file);
+
+	fileStream.on('error', function(err:any) {
+  	console.log('File Error', err);
+	});
+
+	uploadParams.Body = fileStream
+	uploadParams.Key = path.basename(file)
+
+	 connect().upload(uploadParams, function(e:any, data:any) {
+		if (e) {
+			console.log("error", e)
+		} if (data) {
+			console.log("Upload Success", data.Location)
+		}
+	})
+	
+ }
+
+ //upload("mt-test-uploads/test_images/","beach.jpg")
 
 
 
