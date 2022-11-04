@@ -1,5 +1,5 @@
 require("dotenv").config()
-import rekognition from '@aws-sdk/client-rekognition';
+const rekognition = require("@aws-sdk/client-rekognition");
 
 function getVideoOutput(){
     
