@@ -10,3 +10,17 @@ const secretAccessKey = process.env.AWS_SECRET_KEY
 		accessKeyId,
 		secretAccessKey
 	})
+
+	export async function listObjects(bucket:string) {
+		try {
+			const response = await s3.listObjectsV2({
+				Bucket: bucket
+			}).promise();
+	
+			return response
+	
+		} catch (e) {
+			console.log('our error' , e);
+		}
+	}
+	
