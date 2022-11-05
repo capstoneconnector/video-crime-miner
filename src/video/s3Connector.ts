@@ -85,7 +85,5 @@ async function createBucket(bucketName: string) {
 	
  }
 
- createBucket("mt-vcm-uploads")
-
 
 export {listBuckets, listObjects, upload, connect, createBucket}
