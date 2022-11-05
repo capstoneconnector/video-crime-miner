@@ -18,6 +18,22 @@ const path = require('path')
 
 }
 
+async function createBucket(bucketName: string) {
+	/**
+	 * Bucket name must be globally unique and must not contain spaces or uppercase letters.
+	 * see rules for naming buckets: https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+	 */
+	try {
+		const response = await connect().createBucket({
+			Bucket: bucketName
+		}).promise()
+		return response.Location
+
+	} catch (e) {
+		console.log('error', e)
+	}
+}
+
 
  async function listBuckets(){
 	try {
@@ -26,7 +42,7 @@ const path = require('path')
 		
 	} catch (e) {
 
-		console.log('error')
+		console.log('error', e)
 	}
  }
 
@@ -69,5 +85,7 @@ const path = require('path')
 	
  }
 
+ createBucket("mt-vcm-uploads")
 
-export {listBuckets, listObjects, upload, connect}
+
+export {listBuckets, listObjects, upload, connect, createBucket}
