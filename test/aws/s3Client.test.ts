@@ -32,8 +32,14 @@ describe("listBucket function", () => {
 
 describe("upload function", () => {
 
-	it("Should return successfull response after uploading video/image file", async () => {
-		const res = await upload("mt-test-uploads/test_images", "beach.jpg")
+	it("Should return successfull response after uploading image file", async () => {
+		const res = await upload("mt-test-uploads/test_images", "resources/beach.jpg")
+		console.log(res)
+		expect(res).toBeTruthy()
+	})
+
+	it("Should return successfull response after uploading video file", async () => {
+		const res = await upload("mt-test-uploads/test_videos", "resources/testVideo.mp4")
 		console.log(res)
 		expect(res).toBeTruthy()
 	})
