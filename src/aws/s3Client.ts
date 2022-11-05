@@ -44,30 +44,30 @@ const path = require('path')
 	}
 }
 
- function upload(bucket:string, file:string) {
 
+ async function upload(bucket:string, file:string) {
 	var uploadParams = {Bucket: bucket, Key: "", Body:""}
 	var fileStream = fs.createReadStream(file);
 
-	fileStream.on('error', function(err:any) {
-  	console.log('File Error', err);
-	});
+	try {
+		fileStream.on('error', function(err:any) {
+		console.log('File Error', err);
+		});
 
-	uploadParams.Body = fileStream
-	uploadParams.Key = path.basename(file)
+		uploadParams.Body = fileStream
+		uploadParams.Key = path.basename(file)
 
-	 connect().upload(uploadParams, function(e:any, data:any) {
-		if (e) {
-			console.log("error", e)
-		} if (data) {
+		const response = await connect().upload(uploadParams, function(data:any) {
 			console.log("Upload Success", data.Location)
-		}
-	})
+		}).promise()
+
+		return response.Location
+
+	} catch (error) {
+		console.log('error', error)
+	}
 	
  }
-
- //upload("mt-test-uploads/test_images/","beach.jpg")
-
 
 
 export {listBuckets, listObjects, upload, connect}
