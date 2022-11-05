@@ -1,4 +1,4 @@
-import {listObjects, listBuckets, connect, upload} from "../../src/aws/s3Client";
+import {listObjects, listBuckets, connect, upload} from "../../src/video/s3Connector"; 
 
 
 describe("connect function", () => {
