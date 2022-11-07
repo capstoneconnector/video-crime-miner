@@ -1,12 +1,13 @@
-require("dotenv").config()
+const ck = require('ckey')
+//require("dotenv").config({ path: require('video-crime-miner')('.env') })
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const path = require('path')
 
   function connect() {
-	const region = process.env.AWS_BUCKET_REGION
-	const accessKeyId = process.env.AWS_ACCESS_KEY
-	const secretAccessKey = process.env.AWS_SECRET_KEY
+	const region = ck.AWS_BUCKET_REGION
+	const accessKeyId = ck.AWS_ACCESS_KEY_ID
+	const secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
 
 	const s3 = new S3({
 		region,
@@ -38,6 +39,8 @@ async function createBucket(bucketName: string) {
  async function listBuckets(){
 	try {
 		const response = await connect().listBuckets().promise()
+		console.log("BUCKETS:")
+		console.log(response.Buckets)
 		return response.Buckets
 		
 	} catch (e) {
@@ -52,7 +55,7 @@ async function createBucket(bucketName: string) {
 		const response = await connect().listObjectsV2({
 		Bucket: bucket
 		}).promise();
-		
+		console.log("Objects in bucket " + bucket + ":")
 		console.log(response)
 		return response
 	
@@ -86,12 +89,8 @@ async function createBucket(bucketName: string) {
 	
  }
 
-listObjects("video-crime-miner-video-test-bucket") //1
-
-/*
-  .then((response) => {
-    console.log(response); //3
-  });
-*/
+// Testing code
+listObjects("video-crime-miner-video-test-bucket") // an example
+listBuckets()
 
 export {listBuckets, listObjects, upload, connect, createBucket}

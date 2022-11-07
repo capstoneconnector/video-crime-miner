@@ -2,3 +2,5 @@ node_modules
 .cache
 out
 .env
+#Ignores all compiled javascript files from typescript source created while testing.
+/src/**/*.js

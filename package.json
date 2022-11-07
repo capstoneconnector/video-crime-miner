@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-rekognition": "^3.202.0",
-    "aws-sdk": "^2.1247.0"
+    "aws-sdk": "^2.1247.0",
+    "ckey": "^1.0.3"
   }
 }
