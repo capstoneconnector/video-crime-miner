@@ -52,7 +52,8 @@ async function createBucket(bucketName: string) {
 		const response = await connect().listObjectsV2({
 		Bucket: bucket
 		}).promise();
-	
+		
+		console.log(response)
 		return response
 	
 	} catch (e) {
@@ -85,5 +86,12 @@ async function createBucket(bucketName: string) {
 	
  }
 
+listObjects("video-crime-miner-video-test-bucket") //1
+
+/*
+  .then((response) => {
+    console.log(response); //3
+  });
+*/
 
 export {listBuckets, listObjects, upload, connect, createBucket}
