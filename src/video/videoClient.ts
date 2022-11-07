@@ -49,7 +49,7 @@ const sqsParams = {
   };
 
 async function createTopicandQueue(){
-    //console.log("Butt")
+    
     try {
       // Create SNS topic
       
