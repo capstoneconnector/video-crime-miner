@@ -1,5 +1,4 @@
 const ck = require('ckey')
-//require("dotenv").config({ path: require('video-crime-miner')('.env') })
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const path = require('path')
@@ -90,7 +89,8 @@ async function createBucket(bucketName: string) {
  }
 
 // Testing code
-listObjects("video-crime-miner-video-test-bucket") // an example
-listBuckets()
+// listObjects("video-crime-miner-video-test-bucket") // an example
+// listBuckets() //another example
+// If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack
 
 export {listBuckets, listObjects, upload, connect, createBucket}

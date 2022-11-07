@@ -1,9 +1,8 @@
-require("dotenv").config()
+const ck = require('ckey')
 const AWS = require("@aws-sdk/client-rekognition");
 
-// const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
+const accessKeyId = ck.AWS_ACCESS_KEY
+const secretAccessKey = ck.AWS_SECRET_KEY
 
 // Example code for testing face detection output
 // var jobId = startVideoFacesDetection("example", "example")
