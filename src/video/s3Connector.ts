@@ -1,12 +1,12 @@
-require("dotenv").config()
+const ck = require('ckey')
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 const path = require('path')
 
   function connect() {
-	const region = process.env.AWS_BUCKET_REGION
-	const accessKeyId = process.env.AWS_ACCESS_KEY
-	const secretAccessKey = process.env.AWS_SECRET_KEY
+	const region = ck.AWS_BUCKET_REGION
+	const accessKeyId = ck.AWS_ACCESS_KEY_ID
+	const secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
 
 	const s3 = new S3({
 		region,
@@ -38,6 +38,8 @@ async function createBucket(bucketName: string) {
  async function listBuckets(){
 	try {
 		const response = await connect().listBuckets().promise()
+		console.log("BUCKETS:")
+		console.log(response.Buckets)
 		return response.Buckets
 		
 	} catch (e) {
@@ -86,5 +88,9 @@ async function createBucket(bucketName: string) {
 	
  }
 
+// Testing code
+// listObjects("video-crime-miner-video-test-bucket") // an example
+// listBuckets() //another example
+// If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack
 
 export {listBuckets, listObjects, upload, connect, createBucket}
