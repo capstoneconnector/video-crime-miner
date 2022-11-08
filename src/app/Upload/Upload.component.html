@@ -1,9 +1,8 @@
 <h1>Upload File</h1>
-<form action="">
-  <input type="file" id="myFile" name="filename">
+
+<form action="" onsubmit="return false">
+  <input type="file" id="filetoupload">
   <br>
-  <form id="form" onsubmit="return false;">
-    <input type="text" id="userInput" />
-  </form>
-  <input type="submit" onclick="othername()"/>
+  <input type="text" id="userInput" />
+  <input type="submit" onclick="UploadVideoOrImage(document.getElementById('filetoupload').files[0])"/>
 </form>
