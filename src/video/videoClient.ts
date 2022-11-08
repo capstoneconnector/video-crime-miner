@@ -16,7 +16,39 @@ const rekog = require("@aws-sdk/client-rekognition")
 const awsSNS = require("@aws-sdk/client-sns")
 const awsSQS= require("@aws-sdk/client-sqs")
 
+// nested interfaces for response handling from rekognition
+interface BoxCoordinates {
+  Width: float;
+  Top: float;
+  Left: float;
+  Height: float;
+}
 
+interface InstanceContent {
+  Confidence: float;
+  BoundingBox: BoxCoordinates;
+}
+
+interface ParentContent {
+  Name: string;
+}
+
+interface LabelContent {
+
+  Name: string;
+  Confidence: float;
+  Instances: InstanceContent[];
+
+  Parents: ParentContent[];
+}
+
+interface LabelResponse {
+  
+  Label: LabelContent;
+
+  Timestamp: int;
+
+}
 
 // set aws credentials
 const accessKeyId = process.env.AWS_ACCESS_KEY;
@@ -28,8 +60,8 @@ const snsClient = new awsSNS.SNSClient({ accessKeyId: accessKeyId, secretAccessK
 const rekClient = new rekog.RekognitionClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
 
 // Set bucket and video variables
-const bucket = String(process.env.AWS_BUCKET_NAME);
-const videoName = String(process.env.AWS_VIDEO_NAME);
+const bucket = "video-crime-miner-video-test-bucket";
+const videoName = "Test Security Footage.mp4";
 const roleArn = String(process.env.AWS_ROLEARN_NAME);
 var startJobId = ""
 
@@ -38,6 +70,8 @@ var ts = Date.now();
 const snsTopicName = "AmazonRekognitionExample" + ts;
 const snsTopicParams = {Name: snsTopicName}
 const sqsQueueName = "AmazonRekognitionQueue-" + ts;
+
+var jsonReportContainer = {};
 
 // Set the parameters for sqs queue
 const sqsParams = {
@@ -56,15 +90,15 @@ async function createTopicandQueue(){
       const topicResponse = await snsClient.send(new awsSNS.CreateTopicCommand(snsTopicParams));
       
       const topicArn = String(topicResponse.TopicArn)
-      console.log("Success", topicResponse);
+      //console.log("Success", topicResponse);
       // Create SQS Queue
       const sqsResponse = await sqsClient.send(new awsSQS.CreateQueueCommand(sqsParams));
-      console.log("Success", sqsResponse);
+      //console.log("Success", sqsResponse);
       const sqsQueueCommand = await sqsClient.send(new awsSQS.GetQueueUrlCommand({QueueName: sqsQueueName}))
       const sqsQueueUrl = sqsQueueCommand.QueueUrl
       const attribsResponse = await sqsClient.send(new awsSQS.GetQueueAttributesCommand({QueueUrl: sqsQueueUrl, AttributeNames: ['QueueArn']}))
       const attribs = attribsResponse.Attributes
-      console.log(attribs)
+      //console.log(attribs)
       const queueArn = attribs.QueueArn
       // subscribe SQS queue to SNS topic
       const subscribed = await snsClient.send(new awsSNS.SubscribeCommand({TopicArn: topicArn, Protocol:'sqs', Endpoint: queueArn}))
@@ -88,8 +122,8 @@ async function createTopicandQueue(){
       
       const response = await sqsClient.send(new awsSQS.SetQueueAttributesCommand({QueueUrl: sqsQueueUrl, Attributes: {Policy: JSON.stringify(policy)}}))
       
-      console.log(response)
-      console.log(sqsQueueUrl, topicArn)
+      //console.log(response)
+      //console.log(sqsQueueUrl, topicArn)
       return String(sqsQueueUrl) + "$" + topicArn;
   
     } catch (err) {
@@ -99,10 +133,10 @@ async function createTopicandQueue(){
     }
 };
 
-async function startLabelDetection (roleArn: string, snsTopicArn:string) {
+async function startLabelDetection (roleArn: string, snsTopicArn:string, bucketWithVideo:string, nameOfVideoToAnalyze:string) {
     try {
       //Initiate label detection and update value of startJobId with returned Job ID
-     const labelDetectionResponse = await rekClient.send(new rekog.StartLabelDetectionCommand({Video:{S3Object:{Bucket:bucket, Name:videoName}}, 
+     const labelDetectionResponse = await rekClient.send(new rekog.StartLabelDetectionCommand({Video:{S3Object:{Bucket:bucketWithVideo, Name:nameOfVideoToAnalyze}}, 
         NotificationChannel:{RoleArn: roleArn, SNSTopicArn: snsTopicArn}}));
         startJobId = labelDetectionResponse.JobId
         console.log(`JobID: ${startJobId}`)
@@ -114,6 +148,7 @@ async function startLabelDetection (roleArn: string, snsTopicArn:string) {
   };
 
 async function getLabelDetectionResults(startJobId: string) {
+
     console.log("Retrieving Label Detection results")
     // Set max results, paginationToken and finished will be updated depending on response values
     var maxResults = 10
@@ -129,69 +164,36 @@ async function getLabelDetectionResults(startJobId: string) {
         console.log(`Duration: ${response.VideoMetadata.DurationMillis}`)
         console.log(`Format: ${response.VideoMetadata.Format}`)
         console.log(`Frame Rate: ${response.VideoMetadata.FrameRate}`)
-        console.log()
-
-        interface BoxCoordinates {
-            Width: float;
-            Top: float;
-            Left: float;
-            Height: float;
-        }
-
-        interface InstanceContent {
-            Confidence: float;
-            BoundingBox: BoxCoordinates;
-        }
-
-        interface ParentContent {
-            Name: string;
-        }
-
-        interface LabelContent {
-
-            Name: string;
-            Confidence: float;
-            Instances: InstanceContent[];
-
-            Parents: ParentContent[];
-        }
-
-        interface LabelResponse {
-            
-            Label: LabelContent;
-
-            Timestamp: int;
-
-        }
 
         // For every detected label, log label, confidence, bounding box, and timestamp
         response.Labels.forEach(function(labelDetection: LabelResponse) {
+          
+
           var label = labelDetection.Label
-          console.log(`Timestamp: ${labelDetection.Timestamp}`)
-          console.log(`Label: ${label.Name}`)
-          console.log(`Confidence: ${label.Confidence}`)
-          console.log("Instances:")
+          
+         
+
+          
+
+          console.log(`Timestamp: ${labelDetection.Timestamp}\nLabel: ${label.Name}\nConfidence: ${label.Confidence}` + "\nInstances:")
           label.Instances.forEach(function (instance: InstanceContent){
-            console.log(`Confidence: ${instance.Confidence}`)
-            console.log("Bounding Box:")
-            console.log(`Top: ${instance.BoundingBox.Top}`)
-            console.log(`Left: ${instance.BoundingBox.Left}`)
-            console.log(`Width: ${instance.BoundingBox.Width}`)
-            console.log(`Height: ${instance.BoundingBox.Height}`)
-            console.log()
+            console.log("Confidence: " + String(instance.Confidence) + "Bounding Box:\nTop: " + String(instance.BoundingBox.Top) + "\nLeft: " + String(instance.BoundingBox.Left) + "\nWidth: " + String(instance.BoundingBox.Width) + "\nHeight: " + String(instance.BoundingBox.Height))
+            
           })
-        console.log()
+        //console.log()
         // Log parent if found
         console.log("   Parents:")
         label.Parents.forEach(parent =>{
+          
           console.log(`    ${parent.Name}`)
         })
-        console.log()
+        //console.log()
         // Searh for pagination token, if found, set variable to next token
         if (String(response).includes("NextToken")){
           paginationToken = response.NextToken
   
         }else{
+          jsonReportContainer = JSON.stringify(response.Labels)
           finished = true
         }
   
@@ -261,11 +263,11 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
 
   // Start label detection job, sent status notification, check for success status
 // Retrieve results if status is "SUCEEDED", delete notification queue and topic
-async function runLabelDetectionAndGetResults() {
+async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Test Security Footage.mp4") {
     try {
 
         const sqsAndTopic  = createTopicandQueue()
-        const startLabelDetectionRes = startLabelDetection(roleArn, (await sqsAndTopic).split('$')[1])
+        const startLabelDetectionRes = startLabelDetection(roleArn, (await sqsAndTopic).split('$')[1], bucketWithVideo, nameOfVideoToAnalyze)
       /*const sqsAndTopic  = new Promise ((resolve, reject) => {
         resolve(createTopicandQueue())
       })
@@ -286,6 +288,13 @@ async function runLabelDetectionAndGetResults() {
       const deleteQueue = await sqsClient.send(new awsSQS.DeleteQueueCommand({QueueUrl: (await sqsAndTopic).split('$')[0]}));
       const deleteTopic = await snsClient.send(new awsSNS.DeleteTopicCommand({TopicArn: (await sqsAndTopic).split('$')[1]}));
       console.log("Successfully deleted.")
+
+      var newReport = jsonReportContainer
+
+      console.log(newReport)
+
+      return newReport
+
     } catch (err) {
       console.log("Error", err);
     }
