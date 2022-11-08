@@ -53,6 +53,7 @@
   "dependencies": {
     "@aws-sdk/client-rekognition": "^3.202.0",
     "aws-sdk": "^2.1247.0",
+
 	"@angular/animations": "^14.2.0",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
@@ -64,5 +65,8 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
+
+    "ckey": "^1.0.3"
+
   }
 }

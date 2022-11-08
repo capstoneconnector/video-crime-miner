@@ -1,13 +1,14 @@
-require("dotenv").config()
+const ck = require('ckey')
 const AWS = require("@aws-sdk/client-rekognition");
 
-// const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
+const accessKeyId = ck.AWS_ACCESS_KEY
+const secretAccessKey = ck.AWS_SECRET_KEY
 
-var jobId = startVideoFacesDetection()
-var output = getVideoFacesDetectionOutput(jobId)
+// Example code for testing face detection output
+// var jobId = startVideoFacesDetection("example", "example")
+// var output = getVideoFacesDetectionOutput(jobId)
 
+// Function to connect to AWS Rekognition client
 function connect() {
 	const rekognition = new AWS({
 		accessKeyId,
@@ -17,26 +18,26 @@ function connect() {
 	return rekognition
 }
 
-function startVideoFacesDetection(){
+function startVideoFacesDetection(bucketName:string, videoName:string){
     var rekognition = connect()
     var attributes = {
         "FaceAttributes": "DEFAULT",
-        "JobTag": "string",
         "Video": { 
            "S3Object": { 
-              "Bucket": "test-videos-video-crime-processor",
-              "Name": "Garland police releases footage of gunman in fatal shooting of 3 teens at gas station-djU2QN9CI_Y.mp4",
+              "Bucket": bucketName,
+              "Name": videoName,
            }
         }
      }
-    return rekognition.StartFaceDetection(attributes)
+    return rekognition.StartFaceDetection(attributes) // Returns jobId
 }
 
+// Gets the output based on jobId for face recognition
 function getVideoFacesDetectionOutput(jobId:string){
     var rekognition = connect()
     return rekognition.getFaceDetection()
 }
-
+/*
 function sendRequest(){
     var rekognition = connect()
     rekognition.compareFaces({}, function (err: { stack: any; }, data: any) {
@@ -46,5 +47,6 @@ function sendRequest(){
     
     return "https://aws.com/"
 }
+*/
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}

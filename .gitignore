@@ -2,6 +2,10 @@ node_modules
 .cache
 out
 .env
+
+#Ignores all compiled javascript files from typescript source created while testing.
+/src/**/*.js
+
 .angular
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
