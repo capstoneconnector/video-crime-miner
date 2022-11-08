@@ -1,50 +1,67 @@
-require("dotenv").config()
-const AWS = require("@aws-sdk/client-rekognition");
+const ck = require('ckey')
+// const Rekognition = require("@aws-sdk/client-rekognition");
+const { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
 
-// const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = process.env.AWS_ACCESS_KEY
-const secretAccessKey = process.env.AWS_SECRET_KEY
+const region:string = ck.REGION
+const accessKeyId:string = ck.AWS_ACCESS_KEY_ID
+const secretAccessKey:string = ck.AWS_SECRET_ACCESS_KEY
 
-var jobId = startVideoFacesDetection()
-var output = getVideoFacesDetectionOutput(jobId)
 
-function connect() {
-	const rekognition = new AWS({
-		accessKeyId,
-		secretAccessKey
-	})
+//const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
+var attributes = {
+    region : region,
+    credentials:{
+        accessKeyId : accessKeyId,
+        secretAccessKey : secretAccessKey
+    }
+}
+const client  = new RekognitionClient(attributes);
 
-	return rekognition
+async function startVideoFacesDetection(bucketName:string, videoName:string){
+    try {
+        var attributes = {
+            Video: { 
+               S3Object: { 
+                  Name: videoName,
+                  Bucket: bucketName,
+               }
+            }
+         }
+        // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
+        const command = new StartFaceDetectionCommand(attributes)
+        const result = await client.send(command)
+        console.log("jobId is: " + JSON.stringify(result.JobId))
+        return result.JobId
+	} catch (e) {
+		console.log('error', e)
+	}
 }
 
-function startVideoFacesDetection(){
-    var rekognition = connect()
-    var attributes = {
-        "FaceAttributes": "DEFAULT",
-        "JobTag": "string",
-        "Video": { 
-           "S3Object": { 
-              "Bucket": "test-videos-video-crime-processor",
-              "Name": "Garland police releases footage of gunman in fatal shooting of 3 teens at gas station-djU2QN9CI_Y.mp4",
-           }
+// Gets the output based on jobId for face recognition
+async function getVideoFacesDetectionOutput(id:string){
+    try {
+        const parameters = {
+            JobId: id
         }
-     }
-    return rekognition.StartFaceDetection(attributes)
+        const command = new GetFaceDetectionCommand(parameters)
+        var finished = false
+        while(!finished){
+            var result = await client.send(command)
+            if (result.JobStatus == "SUCCEEDED") {
+                finished = true;
+            }
+            //console.log()
+        }
+        console.log(result)
+        return result
+	} catch (e) {
+		console.log('error', e)
+	}
 }
 
-function getVideoFacesDetectionOutput(jobId:string){
-    var rekognition = connect()
-    return rekognition.getFaceDetection()
-}
-
-function sendRequest(){
-    var rekognition = connect()
-    rekognition.compareFaces({}, function (err: { stack: any; }, data: any) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-    });
-    
-    return "https://aws.com/"
-}
+// Example code for testing face detection output
+//startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
+//    getVideoFacesDetectionOutput(jobId)
+//})
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}
