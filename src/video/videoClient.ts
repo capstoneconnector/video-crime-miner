@@ -3,13 +3,14 @@ import { int } from "../../node_modules/aws-sdk/clients/datapipeline";
 import { float } from "../../node_modules/aws-sdk/clients/lightsail";
 import { stdout } from "process";
 import { resolve } from "path";
+const ck = require('ckey')
 
 require("dotenv").config()
 const fs = require('fs')
 const path = require('path')
 
 // Set the AWS Region.
-const REGION = process.env.AWS_REKOG_REGION; //e.g. "us-east-1"
+const REGION = ck.AWS_REKOG_REGION; //e.g. "us-east-1"
 
 // import required aws clients
 const rekog = require("@aws-sdk/client-rekognition")
@@ -51,8 +52,8 @@ interface LabelResponse {
 }
 
 // set aws credentials
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
+const accessKeyId = ck.AWS_ACCESS_KEY;
+const secretAccessKey = ck.AWS_SECRET_KEY;
 
 // Create rekog, SQS, and SNS service objects
 const sqsClient = new awsSQS.SQSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
@@ -62,7 +63,7 @@ const rekClient = new rekog.RekognitionClient({ accessKeyId: accessKeyId, secret
 // Set bucket and video variables
 const bucket = "video-crime-miner-video-test-bucket";
 const videoName = "Test Security Footage.mp4";
-const roleArn = String(process.env.AWS_ROLEARN_NAME);
+const roleArn = String(ck.AWS_ROLEARN_NAME);
 var startJobId = ""
 
 // initialize configuirations for sns and sqs clients
