@@ -52,7 +52,8 @@ async function createBucket(bucketName: string) {
 		const response = await connect().listObjectsV2({
 		Bucket: bucket
 		}).promise();
-	
+		console.log("Objects in bucket " + bucket + ":")
+		console.log(response)
 		return response
 	
 	} catch (e) {
