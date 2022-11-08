@@ -1,52 +1,66 @@
 const ck = require('ckey')
-const AWS = require("@aws-sdk/client-rekognition");
+// const Rekognition = require("@aws-sdk/client-rekognition");
+const { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
 
-const accessKeyId = ck.AWS_ACCESS_KEY
-const secretAccessKey = ck.AWS_SECRET_KEY
+const region:string = ck.REGION
+const accessKeyId:string = ck.AWS_ACCESS_KEY_ID
+const secretAccessKey:string = ck.AWS_SECRET_ACCESS_KEY
 
-// Example code for testing face detection output
-// var jobId = startVideoFacesDetection("example", "example")
-// var output = getVideoFacesDetectionOutput(jobId)
-
-// Function to connect to AWS Rekognition client
-function connect() {
-	const rekognition = new AWS({
-		accessKeyId,
-		secretAccessKey
-	})
-
-	return rekognition
+//const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
+var attributes = {
+    region : region,
+    credentials:{
+        accessKeyId : accessKeyId,
+        secretAccessKey : secretAccessKey
+    }
 }
+const client  = new RekognitionClient(attributes);
 
-function startVideoFacesDetection(bucketName:string, videoName:string){
-    var rekognition = connect()
-    var attributes = {
-        "FaceAttributes": "DEFAULT",
-        "Video": { 
-           "S3Object": { 
-              "Bucket": bucketName,
-              "Name": videoName,
-           }
-        }
-     }
-    return rekognition.StartFaceDetection(attributes) // Returns jobId
+async function startVideoFacesDetection(bucketName:string, videoName:string){
+    try {
+        var attributes = {
+            Video: { 
+               S3Object: { 
+                  Name: videoName,
+                  Bucket: bucketName,
+               }
+            }
+         }
+        // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
+        const command = new StartFaceDetectionCommand(attributes)
+        const result = await client.send(command)
+        console.log("jobId is: " + JSON.stringify(result.JobId))
+        return result.JobId
+	} catch (e) {
+		console.log('error', e)
+	}
 }
 
 // Gets the output based on jobId for face recognition
-function getVideoFacesDetectionOutput(jobId:string){
-    var rekognition = connect()
-    return rekognition.getFaceDetection()
+async function getVideoFacesDetectionOutput(id:string){
+    try {
+        const parameters = {
+            JobId: id
+        }
+        const command = new GetFaceDetectionCommand(parameters)
+        var finished = false
+        while(!finished){
+            var result = await client.send(command)
+            if (result.JobStatus == "SUCCEEDED") {
+                finished = true;
+            }
+            //console.log()
+        }
+        console.log(result)
+        return result
+	} catch (e) {
+		console.log('error', e)
+	}
 }
-/*
-function sendRequest(){
-    var rekognition = connect()
-    rekognition.compareFaces({}, function (err: { stack: any; }, data: any) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-    });
-    
-    return "https://aws.com/"
-}
-*/
+
+// Example code for testing face detection output
+//startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
+//    getVideoFacesDetectionOutput(jobId)
+//})
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}
