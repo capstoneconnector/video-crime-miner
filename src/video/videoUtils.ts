@@ -6,6 +6,7 @@ const region:string = ck.REGION
 const accessKeyId:string = ck.AWS_ACCESS_KEY_ID
 const secretAccessKey:string = ck.AWS_SECRET_ACCESS_KEY
 
+
 //const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
 var attributes = {
     region : region,
