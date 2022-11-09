@@ -1,32 +1,24 @@
-import { InstanceConfigInstanceCountInteger } from "../../node_modules/aws-sdk/clients/braket";
-import { int } from "../../node_modules/aws-sdk/clients/datapipeline";
-import { float } from "../../node_modules/aws-sdk/clients/lightsail";
-import { stdout } from "process";
-import { resolve } from "path";
-const ck = require('ckey')
+// import required modules
+var rekog = require("@aws-sdk/client-rekognition")
+var awsSNS = require("@aws-sdk/client-sns")
+var awsSQS= require("@aws-sdk/client-sqs")
+var ck = require('ckey')
+var {stdout} = require("process")
 
-require("dotenv").config()
-const fs = require('fs')
-const path = require('path')
 
 // Set the AWS Region.
 const REGION = ck.AWS_REKOG_REGION; //e.g. "us-east-1"
 
-// import required aws clients
-const rekog = require("@aws-sdk/client-rekognition")
-const awsSNS = require("@aws-sdk/client-sns")
-const awsSQS= require("@aws-sdk/client-sqs")
-
 // nested interfaces for response handling from rekognition
 interface BoxCoordinates {
-  Width: float;
-  Top: float;
-  Left: float;
-  Height: float;
+  Width: number;
+  Top: number;
+  Left: number;
+  Height: number;
 }
 
 interface InstanceContent {
-  Confidence: float;
+  Confidence: number;
   BoundingBox: BoxCoordinates;
 }
 
@@ -37,7 +29,7 @@ interface ParentContent {
 interface LabelContent {
 
   Name: string;
-  Confidence: float;
+  Confidence: number;
   Instances: InstanceContent[];
 
   Parents: ParentContent[];
@@ -47,13 +39,13 @@ interface LabelResponse {
 
   Label: LabelContent;
 
-  Timestamp: int;
+  Timestamp: number;
 
 }
 
 // set aws credentials
-const accessKeyId = ck.AWS_ACCESS_KEY;
-const secretAccessKey = ck.AWS_SECRET_KEY;
+var accessKeyId = ck.AWS_ACCESS_KEY;
+var secretAccessKey = ck.AWS_SECRET_KEY;
 
 // Create rekog, SQS, and SNS service objects
 const sqsClient = new awsSQS.SQSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
@@ -303,4 +295,3 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
     }
   };
 
-export {createTopicandQueue, startLabelDetection, getLabelDetectionResults, getSQSMessageSuccess, runLabelDetectionAndGetResults}
