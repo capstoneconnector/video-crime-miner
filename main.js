@@ -1,5 +1,8 @@
 const { fail } = require("assert")
-const { upload } = require("./src/video/s3Connector.js")
+const { upload, listObjects } = require("./src/video/s3Connector.js")
+const { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('./src/video/videoUtils.js')
+const { runLabelDetectionAndGetResults } = require('./src/video/videoClient.js')
+//import {stuff} from './src/video/videoClient.js'
 
 const readline = require('readline').createInterface({
     input: process.stdin,
@@ -30,13 +33,21 @@ function resolveInput(userInput){
         })
     }else if(userInput=="2"){
         //scan video faces
-        main()
+        readline.question("Input AWS filename: ", x => {
+            startVideoFacesDetection("video-crime-miner-video-test-bucket", x).then(jobId => {
+                    getVideoFacesDetectionOutput(jobId)
+            })
+        })
     }else if(userInput=="3"){
         //label detection video
-        main()
+        console.log("This may take a while...")
+        
+            runLabelDetectionAndGetResults().then(x => {
+                console.log(x)
+            })
     }else if(userInput=="4"){
         //view files
-        main()
+        listObjects("video-crime-miner-video-test-bucket")
     }else{
         console.log("ERROR: invalid choice")
         main()

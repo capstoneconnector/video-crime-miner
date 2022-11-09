@@ -264,7 +264,7 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
 
   // Start label detection job, sent status notification, check for success status
 // Retrieve results if status is "SUCEEDED", delete notification queue and topic
-async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Test Security Footage.mp4") {
+async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4") {
     try {
 
         const sqsAndTopic  = createTopicandQueue()
