@@ -1,12 +1,12 @@
-const ck = require('ckey')
-const S3 = require('aws-sdk/clients/s3')
-const fs = require('fs')
-const path = require('path')
+var ck = require('ckey')
+var S3 = require('aws-sdk/clients/s3')
+var fs = require('fs')
+var path = require('path')
 
   function connect() {
-	const region = ck.AWS_BUCKET_REGION
-	const accessKeyId = ck.AWS_ACCESS_KEY_ID
-	const secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
+	var region = ck.AWS_BUCKET_REGION
+	var accessKeyId = ck.AWS_ACCESS_KEY_ID
+	var secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
 
 	const s3 = new S3({
 		region,
@@ -93,4 +93,3 @@ async function createBucket(bucketName: string) {
 // listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack
 
-export {listBuckets, listObjects, upload, connect, createBucket}

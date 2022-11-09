@@ -1,6 +1,3 @@
-
-import {createTopicandQueue, startLabelDetection, getLabelDetectionResults, getSQSMessageSuccess, runLabelDetectionAndGetResults} from "../src/video/videoClient";
-
 describe ("createTopicAndQueue function", () => {
 
     it("creates SNS message topic and SQS queue for messages, and pairs them together. Should return the" + 
