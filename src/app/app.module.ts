@@ -5,12 +5,28 @@ import { LoginComponent } from './Login/Login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './App/app.component';
 import { UploadComponent } from './Upload/Upload.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { BodyComponent } from './body/body.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ViewComponent } from './view/view.component';
+import { MediaComponent } from './media/media.component';
+import { SettingsComponent } from './settings/settings.component';
+import { ReportsComponent } from './reports/reports.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    UploadComponent
+    UploadComponent,
+    SidenavComponent,
+    BodyComponent,
+    DashboardComponent,
+    ViewComponent,
+    MediaComponent,
+    SettingsComponent,
+    ReportsComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
