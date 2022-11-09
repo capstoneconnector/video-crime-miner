@@ -1,5 +1,5 @@
 // Angular-Video Connector Module
-const upload = require("../video/s3Connector.js")
+const upload = require("./s3Connector.js")
 
 function UploadVideoOrImage(form:any){
     // get file path
