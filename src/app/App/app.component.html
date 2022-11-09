@@ -1,11 +1,5 @@
-<div>
-  <h1>
-    {{title}}
-  </h1>
-</div>
-
-<app-Login></app-Login>
-<app-upload></app-upload>
-
-
-<router-outlet></router-outlet>
+<app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+<app-body
+    [collapsed]="isSideNavCollapsed"
+    [screenWidth]="screenWidth"
+></app-body>
