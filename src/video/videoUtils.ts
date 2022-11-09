@@ -1,10 +1,10 @@
-const ck = require('ckey')
+var ck = require('ckey')
 // const Rekognition = require("@aws-sdk/client-rekognition");
-const { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
+var { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
 
-const region:string = ck.REGION
-const accessKeyId:string = ck.AWS_ACCESS_KEY_ID
-const secretAccessKey:string = ck.AWS_SECRET_ACCESS_KEY
+var region = ck.REGION
+var accessKeyId = ck.AWS_ACCESS_KEY_ID
+var secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
 
 
 //const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
@@ -63,5 +63,3 @@ async function getVideoFacesDetectionOutput(id:string){
 //startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
 //    getVideoFacesDetectionOutput(jobId)
 //})
-
-export {startVideoFacesDetection, getVideoFacesDetectionOutput}
