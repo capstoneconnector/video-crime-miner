@@ -1,11 +1,5 @@
 import { connect, createBucket, listBuckets, listObjects, upload } from "../../src/node/s3Connector"
 
-describe("filler", () => {
-	test("filler", () => {
-		expect(false).toBe(false)
-	})
-})
-
 describe("connect function", () => {
 
 	test("Should return a response from aws after sending required params", () => {
