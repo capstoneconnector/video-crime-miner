@@ -1,4 +1,4 @@
-import {listObjects, listBuckets, connect, upload, createBucket} from "../../src/video/s3Connector"; 
+import {listObjects, listBuckets, connect, upload, createBucket} from "../../src/node/s3Connector"; 
 
 describe("connect function", () => {
 
