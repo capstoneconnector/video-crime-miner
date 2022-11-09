@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { LoginComponent } from './Login/Login.component';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './App/app.component';
@@ -17,7 +17,6 @@ import { StatsComponent } from './stats/stats.component';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     UploadComponent,
     SidenavComponent,
     BodyComponent,
