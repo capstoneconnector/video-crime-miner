@@ -1,3 +1,10 @@
+import { createTopicandQueue, runLabelDetectionAndGetResults } from "../../src/video/videoClient"
+
+describe("filler", () => {
+	test("filler", () => {
+		expect(false).toBe(false)
+	})
+})
 /*
 describe ("createTopicAndQueue function", () => {
 
@@ -12,8 +19,6 @@ describe ("createTopicAndQueue function", () => {
                                                                         
 describe ("runLabelDetectionAndGetResults function", () => {
 
-}
-
     it("Analyzes video in given s3 bucket and returns report 2", async() => {
         jest.spyOn(console, 'log').mockImplementation(jest.fn());
         jest.spyOn(console, 'debug').mockImplementation(jest.fn());
@@ -25,7 +30,6 @@ describe ("runLabelDetectionAndGetResults function", () => {
     }, 30500000)
 
 })
-
 */
 
 /*it("Analyzes video in given s3 bucket and returns report 1", async() => {

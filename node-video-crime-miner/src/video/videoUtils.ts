@@ -67,3 +67,5 @@ async function getVideoFacesDetectionOutput(id:string){
 
 //module.exports = {startVideoFacesDetection, getVideoFacesDetectionOutput}
 //exports.startVideoFacesDetection = startVideoFacesDetection
+
+export {startVideoFacesDetection, getVideoFacesDetectionOutput}

@@ -1,8 +1,9 @@
 // Mocking preparation
-var { mockClient } = require("aws-sdk-client-mock")
-var { RekognitionClient, StartFaceDetectionCommand } = require("@aws-sdk/client-rekognition")
+import { mockClient } from "aws-sdk-client-mock"
+import { RekognitionClient, StartFaceDetectionCommand } from "@aws-sdk/client-rekognition"
+import { startVideoFacesDetection } from "../../src/video/videoUtils"
+
 var rekognitionMock = mockClient(RekognitionClient)
-//var { startVideoFacesDetection } = require("../../src/video/videoUtils")
 
 beforeEach(() => {
     rekognitionMock.reset();

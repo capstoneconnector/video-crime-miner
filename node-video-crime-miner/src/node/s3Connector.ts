@@ -93,3 +93,4 @@ async function createBucket(bucketName: string) {
 // listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack
 
+export { connect, createBucket, listBuckets, listObjects, upload }
