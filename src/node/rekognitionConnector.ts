@@ -3,7 +3,7 @@
 //const upload = require("../video/s3Connector.js")
 //import { upload } from "../video/s3Connector.js"
 //var exports = {}
-import { upload } from '../video/s3Connector.js'
+import { upload } from "./s3Connector.js"
 //import * as something from "../video/s3Connector.js"
 
 function UploadVideoOrImage(form:any){

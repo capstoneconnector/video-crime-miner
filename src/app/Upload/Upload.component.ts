@@ -1,8 +1,15 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
-  templateUrl: './Upload.component.html',
-  styleUrls: ['./Upload.component.css']
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent{}
+export class UploadComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

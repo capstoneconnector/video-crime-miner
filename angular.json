@@ -18,13 +18,14 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets"
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": ["src/node/rekognitionConnector.js"]
+            "scripts": ["out/src/node/rekognitionConnector.js"]
           },
           "configurations": {
             "production": {
@@ -97,6 +98,6 @@
     }
   },
   "cli": {
-    "analytics": "0c3c4b20-ea52-4b46-8cd4-6bab60a69fa7"
+    "analytics": "51977a51-019d-4c9a-9527-2b963d6f2048"
   }
 }

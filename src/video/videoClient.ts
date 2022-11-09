@@ -3,13 +3,14 @@ import { int } from "../../node_modules/aws-sdk/clients/datapipeline";
 import { float } from "../../node_modules/aws-sdk/clients/lightsail";
 import { stdout } from "process";
 import { resolve } from "path";
+const ck = require('ckey')
 
 require("dotenv").config()
 const fs = require('fs')
 const path = require('path')
 
 // Set the AWS Region.
-const REGION = process.env.AWS_REKOG_REGION; //e.g. "us-east-1"
+const REGION = ck.AWS_REKOG_REGION; //e.g. "us-east-1"
 
 // import required aws clients
 const rekog = require("@aws-sdk/client-rekognition")
@@ -43,7 +44,7 @@ interface LabelContent {
 }
 
 interface LabelResponse {
-  
+
   Label: LabelContent;
 
   Timestamp: int;
@@ -51,8 +52,8 @@ interface LabelResponse {
 }
 
 // set aws credentials
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
+const accessKeyId = ck.AWS_ACCESS_KEY;
+const secretAccessKey = ck.AWS_SECRET_KEY;
 
 // Create rekog, SQS, and SNS service objects
 const sqsClient = new awsSQS.SQSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
@@ -62,7 +63,7 @@ const rekClient = new rekog.RekognitionClient({ accessKeyId: accessKeyId, secret
 // Set bucket and video variables
 const bucket = "video-crime-miner-video-test-bucket";
 const videoName = "Test Security Footage.mp4";
-const roleArn = String(process.env.AWS_ROLEARN_NAME);
+const roleArn = String(ck.AWS_ROLEARN_NAME);
 var startJobId = ""
 
 // initialize configuirations for sns and sqs clients
@@ -83,12 +84,12 @@ const sqsParams = {
   };
 
 async function createTopicandQueue(){
-    
+
     try {
       // Create SNS topic
-      
+
       const topicResponse = await snsClient.send(new awsSNS.CreateTopicCommand(snsTopicParams));
-      
+
       const topicArn = String(topicResponse.TopicArn)
       //console.log("Success", topicResponse);
       // Create SQS Queue
@@ -119,13 +120,13 @@ async function createTopicandQueue(){
           }
         ]
       };
-      
+
       const response = await sqsClient.send(new awsSQS.SetQueueAttributesCommand({QueueUrl: sqsQueueUrl, Attributes: {Policy: JSON.stringify(policy)}}))
-      
+
       //console.log(response)
       //console.log(sqsQueueUrl, topicArn)
       return String(sqsQueueUrl) + "$" + topicArn;
-  
+
     } catch (err) {
 
       console.log("Error", err);
@@ -136,7 +137,7 @@ async function createTopicandQueue(){
 async function startLabelDetection (roleArn: string, snsTopicArn:string, bucketWithVideo:string, nameOfVideoToAnalyze:string) {
     try {
       //Initiate label detection and update value of startJobId with returned Job ID
-     const labelDetectionResponse = await rekClient.send(new rekog.StartLabelDetectionCommand({Video:{S3Object:{Bucket:bucketWithVideo, Name:nameOfVideoToAnalyze}}, 
+     const labelDetectionResponse = await rekClient.send(new rekog.StartLabelDetectionCommand({Video:{S3Object:{Bucket:bucketWithVideo, Name:nameOfVideoToAnalyze}},
         NotificationChannel:{RoleArn: roleArn, SNSTopicArn: snsTopicArn}}));
         startJobId = labelDetectionResponse.JobId
         console.log(`JobID: ${startJobId}`)
@@ -154,10 +155,10 @@ async function getLabelDetectionResults(startJobId: string) {
     var maxResults = 10
     var paginationToken = ''
     var finished = false
-  
+
     // Begin retrieving label detection results
     while (finished == false){
-      var response = await rekClient.send(new rekog.GetLabelDetectionCommand({JobId: startJobId, MaxResults: maxResults, 
+      var response = await rekClient.send(new rekog.GetLabelDetectionCommand({JobId: startJobId, MaxResults: maxResults,
         NextToken: paginationToken, SortBy:'TIMESTAMP'}))
         // Log metadata
         console.log(`Codec: ${response.VideoMetadata.Codec}`)
@@ -167,36 +168,36 @@ async function getLabelDetectionResults(startJobId: string) {
 
         // For every detected label, log label, confidence, bounding box, and timestamp
         response.Labels.forEach(function(labelDetection: LabelResponse) {
-          
+
 
           var label = labelDetection.Label
-          
-         
 
-          
+
+
+
 
           console.log(`Timestamp: ${labelDetection.Timestamp}\nLabel: ${label.Name}\nConfidence: ${label.Confidence}` + "\nInstances:")
           label.Instances.forEach(function (instance: InstanceContent){
             console.log("Confidence: " + String(instance.Confidence) + "Bounding Box:\nTop: " + String(instance.BoundingBox.Top) + "\nLeft: " + String(instance.BoundingBox.Left) + "\nWidth: " + String(instance.BoundingBox.Width) + "\nHeight: " + String(instance.BoundingBox.Height))
-            
+
           })
         //console.log()
         // Log parent if found
         console.log("   Parents:")
         label.Parents.forEach(parent =>{
-          
+
           console.log(`    ${parent.Name}`)
         })
         //console.log()
         // Searh for pagination token, if found, set variable to next token
         if (String(response).includes("NextToken")){
           paginationToken = response.NextToken
-  
+
         }else{
           jsonReportContainer = JSON.stringify(response.Labels)
           finished = true
         }
-  
+
         })
     }
 }
@@ -210,8 +211,8 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
       var dotLine = 0
       // while not found, continue to poll for response
       while (jobFound == false){
-        var sqsReceivedResponse = await sqsClient.send(new awsSQS.ReceiveMessageCommand({QueueUrl:sqsQueueUrl, 
-            MessageAttributeNames: 'All', 
+        var sqsReceivedResponse = await sqsClient.send(new awsSQS.ReceiveMessageCommand({QueueUrl:sqsQueueUrl,
+            MessageAttributeNames: 'All',
             MaxNumberOfMessages: 10
         }));
         if (sqsReceivedResponse){
@@ -222,7 +223,7 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
               dotLine = dotLine + 1
             }else {
               console.log('')
-              dotLine = 0 
+              dotLine = 0
             };
             stdout.write('', () => {
               console.log('');
@@ -231,7 +232,7 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
             continue
           }
         }
-  
+
         // Once job found, log Job ID and return true if status is succeeded
         for (var message of sqsReceivedResponse.Messages){
           console.log("Retrieved messages:")
@@ -257,13 +258,14 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
     return succeeded
     } catch(err) {
       console.log("Error", err);
+      return []
     }
   }
 
 
   // Start label detection job, sent status notification, check for success status
 // Retrieve results if status is "SUCEEDED", delete notification queue and topic
-async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Test Security Footage.mp4") {
+async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4") {
     try {
 
         const sqsAndTopic  = createTopicandQueue()
@@ -276,9 +278,9 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
             const startLabelDetectionRes = new Promise ((resolve, reject) => {
                 resolve(startLabelDetection(roleArn, value[1]) )
             });
-            
+
         } )*/
-      
+
       const getSQSMessageStatus = await getSQSMessageSuccess((await sqsAndTopic).split('$')[0], await startLabelDetectionRes)
       console.log(getSQSMessageSuccess)
       if (await getSQSMessageSuccess){
@@ -297,6 +299,7 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
 
     } catch (err) {
       console.log("Error", err);
+      return []
     }
   };
 
