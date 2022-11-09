@@ -1,16 +1,12 @@
 // Angular-Video Connector Module
-//import upload from "../video/s3Connector.js"
-//const upload = require("../video/s3Connector.js")
-//import { upload } from "../video/s3Connector.js"
-//var exports = {}
-import { upload } from "./s3Connector.js"
-//import * as something from "../video/s3Connector.js"
+
+var s3 = require("./s3Connector.js")
 
 function UploadVideoOrImage(form:any){
     // get file path
     try{
         console.log(form)
-        upload("video-crime-miner-video-test-bucket", form).then((response: any) => {
+        s3.upload("video-crime-miner-video-test-bucket", form).then((response: any) => {
             console.log(response)
         })
     } catch (error){
@@ -19,4 +15,3 @@ function UploadVideoOrImage(form:any){
     // call upload in S3Connector with that file path
 }
 
-export {UploadVideoOrImage}

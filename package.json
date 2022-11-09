@@ -13,7 +13,7 @@
     "watch-site": "ng build --watch --configuration development",
     "test-site": "ng test",
     "start": "tsc --watch",
-    "build": "tsc --watch",
+    "build": "tsc",
     "test": "jest",
     "cover": "jest --coverage",
     "typecheck": "tsc"
