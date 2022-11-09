@@ -25,7 +25,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": ["out/src/node/rekognitionConnector.js"]
+            "scripts": []
           },
           "configurations": {
             "production": {
