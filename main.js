@@ -2,7 +2,6 @@ const { fail } = require("assert")
 const { upload, listObjects } = require("./src/video/s3Connector.js")
 const { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('./src/video/videoUtils.js')
 const { runLabelDetectionAndGetResults } = require('./src/video/videoClient.js')
-//import {stuff} from './src/video/videoClient.js'
 
 const readline = require('readline').createInterface({
     input: process.stdin,
