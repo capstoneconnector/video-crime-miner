@@ -1,7 +1,7 @@
-var { fail } = require("assert")
-var { upload, listObjects } = require("../out/src/node/s3Connector.js")
-var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../out/src/video/videoUtils.js')
-var { runLabelDetectionAndGetResults } = require('../out/src/video/videoClient.js')
+//var { fail } = require("assert")
+var { upload, listObjects } = require("../../out/src/node/s3Connector.js")
+var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../../out/src/video/videoUtils.js')
+var { runLabelDetectionAndGetResults } = require('../../out/src/video/videoClient.js')
 
 var readline = require('readline').createInterface({
     input: process.stdin,
@@ -13,27 +13,27 @@ function main(){
     console.log("What would you like to do?")
     console.log(choices)
 
-    readline.question("Choose an option: ", x => {
+    readline.question("Choose an option: ", (x:any) => {
         resolveInput(x)
     })
 }
 
 
-function resolveInput(userInput){
+function resolveInput(userInput:any){
     if(userInput=="q"){
         //exit the program
         fail("user quit the program")
     }else if(userInput=="1"){
         //upload a file
-        readline.question("Input file path: ", x => {
-            upload("video-crime-miner-video-test-bucket", x).then(response => {
+        readline.question("Input file path: ", (x:any) => {
+            upload("video-crime-miner-video-test-bucket", x).then((response:any) => {
                 console.log(response)
             })
         })
     }else if(userInput=="2"){
         //scan video faces
-        readline.question("Input AWS filename: ", x => {
-            startVideoFacesDetection("video-crime-miner-video-test-bucket", x).then(jobId => {
+        readline.question("Input AWS filename: ", (x:any) => {
+            startVideoFacesDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
                     getVideoFacesDetectionOutput(jobId)
             })
         })
@@ -41,7 +41,7 @@ function resolveInput(userInput){
         //label detection video
         console.log("This may take a while...")
         
-            runLabelDetectionAndGetResults().then(x => {
+            runLabelDetectionAndGetResults().then((x:any) => {
                 console.log(x)
             })
     }else if(userInput=="4"){
