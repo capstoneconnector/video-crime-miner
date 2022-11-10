@@ -1,7 +1,10 @@
 //var { fail } = require("assert")
-var { upload, listObjects } = require("../node/s3Connector")
-var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../video/videoUtils')
-var { runLabelDetectionAndGetResults } = require('../video/videoClient')
+import {upload, listObjects} from "../node/s3Connector"
+import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../video/videoUtils'
+import {runLabelDetectionAndGetResults} from '../video/videoClient'
+//var { upload, listObjects } = require("../node/s3Connector")
+//var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../video/videoUtils')
+//var { runLabelDetectionAndGetResults } = require('../video/videoClient')
 
 var readline = require('readline').createInterface({
     input: process.stdin,
