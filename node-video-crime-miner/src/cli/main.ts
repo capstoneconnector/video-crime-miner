@@ -25,12 +25,12 @@ function main(){
 function resolveInput(userInput:any){
     if(userInput=="q"){
         //exit the program
-        fail("user quit the program")
+        process.exit()
     }else if(userInput=="1"){
         //upload a file
         readline.question("Input file path: ", (x:any) => {
             upload("video-crime-miner-video-test-bucket", x).then((response:any) => {
-                console.log(response)
+                //console.log(response)
             })
         })
     }else if(userInput=="2"){
@@ -43,16 +43,16 @@ function resolveInput(userInput:any){
     }else if(userInput=="3"){
         //label detection video
         console.log("This may take a while...")
-        
-            runLabelDetectionAndGetResults().then((x:any) => {
-                console.log(x)
+        readline.question("Input AWS filename: ", (x:any) => {
+            runLabelDetectionAndGetResults("video-crime-miner-video-test-bucket", x).then((x:any) => {
+                //console.log(x)
             })
+        })
     }else if(userInput=="4"){
         //view files
         listObjects("video-crime-miner-video-test-bucket")
     }else{
         console.log("ERROR: invalid choice")
-        main()
     }
 }
 

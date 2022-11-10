@@ -68,12 +68,14 @@ function startVideoFacesDetection(bucketName, videoName) {
                         }
                     };
                     command = new StartFaceDetectionCommand(attributes);
-                    console.log(JSON.stringify(command));
-                    return [4 /*yield*/, client.send(command)];
+                    return [4 /*yield*/, client.send(command)
+                        //console.log("jobId is: " + JSON.stringify(result.JobId))
+                        //console.log(result)
+                    ];
                 case 1:
                     result = _a.sent();
-                    console.log("jobId is: " + JSON.stringify(result.JobId));
-                    console.log(result);
+                    //console.log("jobId is: " + JSON.stringify(result.JobId))
+                    //console.log(result)
                     return [2 /*return*/, result.JobId];
                 case 2:
                     e_1 = _a.sent();
@@ -108,9 +110,9 @@ function getVideoFacesDetectionOutput(id) {
                         finished = true;
                     }
                     return [3 /*break*/, 1];
-                case 3:
-                    console.log(result);
-                    return [2 /*return*/, result];
+                case 3: 
+                //console.log(result)
+                return [2 /*return*/, result];
                 case 4:
                     e_2 = _a.sent();
                     console.log('error', e_2);

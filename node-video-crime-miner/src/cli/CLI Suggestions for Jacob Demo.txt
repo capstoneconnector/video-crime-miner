@@ -6,7 +6,7 @@ Test Video CLI.mp4
 
 Backup:
 Option 1:
-C:\Users\Student\Desktop\CS495\Crime Video Processor\video-crime-miner\resources\Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4
+C:\Users\Student\Desktop\CS495\Crime Video Processor\video-crime-miner\node-video-crime-miner\resources\Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4
 
 Option 2:
 Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4
