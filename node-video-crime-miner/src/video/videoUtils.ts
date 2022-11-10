@@ -15,7 +15,7 @@ var attributes = {
         secretAccessKey : secretAccessKey
     }
 }
-const client  = new RekognitionClient(attributes);
+const client  = new RekognitionClient(attributes)
 
 async function startVideoFacesDetection(bucketName:string, videoName:string){
     try {
@@ -61,11 +61,8 @@ async function getVideoFacesDetectionOutput(id:string){
 }
 
 // Example code for testing face detection output
-//startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
-//    getVideoFacesDetectionOutput(jobId)
-//})
-
-//module.exports = {startVideoFacesDetection, getVideoFacesDetectionOutput}
-//exports.startVideoFacesDetection = startVideoFacesDetection
+startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
+    getVideoFacesDetectionOutput(jobId)
+})
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}
