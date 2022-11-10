@@ -1,7 +1,7 @@
 // Mocking preparation
 import { mockClient } from "aws-sdk-client-mock"
-import { RekognitionClient, StartFaceDetectionCommand } from "@aws-sdk/client-rekognition"
-import { startVideoFacesDetection } from "../../src/video/videoUtils"
+import { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand } from "@aws-sdk/client-rekognition"
+import { startVideoFacesDetection, getVideoFacesDetectionOutput } from "../../src/video/videoUtils"
 
 var rekognitionMock = mockClient(RekognitionClient)
 
@@ -12,7 +12,6 @@ beforeEach(() => {
 // Test suite
 describe("startVideoFacesDetection function", () => {
     test("it should return the valid jobId on success", async () => {
-
         const inputBucket:string = "example-bucket"
         const inputFile:string = "C:/fakepath/example.jpg"
         const output = "174a0134113639a384838cb4800b0e2b567ba160769516dd17804ba66aeb53f5"
@@ -35,3 +34,65 @@ describe("startVideoFacesDetection function", () => {
         expect(result).toBe(output)
     });
   });
+
+describe("getVideoFacesDetectionOutput function", () => {
+    test("it should return valid json after it has successful in it", async () => {
+      const inputId:string = "174a0134113639a384838cb4800b0e2b567ba160769516dd17804ba66aeb53f5"
+
+      var json = 
+      {
+        '$metadata': {
+          httpStatusCode: 200,
+          requestId: '3f2de1e2-bdd5-4393-9f7e-123f2751f09e',
+          extendedRequestId: undefined,
+          cfId: undefined,
+          attempts: 1,
+          totalRetryDelay: 0
+        },
+        Faces: [],
+        JobStatus: 'SUCCEEDED',
+        NextToken: undefined,
+        StatusMessage: undefined,
+        VideoMetadata: {
+          Codec: 'h264',
+          ColorRange: 'LIMITED',
+          DurationMillis: 15320,
+          Format: 'QuickTime / MOV',
+          FrameHeight: 1080,
+          FrameRate: 25,
+          FrameWidth: 1920
+        }
+      }
+
+      const output = json
+      rekognitionMock.on(GetFaceDetectionCommand).resolves(json)
+      const result = await getVideoFacesDetectionOutput(inputId)
+      expect(result).toBe(output)
+    })
+})
+
+/*
+{
+  '$metadata': {
+    httpStatusCode: 200,
+    requestId: '3f2de1e2-bdd5-4393-9f7e-123f2751f09e',
+    extendedRequestId: undefined,
+    cfId: undefined,
+    attempts: 1,
+    totalRetryDelay: 0
+  },
+  Faces: [],
+  JobStatus: 'SUCCEEDED',
+  NextToken: undefined,
+  StatusMessage: undefined,
+  VideoMetadata: {
+    Codec: 'h264',
+    ColorRange: 'LIMITED',
+    DurationMillis: 15320,
+    Format: 'QuickTime / MOV',
+    FrameHeight: 1080,
+    FrameRate: 25,
+    FrameWidth: 1920
+  }
+}
+*/
