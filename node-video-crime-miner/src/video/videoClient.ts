@@ -295,3 +295,4 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
     }
   };
 
+export { createTopicandQueue, startLabelDetection, getLabelDetectionResults, getSQSMessageSuccess, runLabelDetectionAndGetResults }
