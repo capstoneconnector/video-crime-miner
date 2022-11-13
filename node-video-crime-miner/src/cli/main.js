@@ -28,7 +28,7 @@ function resolveInput(userInput) {
         //upload a file
         readline.question("Input file path: ", function (x) {
             (0, s3Connector_1.upload)("video-crime-miner-video-test-bucket", x).then(function (response) {
-                //console.log(response)
+                console.log(response);
             });
         });
     }
@@ -36,7 +36,10 @@ function resolveInput(userInput) {
         //scan video faces
         readline.question("Input AWS filename: ", function (x) {
             (0, videoUtils_1.startVideoFacesDetection)("video-crime-miner-video-test-bucket", x).then(function (jobId) {
-                (0, videoUtils_1.getVideoFacesDetectionOutput)(jobId);
+                console.log(jobId);
+                (0, videoUtils_1.getVideoFacesDetectionOutput)(jobId).then(function (response) {
+                    console.log(response);
+                });
             });
         });
     }

@@ -30,14 +30,17 @@ function resolveInput(userInput:any){
         //upload a file
         readline.question("Input file path: ", (x:any) => {
             upload("video-crime-miner-video-test-bucket", x).then((response:any) => {
-                //console.log(response)
+                console.log(response)
             })
         })
     }else if(userInput=="2"){
         //scan video faces
         readline.question("Input AWS filename: ", (x:any) => {
             startVideoFacesDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
-                    getVideoFacesDetectionOutput(jobId)
+                    console.log(jobId)
+                    getVideoFacesDetectionOutput(jobId).then((response:any) => {
+                        console.log(response)
+                    })
             })
         })
     }else if(userInput=="3"){
