@@ -1,145 +1,130 @@
-// import required modules
-var rekog = require("@aws-sdk/client-rekognition")
-var awsSNS = require("@aws-sdk/client-sns")
-var awsSQS= require("@aws-sdk/client-sqs")
-var ck = require('ckey')
-var {stdout} = require("process")
+var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
+var {stdout} = require("process") // this has problems when converted to import statement!
+import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
 
 
 // Set the AWS Region.
-const REGION = ck.AWS_REKOG_REGION; //e.g. "us-east-1"
-
-// nested interfaces for response handling from rekognition
-interface BoxCoordinates {
-  Width: number;
-  Top: number;
-  Left: number;
-  Height: number;
-}
-
-interface InstanceContent {
-  Confidence: number;
-  BoundingBox: BoxCoordinates;
-}
-
-interface ParentContent {
-  Name: string;
-}
-
-interface LabelContent {
-
-  Name: string;
-  Confidence: number;
-  Instances: InstanceContent[];
-
-  Parents: ParentContent[];
-}
-
-interface LabelResponse {
-
-  Label: LabelContent;
-
-  Timestamp: number;
-
-}
-
-// set aws credentials
-var accessKeyId = ck.AWS_ACCESS_KEY;
-var secretAccessKey = ck.AWS_SECRET_KEY;
+const region = ck.AWS_REKOG_REGION; //e.g. "us-east-1"
+// set AWS credentials
+const accessKeyId = ck.AWS_ACCESS_KEY;
+const secretAccessKey = ck.AWS_SECRET_KEY;
 
 // Create rekog, SQS, and SNS service objects
-const sqsClient = new awsSQS.SQSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
-const snsClient = new awsSNS.SNSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
-const rekClient = new rekog.RekognitionClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
+//const sqsClient = new awsSQS.SQSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
+//const snsClient = new awsSNS.SNSClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
+//const rekClient = new rekog.RekognitionClient({ accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: REGION });
+
+var attributes = {
+  region : region,
+  credentials:{
+      accessKeyId : accessKeyId,
+      secretAccessKey : secretAccessKey
+  }
+}
+
+const client  = new RekognitionClient(attributes)
 
 // Set bucket and video variables
-const bucket = "video-crime-miner-video-test-bucket";
-const videoName = "Test Security Footage.mp4";
-const roleArn = String(ck.AWS_ROLEARN_NAME);
-var startJobId = ""
+//const bucket = "video-crime-miner-video-test-bucket";
+//const videoName = "Test Security Footage.mp4";
+//const roleArn = String(ck.AWS_ROLEARN_NAME);
+//var startJobId = ""
 
 // initialize configuirations for sns and sqs clients
-var ts = Date.now();
-const snsTopicName = "AmazonRekognitionExample" + ts;
-const snsTopicParams = {Name: snsTopicName}
-const sqsQueueName = "AmazonRekognitionQueue-" + ts;
+//var ts = Date.now();
+//const snsTopicName = "AmazonRekognitionExample" + ts;
+//const snsTopicParams = {Name: snsTopicName}
+//const sqsQueueName = "AmazonRekognitionQueue-" + ts;
 
-var jsonReportContainer = {};
+//var jsonReportContainer = {};
 
 // Set the parameters for sqs queue
-const sqsParams = {
-    QueueName: sqsQueueName, //SQS_QUEUE_URL
-    Attributes: {
-      DelaySeconds: "60", // Number of seconds delay.
-      MessageRetentionPeriod: "86400", // Number of seconds delay.
-    },
-  };
+//const sqsParams = {
+//    QueueName: sqsQueueName, //SQS_QUEUE_URL
+//    Attributes: {
+//      DelaySeconds: "60", // Number of seconds delay.
+//      MessageRetentionPeriod: "86400", // Number of seconds delay.
+//    },
+//  };
 
+/*
 async function createTopicandQueue(){
 
-    try {
-      // Create SNS topic
+  try {
+    // Create SNS topic
 
-      const topicResponse = await snsClient.send(new awsSNS.CreateTopicCommand(snsTopicParams));
+    const topicResponse = await snsClient.send(new awsSNS.CreateTopicCommand(snsTopicParams));
 
-      const topicArn = String(topicResponse.TopicArn)
-      //console.log("Success", topicResponse);
-      // Create SQS Queue
-      const sqsResponse = await sqsClient.send(new awsSQS.CreateQueueCommand(sqsParams));
-      //console.log("Success", sqsResponse);
-      const sqsQueueCommand = await sqsClient.send(new awsSQS.GetQueueUrlCommand({QueueName: sqsQueueName}))
-      const sqsQueueUrl = sqsQueueCommand.QueueUrl
-      const attribsResponse = await sqsClient.send(new awsSQS.GetQueueAttributesCommand({QueueUrl: sqsQueueUrl, AttributeNames: ['QueueArn']}))
-      const attribs = attribsResponse.Attributes
-      //console.log(attribs)
-      const queueArn = attribs.QueueArn
-      // subscribe SQS queue to SNS topic
-      const subscribed = await snsClient.send(new awsSNS.SubscribeCommand({TopicArn: topicArn, Protocol:'sqs', Endpoint: queueArn}))
-      const policy = {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Sid: "MyPolicy",
-            Effect: "Allow",
-            Principal: {AWS: "*"},
-            Action: "SQS:SendMessage",
-            Resource: queueArn,
-            Condition: {
-              ArnEquals: {
-                'aws:SourceArn': topicArn
-              }
+    const topicArn = String(topicResponse.TopicArn)
+    //console.log("Success", topicResponse);
+    // Create SQS Queue
+    const sqsResponse = await sqsClient.send(new awsSQS.CreateQueueCommand(sqsParams));
+    //console.log("Success", sqsResponse);
+    const sqsQueueCommand = await sqsClient.send(new awsSQS.GetQueueUrlCommand({QueueName: sqsQueueName}))
+    const sqsQueueUrl = sqsQueueCommand.QueueUrl
+    const attribsResponse = await sqsClient.send(new awsSQS.GetQueueAttributesCommand({QueueUrl: sqsQueueUrl, AttributeNames: ['QueueArn']}))
+    const attribs = attribsResponse.Attributes
+    //console.log(attribs)
+    const queueArn = attribs.QueueArn
+    // subscribe SQS queue to SNS topic
+    const subscribed = await snsClient.send(new awsSNS.SubscribeCommand({TopicArn: topicArn, Protocol:'sqs', Endpoint: queueArn}))
+    const policy = {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Sid: "MyPolicy",
+          Effect: "Allow",
+          Principal: {AWS: "*"},
+          Action: "SQS:SendMessage",
+          Resource: queueArn,
+          Condition: {
+            ArnEquals: {
+              'aws:SourceArn': topicArn
             }
           }
-        ]
-      };
+        }
+      ]
+    };
 
-      const response = await sqsClient.send(new awsSQS.SetQueueAttributesCommand({QueueUrl: sqsQueueUrl, Attributes: {Policy: JSON.stringify(policy)}}))
+    const response = await sqsClient.send(new awsSQS.SetQueueAttributesCommand({QueueUrl: sqsQueueUrl, Attributes: {Policy: JSON.stringify(policy)}}))
 
-      //console.log(response)
-      //console.log(sqsQueueUrl, topicArn)
-      return String(sqsQueueUrl) + "$" + topicArn;
+    //console.log(response)
+    //console.log(sqsQueueUrl, topicArn)
+    return String(sqsQueueUrl) + "$" + topicArn;
 
-    } catch (err) {
+  } catch (err) {
 
-      console.log("Error", err);
-      return ""
-    }
+    console.log("Error", err);
+    return ""
+  }
 };
 
-async function startLabelDetection (roleArn: string, snsTopicArn:string, bucketWithVideo:string, nameOfVideoToAnalyze:string) {
-    try {
-      //Initiate label detection and update value of startJobId with returned Job ID
-     const labelDetectionResponse = await rekClient.send(new rekog.StartLabelDetectionCommand({Video:{S3Object:{Bucket:bucketWithVideo, Name:nameOfVideoToAnalyze}},
-        NotificationChannel:{RoleArn: roleArn, SNSTopicArn: snsTopicArn}}));
-        startJobId = labelDetectionResponse.JobId
-        console.log(`JobID: ${startJobId}`)
-        return startJobId
-    } catch (err) {
-      console.log("Error", err);
-      return ""
-    }
-  };
+*/
 
+async function startLabelDetection(bucketName:string, videoName:string) {
+  try {
+    var attributes = {
+      Video: { 
+        S3Object: { 
+          Name: videoName,
+          Bucket: bucketName,
+        }
+      }
+    }
+
+    // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
+    const command = new StartLabelDetectionCommand(attributes)
+    const result = await client.send(command)
+    return result.JobId || {error:"Couldn't start faces detection"}
+  } catch (e) {
+    console.log('error', e)
+        return {
+            error: e
+        }
+  }
+}
+
+/*
 async function getLabelDetectionResults(startJobId: string) {
 
     console.log("Retrieving Label Detection results")
@@ -193,7 +178,30 @@ async function getLabelDetectionResults(startJobId: string) {
         })
     }
 }
+*/
 
+async function getLabelDetectionResults(id: string) {
+  try {
+    const parameters = {
+        JobId: id
+    }
+    const command = new GetLabelDetectionCommand(parameters)
+    var finished = false
+    var result
+    while(!finished){
+        result = await client.send(command)
+        if (result.JobStatus == "SUCCEEDED") {
+            finished = true;
+        }
+    }
+    //console.log(result)
+    return result || {error: "Could not get Label Detection Results"}
+  } catch (e) {
+  console.log('error', e)
+  }
+}
+
+/*
 // Checks for status of job completion
 async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
     try {
@@ -253,8 +261,10 @@ async function getSQSMessageSuccess (sqsQueueUrl:string, startJobId:string) {
       return []
     }
   }
+*/
 
 
+/*
   // Start label detection job, sent status notification, check for success status
 // Retrieve results if status is "SUCEEDED", delete notification queue and topic
 async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-crime-miner-video-test-bucket", nameOfVideoToAnalyze:string = "Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4") {
@@ -262,16 +272,6 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
 
         const sqsAndTopic  = createTopicandQueue()
         const startLabelDetectionRes = startLabelDetection(roleArn, (await sqsAndTopic).split('$')[1], bucketWithVideo, nameOfVideoToAnalyze)
-      /*const sqsAndTopic  = new Promise ((resolve, reject) => {
-        resolve(createTopicandQueue())
-      })
-      sqsAndTopic.then(
-        (value) => {
-            const startLabelDetectionRes = new Promise ((resolve, reject) => {
-                resolve(startLabelDetection(roleArn, value[1]) )
-            });
-
-        } )*/
 
       const getSQSMessageStatus = await getSQSMessageSuccess((await sqsAndTopic).split('$')[0], await startLabelDetectionRes)
       console.log(getSQSMessageSuccess)
@@ -295,4 +295,6 @@ async function runLabelDetectionAndGetResults(bucketWithVideo:string = "video-cr
     }
   };
 
-export { createTopicandQueue, startLabelDetection, getLabelDetectionResults, getSQSMessageSuccess, runLabelDetectionAndGetResults }
+*/
+
+export { startLabelDetection, getLabelDetectionResults }

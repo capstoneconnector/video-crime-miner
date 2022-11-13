@@ -29,9 +29,12 @@ async function startVideoFacesDetection(bucketName:string, videoName:string){
         // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
         const command = new StartFaceDetectionCommand(attributes)
         const result = await client.send(command)
-        return result.JobId
+        return result.JobId || {error:"Couldn't start faces detection"}
 	} catch (e) {
 		console.log('error', e)
+        return {
+            error: e
+        }
 	}
 }
 
@@ -43,14 +46,15 @@ async function getVideoFacesDetectionOutput(id:string){
         }
         const command = new GetFaceDetectionCommand(parameters)
         var finished = false
+        var result
         while(!finished){
-            var result = await client.send(command)
+            result = await client.send(command)
             if (result.JobStatus == "SUCCEEDED") {
                 finished = true;
             }
         }
         //console.log(result)
-        return result
+        return result || {error: "Could not get Face Detection Results"}
 	} catch (e) {
 		console.log('error', e)
 	}
