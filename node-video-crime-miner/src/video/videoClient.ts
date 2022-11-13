@@ -1,5 +1,4 @@
 var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
-//var {stdout} = require("process") // this has problems when converted to import statement!
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
 
 
