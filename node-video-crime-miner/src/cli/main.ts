@@ -1,7 +1,7 @@
 //var { fail } = require("assert")
-import {upload, listObjects} from "../node/s3Connector"
-import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../video/videoUtils'
-import {runLabelDetectionAndGetResults} from '../video/videoClient'
+import {upload, listObjects} from "../AWS Layer/s3Connector"
+import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../AWS Layer/Rekognition/videoUtils'
+import {runLabelDetectionAndGetResults} from '../AWS Layer/Rekognition/videoClient'
 //var { upload, listObjects } = require("../node/s3Connector")
 //var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../video/videoUtils')
 //var { runLabelDetectionAndGetResults } = require('../video/videoClient')
