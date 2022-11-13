@@ -1,5 +1,4 @@
-var ck = require('ckey')
-// const Rekognition = require("@aws-sdk/client-rekognition");
+var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
 var { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
 
 var region = ck.REGION
@@ -29,10 +28,7 @@ async function startVideoFacesDetection(bucketName:string, videoName:string){
          }
         // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
         const command = new StartFaceDetectionCommand(attributes)
-        //console.log(JSON.stringify(command))
         const result = await client.send(command)
-        //console.log("jobId is: " + JSON.stringify(result.JobId))
-        //console.log(result)
         return result.JobId
 	} catch (e) {
 		console.log('error', e)
@@ -61,8 +57,8 @@ async function getVideoFacesDetectionOutput(id:string){
 }
 
 // Example code for testing face detection output
-startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
-    getVideoFacesDetectionOutput(jobId)
-})
+//startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
+//    getVideoFacesDetectionOutput(jobId)
+//})
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}
