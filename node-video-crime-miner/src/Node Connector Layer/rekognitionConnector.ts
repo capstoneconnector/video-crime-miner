@@ -2,8 +2,6 @@
 
 // TODO: Figure out how to connect this to the frontend
 
-var s3 = require("./s3Connector.js")
-
 function UploadVideoOrImage(form:any){
     // get file path
     try{
