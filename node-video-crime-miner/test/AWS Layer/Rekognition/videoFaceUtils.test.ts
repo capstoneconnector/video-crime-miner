@@ -1,7 +1,7 @@
 // Mocking preparation
 import { mockClient } from "aws-sdk-client-mock"
 import { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand } from "@aws-sdk/client-rekognition"
-import { startVideoFacesDetection, getVideoFacesDetectionOutput } from "../../src/video/videoUtils"
+import { startVideoFacesDetection, getVideoFacesDetectionOutput } from "../../../src/AWS Layer/Rekognition/videoFaceUtils"
 
 var rekognitionMock = mockClient(RekognitionClient)
 

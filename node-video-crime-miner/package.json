@@ -7,16 +7,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "ng": "ng",
-    "start-site": "ng serve",
-    "build-site": "ng build",
-    "watch-site": "ng build --watch --configuration development",
-    "test-site": "ng test",
     "start": "tsc --watch",
     "build": "tsc",
     "test": "jest",
-    "cover": "jest --coverage",
-    "typecheck": "tsc"
+    "cover": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,9 +24,6 @@
   },
   "homepage": "https://github.com/jacobbishop1000/video-crime-miner#readme",
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.2.6",
-    "@angular/cli": "~14.2.6",
-    "@angular/compiler-cli": "^14.2.0",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.9",
     "aws-sdk-client-mock": "^2.0.0",
@@ -47,14 +38,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^14.2.0",
-    "@angular/common": "^14.2.0",
-    "@angular/compiler": "^14.2.0",
-    "@angular/core": "^14.2.0",
-    "@angular/forms": "^14.2.0",
-    "@angular/platform-browser": "^14.2.0",
-    "@angular/platform-browser-dynamic": "^14.2.0",
-    "@angular/router": "^14.2.0",
     "@aws-sdk/client-rekognition": "^3.202.0",
     "@aws-sdk/client-s3": "^3.209.0",
     "@aws-sdk/client-sns": "^3.204.0",

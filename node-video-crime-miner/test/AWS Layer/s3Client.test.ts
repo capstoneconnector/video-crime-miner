@@ -1,5 +1,5 @@
-var s3 = require("../../src/node/s3Connector.ts")
-jest.mock("../../src/node/s3Connector.ts")
+var s3 = require("../../src/AWS Layer/s3Connector")
+jest.mock("../../src/node/s3Connector")
 
 describe("connect function", () => {
 

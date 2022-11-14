@@ -1,5 +1,5 @@
 //import { createTopicandQueue, runLabelDetectionAndGetResults } from "../../src/video/videoClient"
-var awsClient = require("../../src/video/videoClient")
+var awsClient = require("../../../src/AWS Layer/Rekognition/videoLabelUtils")
 jest.mock("../../src/video/videoClient")
 
 describe ("createTopicAndQueue function", () => {
