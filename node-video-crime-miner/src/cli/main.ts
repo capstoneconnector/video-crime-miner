@@ -1,8 +1,9 @@
 import {upload, listObjects} from "../AWS Layer/s3Connector.js"
 import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../AWS Layer/Rekognition/videoFaceUtils.js'
 import { startLabelDetection, getLabelDetectionResults } from '../AWS Layer/Rekognition/videoLabelUtils.js'
+import * as reader from "readline"
 
-var readline = require('readline').createInterface({
+var readline = reader.createInterface({
     input: process.stdin,
     output: process.stdout
   })
