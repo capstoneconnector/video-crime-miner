@@ -1,5 +1,5 @@
 var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
-import * as fs  from 'fs' // This is how we transfer from this: //var fs = require('fs')
+import * as fs  from 'fs'
 import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand} from '@aws-sdk/client-s3'
 import * as path from 'path'
 

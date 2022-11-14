@@ -15,3 +15,5 @@ function UploadVideoOrImage(form:any){
     // call upload in S3Connector with that file path
 
 }
+
+export { UploadVideoOrImage }

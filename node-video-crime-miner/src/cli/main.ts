@@ -1,10 +1,6 @@
-//var { fail } = require("assert")
 import {upload, listObjects} from "../AWS Layer/s3Connector"
 import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../AWS Layer/Rekognition/videoFaceUtils'
 import { startLabelDetection, getLabelDetectionResults } from '../AWS Layer/Rekognition/videoLabelUtils'
-//var { upload, listObjects } = require("../node/s3Connector")
-//var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../video/videoUtils')
-//var { runLabelDetectionAndGetResults } = require('../video/videoClient')
 
 var readline = require('readline').createInterface({
     input: process.stdin,

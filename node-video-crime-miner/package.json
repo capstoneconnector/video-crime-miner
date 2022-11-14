@@ -2,6 +2,7 @@
   "name": "node-video-crime-miner",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "engines": {
     "node": ">=12"
   },
