@@ -1,10 +1,12 @@
-var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
+import * as dotenv from "dotenv"
 import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand } from "@aws-sdk/client-sqs"
 
+dotenv.config({ path: "../../../.env"})
+
 // AWS .env variables
-const region  = ck.REGION
-const accessKeyId = ck.AWS_ACCESS_KEY
-const secretAccessKey = ck.AWS_SECRET_KEY
+const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
+const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
+const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
 // Create SQS client to send commands to
 const attributes = {

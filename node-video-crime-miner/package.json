@@ -13,8 +13,9 @@
     "node": ">=12"
   },
   "scripts": {
-    "start": "tsc --watch",
-    "build": "tsc",
+    "create": "npm run build && npm run test",
+    "start": "node out/src/cli/main.js",
+    "build": "tsc -p .",
     "test": "jest",
     "cover": "jest --coverage"
   },

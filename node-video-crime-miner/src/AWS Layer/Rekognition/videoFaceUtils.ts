@@ -1,10 +1,11 @@
-var ck = require('ckey') // This needs to be require because of: https://stackoverflow.com/a/42505940/17977811
-var { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
+import * as dotenv from "dotenv"
+import { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} from "@aws-sdk/client-rekognition"
 
-var region = ck.REGION
-var accessKeyId = ck.AWS_ACCESS_KEY_ID
-var secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
+dotenv.config({ path: "../../../../.env"})
 
+const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
+const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
+const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
 //const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
 var attributes = {
