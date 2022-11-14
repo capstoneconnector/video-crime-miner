@@ -2,18 +2,9 @@
 
 // TODO: Figure out how to connect this to the frontend
 
-function UploadVideoOrImage(form:any){
-    // get file path
-    try{
-        console.log(form)
-        s3.upload("video-crime-miner-video-test-bucket", form).then((response: any) => {
-            console.log(response)
-        })
-    } catch (error){
-        console.log(error)
-    }
-    // call upload in S3Connector with that file path
-
+function UploadVideo(form:any){
+    // TODO: Allow user to upload Video to AWS
+    return null
 }
 
-export { UploadVideoOrImage }
+export { UploadVideo }
