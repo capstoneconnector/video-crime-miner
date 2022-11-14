@@ -1,11 +1,11 @@
-var ck = require('ckey')
-// const Rekognition = require("@aws-sdk/client-rekognition");
-var { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} = require("@aws-sdk/client-rekognition");
+import * as dotenv from "dotenv"
+import { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} from "@aws-sdk/client-rekognition"
 
-var region = ck.REGION
-var accessKeyId = ck.AWS_ACCESS_KEY_ID
-var secretAccessKey = ck.AWS_SECRET_ACCESS_KEY
+dotenv.config({ path: "../../../../.env"})
 
+const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
+const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
+const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
 //const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
 var attributes = {
@@ -29,13 +29,13 @@ async function startVideoFacesDetection(bucketName:string, videoName:string){
          }
         // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
         const command = new StartFaceDetectionCommand(attributes)
-        //console.log(JSON.stringify(command))
         const result = await client.send(command)
-        //console.log("jobId is: " + JSON.stringify(result.JobId))
-        //console.log(result)
-        return result.JobId
+        return result.JobId || {error:"Couldn't start faces detection"}
 	} catch (e) {
 		console.log('error', e)
+        return {
+            error: e
+        }
 	}
 }
 
@@ -47,22 +47,23 @@ async function getVideoFacesDetectionOutput(id:string){
         }
         const command = new GetFaceDetectionCommand(parameters)
         var finished = false
+        var result
         while(!finished){
-            var result = await client.send(command)
+            result = await client.send(command)
             if (result.JobStatus == "SUCCEEDED") {
                 finished = true;
             }
         }
         //console.log(result)
-        return result
+        return result || {error: "Could not get Face Detection Results"}
 	} catch (e) {
 		console.log('error', e)
 	}
 }
 
 // Example code for testing face detection output
-startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
-    getVideoFacesDetectionOutput(jobId)
-})
+//startVideoFacesDetection("video-crime-miner-video-test-bucket", "testVideo.mp4").then(jobId => {
+//    getVideoFacesDetectionOutput(jobId)
+//})
 
 export {startVideoFacesDetection, getVideoFacesDetectionOutput}

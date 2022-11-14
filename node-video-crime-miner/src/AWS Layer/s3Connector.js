@@ -36,40 +36,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.upload = exports.listObjects = exports.listBuckets = exports.createBucket = exports.connect = void 0;
-var ck = require('ckey');
-var S3 = require('aws-sdk/clients/s3');
-var fs = require('fs');
-var path = require('path');
-function connect() {
-    var region = ck.AWS_BUCKET_REGION;
-    var accessKeyId = ck.AWS_ACCESS_KEY_ID;
-    var secretAccessKey = ck.AWS_SECRET_ACCESS_KEY;
-    var s3 = new S3({
-        region: region,
+exports.upload = exports.listObjects = exports.listBuckets = exports.createBucket = void 0;
+var fs = require("fs");
+var client_s3_1 = require("@aws-sdk/client-s3");
+var path = require("path");
+var region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV";
+var accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV";
+var secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV";
+var attributes = {
+    region: region,
+    credentials: {
         accessKeyId: accessKeyId,
         secretAccessKey: secretAccessKey
-    });
-    return s3;
-}
-exports.connect = connect;
+    }
+};
+var client = new client_s3_1.S3Client(attributes);
 function createBucket(bucketName) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, e_1;
+        var attributes, command, result, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, connect().createBucket({
-                            Bucket: bucketName
-                        }).promise()];
+                    attributes = {
+                        Bucket: bucketName
+                    };
+                    command = new client_s3_1.CreateBucketCommand(attributes);
+                    return [4 /*yield*/, client.send(command)];
                 case 1:
-                    response = _a.sent();
-                    return [2 /*return*/, response.Location];
+                    result = _a.sent();
+                    return [2 /*return*/, result.Location || { error: "Bucket not created" }];
                 case 2:
                     e_1 = _a.sent();
                     console.log('error', e_1);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, { error: e_1 }];
                 case 3: return [2 /*return*/];
             }
         });
@@ -78,21 +78,21 @@ function createBucket(bucketName) {
 exports.createBucket = createBucket;
 function listBuckets() {
     return __awaiter(this, void 0, void 0, function () {
-        var response, e_2;
+        var attributes, command, result, e_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, connect().listBuckets().promise()];
+                    attributes = {};
+                    command = new client_s3_1.ListBucketsCommand(attributes);
+                    return [4 /*yield*/, client.send(command)];
                 case 1:
-                    response = _a.sent();
-                    console.log("BUCKETS:");
-                    console.log(response.Buckets);
-                    return [2 /*return*/, response.Buckets];
+                    result = _a.sent();
+                    return [2 /*return*/, result.Buckets || { error: "Could not retrieve buckets" }];
                 case 2:
                     e_2 = _a.sent();
                     console.log('error', e_2);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, { error: e_2 }];
                 case 3: return [2 /*return*/];
             }
         });
@@ -101,23 +101,23 @@ function listBuckets() {
 exports.listBuckets = listBuckets;
 function listObjects(bucket) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, e_3;
+        var attributes, command, result, e_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, connect().listObjectsV2({
-                            Bucket: bucket
-                        }).promise()];
+                    attributes = {
+                        Bucket: bucket
+                    };
+                    command = new client_s3_1.ListObjectsV2Command(attributes);
+                    return [4 /*yield*/, client.send(command)];
                 case 1:
-                    response = _a.sent();
-                    console.log("Objects in bucket " + bucket + ":");
-                    console.log(response);
-                    return [2 /*return*/, response];
+                    result = _a.sent();
+                    return [2 /*return*/, result.Contents || { error: "Could not retrieve bucket contents for bucket: " + bucket }];
                 case 2:
                     e_3 = _a.sent();
                     console.log('error', e_3);
-                    return [3 /*break*/, 3];
+                    return [2 /*return*/, { error: e_3 }];
                 case 3: return [2 /*return*/];
             }
         });
@@ -126,33 +126,31 @@ function listObjects(bucket) {
 exports.listObjects = listObjects;
 function upload(bucket, file) {
     return __awaiter(this, void 0, void 0, function () {
-        var uploadParams, fileStream, response, error_1;
+        var fileStream, attributes, command, result, e_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    uploadParams = { Bucket: bucket, Key: "", Body: "" };
+                    _a.trys.push([0, 2, , 3]);
                     fileStream = fs.createReadStream(file);
-                    _a.label = 1;
+                    attributes = {
+                        Bucket: bucket,
+                        Key: path.basename(file),
+                        Body: fileStream
+                    };
+                    command = new client_s3_1.PutObjectCommand(attributes);
+                    return [4 /*yield*/, client.send(command)];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    fileStream.on('error', function (err) {
-                        console.log('File Error', err);
-                    });
-                    uploadParams.Body = fileStream;
-                    uploadParams.Key = path.basename(file);
-                    return [4 /*yield*/, connect().upload(uploadParams, function (data) {
-                            console.log("Upload Success", data.Location);
-                        }).promise()];
+                    result = _a.sent();
+                    return [2 /*return*/, result || { error: "Could not upload " + file + " to " + bucket }];
                 case 2:
-                    response = _a.sent();
-                    return [2 /*return*/, response.Location];
-                case 3:
-                    error_1 = _a.sent();
-                    console.log('error', error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    e_4 = _a.sent();
+                    console.log('error', e_4);
+                    return [2 /*return*/, { error: e_4 }];
+                case 3: return [2 /*return*/];
             }
         });
     });
 }
 exports.upload = upload;
+// Testing code
+listObjects("video-crime-miner-video-test-bucket"); // an example

@@ -1,12 +1,9 @@
-//var { fail } = require("assert")
-import {upload, listObjects} from "../node/s3Connector"
-import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../video/videoUtils'
-import {runLabelDetectionAndGetResults} from '../video/videoClient'
-//var { upload, listObjects } = require("../node/s3Connector")
-//var { startVideoFacesDetection, getVideoFacesDetectionOutput } = require('../video/videoUtils')
-//var { runLabelDetectionAndGetResults } = require('../video/videoClient')
+import {upload, listObjects} from "../AWS Layer/s3Connector.js"
+import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../AWS Layer/Rekognition/videoFaceUtils.js'
+import { startLabelDetection, getLabelDetectionResults } from '../AWS Layer/Rekognition/videoLabelUtils.js'
+import * as reader from "readline"
 
-var readline = require('readline').createInterface({
+var readline = reader.createInterface({
     input: process.stdin,
     output: process.stdout
   })
@@ -47,8 +44,11 @@ function resolveInput(userInput:any){
         //label detection video
         console.log("This may take a while...")
         readline.question("Input AWS filename: ", (x:any) => {
-            runLabelDetectionAndGetResults("video-crime-miner-video-test-bucket", x).then((x:any) => {
-                //console.log(x)
+            startLabelDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
+                    console.log(jobId)
+                    getLabelDetectionResults(jobId).then((response:any) => {
+                        console.log(response)
+                    })
             })
         })
     }else if(userInput=="4"){
