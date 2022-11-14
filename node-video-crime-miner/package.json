@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "main": "./src/cli/main.js",
+  "main": "src/cli/main.js",
   "engines": {
     "node": ">=12"
   },
