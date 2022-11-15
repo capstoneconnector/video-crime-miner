@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv"
 import { SNSClient, CreateTopicCommand, SubscribeCommand } from "@aws-sdk/client-sns"
 
-dotenv.config({ path: "../../../.env"})
+dotenv.config({ path: "/.env"})
 
 // AWS .env variables
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"

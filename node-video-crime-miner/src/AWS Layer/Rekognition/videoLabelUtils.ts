@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv"
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
 
-dotenv.config({ path: "../../../../.env"})
+dotenv.config({ path: "../../../.env"})
 
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"

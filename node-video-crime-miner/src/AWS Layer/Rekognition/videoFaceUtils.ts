@@ -1,13 +1,13 @@
 import * as dotenv from "dotenv"
 import { RekognitionClient, StartFaceDetectionCommand, GetFaceDetectionCommand} from "@aws-sdk/client-rekognition"
 
-dotenv.config({ path: "../../../../.env"})
+dotenv.config({ path: "../../../.env"})
 
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
-//const client  = new RekognitionClient(region, accessKeyId, secretAccessKey)
+// Create the Rekognition Client
 var attributes = {
     region : region,
     credentials:{

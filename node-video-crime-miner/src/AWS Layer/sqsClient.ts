@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv"
 import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand } from "@aws-sdk/client-sqs"
 
-dotenv.config({ path: "../../../.env"})
+dotenv.config({ path: "/.env"})
 
 // AWS .env variables
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
