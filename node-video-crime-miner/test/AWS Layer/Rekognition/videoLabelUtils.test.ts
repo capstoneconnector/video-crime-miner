@@ -6,12 +6,18 @@ var rekognitionMock = mockClient(RekognitionClient)
 
 describe ("createTopicAndQueue function", () => {
     
-    it("creates SNS message topic and SQS queue for messages, and pairs them together. Should return the" + 
-    "url for the SQS queue and the ARN (Amazon Resource Name) of the SNS message topic. ", async() => {
-        const response = ""
-        
-        console.log("Response: " + String(response))
-        expect(response).toBeTruthy()
+    it("returns valid jobid on success", async() => {
+
+        const inputBucket:string = "example-bucket"
+        const inputFile:string = "C:/fakepath/example.mp4"
+        const output = "174a0134113639a384838cb4800b0e2b567ba160769516dd17804ba66aeb53f5"
+
+        rekognitionMock.on(StartLabelDetectionCommand).resolves({
+            //insert example json stub here
+        })
+
+        const response = await startLabelDetection(inputBucket, inputFile)
+        expect(response).toBe(output)
     })
 })
 
