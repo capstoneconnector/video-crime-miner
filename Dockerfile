@@ -1,15 +1,15 @@
-FROM node:19 AS ui-build
+FROM node:19 AS angular-build
 WORKDIR /usr/src/angular-video-crime-miner/
 COPY angular-video-crime-miner/ ./angular-video-crime-miner/
-RUN cd m && angular-video-crime-miner install @angular/cli && npm install && npm run start-site
+RUN cd angular-video-crime-miner && npm install @angular/cli && npm install && npm run build-site
 
-FROM node:19 AS server-build
-WORKDIR /root/node-video-crime-miner/
-COPY --from=ui-build /usr/src/app/my-app/dist ./my-app/dist
+FROM node:19 AS node-client-build
+WORKDIR /usr/src/node-video-crime-miner/
+# WORKDIR /usr/src/
+COPY --from=angular-build angular-video-crime-miner/dist/ ./angular-video-crime-miner/dist
 COPY package*.json ./
-RUN npm install
-COPY server.js .
+RUN npm install && npm run start
 
 EXPOSE 3080
 
-CMD ["node", "server.js"]
+CMD ["node", "out/src/cli/main.js"]
