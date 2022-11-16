@@ -2,7 +2,7 @@ node_modules
 .cache
 out
 .env
-
+dist
 #Ignores all compiled javascript files from typescript source created while testing.
 /src/**/*.js
 
