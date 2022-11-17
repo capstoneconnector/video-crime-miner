@@ -14,7 +14,7 @@
   },
   "scripts": {
     "create": "npm run build && npm run test",
-    "start": "node out/src/cli/main.js",
+    "start": "cd out/src/cli/ && node ./main.js",
     "build": "tsc -p .",
     "test": "jest",
     "cover": "jest --coverage"
@@ -46,6 +46,7 @@
     "@aws-sdk/client-sqs": "^3.204.0",
     "aws-sdk": "^2.1247.0",
     "ckey": "^1.0.3",
+    "find-config": "^1.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

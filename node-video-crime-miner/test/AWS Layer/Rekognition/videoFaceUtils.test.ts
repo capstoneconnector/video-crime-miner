@@ -29,8 +29,6 @@ describe("startVideoFacesDetection function", () => {
         })
 
         const result = await startVideoFacesDetection(inputBucket, inputFile)
-
-        //expect(rekognitionMock).toHaveBeenCalled()
         expect(result).toBe(output)
     });
   });
@@ -70,29 +68,3 @@ describe("getVideoFacesDetectionOutput function", () => {
       expect(result).toBe(output)
     })
 })
-
-/*
-{
-  '$metadata': {
-    httpStatusCode: 200,
-    requestId: '3f2de1e2-bdd5-4393-9f7e-123f2751f09e',
-    extendedRequestId: undefined,
-    cfId: undefined,
-    attempts: 1,
-    totalRetryDelay: 0
-  },
-  Faces: [],
-  JobStatus: 'SUCCEEDED',
-  NextToken: undefined,
-  StatusMessage: undefined,
-  VideoMetadata: {
-    Codec: 'h264',
-    ColorRange: 'LIMITED',
-    DurationMillis: 15320,
-    Format: 'QuickTime / MOV',
-    FrameHeight: 1080,
-    FrameRate: 25,
-    FrameWidth: 1920
-  }
-}
-*/

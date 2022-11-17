@@ -13,7 +13,7 @@ function main(){
     console.log("What would you like to do?")
     console.log(choices)
 
-    readline.question("Choose an option: ", (x:any) => {
+    readline.question("Choose an option: ", (x:string) => {
         resolveInput(x)
     })
 }
