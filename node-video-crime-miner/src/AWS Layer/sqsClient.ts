@@ -51,13 +51,13 @@ async function getQueueUrl(queueName: string, clientToUse: SQSClient | any=clien
     }
 }
 
-async function getQueueAttributes(queueUrl:string){
+async function getQueueAttributes(queueUrl:string, clientToUse: SQSClient | any=client){
     try{
         const attributes = {
             QueueUrl: queueUrl
         }
         const command = new GetQueueAttributesCommand(attributes)
-        const result = await client.send(command)
+        const result = await clientToUse.send(command)
         return result || {error:"Error"}
     }catch(e){
         console.log(e)
