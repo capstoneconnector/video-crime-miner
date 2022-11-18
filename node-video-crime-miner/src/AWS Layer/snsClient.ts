@@ -18,13 +18,13 @@ const attributes = {
 }
 const client = new SNSClient(attributes)
 
-async function createTopic(topicName:string){
+async function createTopic(topicName:string, clientToUse: SNSClient | any = client){
     try{
         const attributes = {
             Name: topicName
         }
         const command = new CreateTopicCommand(attributes)
-        const result = await client.send(command)
+        const result = await clientToUse.send(command)
         return result || {error:"Error"}
     }catch(e){
         console.log(e)
