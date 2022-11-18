@@ -65,7 +65,7 @@ async function getQueueAttributes(queueUrl:string, clientToUse: SQSClient | any=
     }
 }
 
-async function setQueueAttributes(queueUrl:string, attributesInJson:Record<string, string>){
+async function setQueueAttributes(queueUrl:string, attributesInJson:Record<string, string>, clientToUse: SQSClient | any=client){
     // This was in the attributes const before, not sure if it belongs there now
     /*
     const policy = {
@@ -93,7 +93,7 @@ async function setQueueAttributes(queueUrl:string, attributesInJson:Record<strin
             Attributes: attributesInJson //The above commented out portion was here, but should it always be hardcoded? Not sure!
         }
         const command = new SetQueueAttributesCommand(attributes)
-        const result = await client.send(command)
+        const result = await clientToUse.send(command)
         return result || {error:"Error"}
     }catch(e){
         console.log(e)
