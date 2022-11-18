@@ -1,6 +1,6 @@
 import { mockClient } from "aws-sdk-client-mock"
-import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand } from "@aws-sdk/client-sqs"
-import { createQueue, getQueueUrl, getQueueAttributes } from "../../src/AWS Layer/sqsClient"
+import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand } from "@aws-sdk/client-sqs"
+import { createQueue, getQueueUrl, getQueueAttributes, setQueueAttributes } from "../../src/AWS Layer/sqsClient"
 
 var sqsMock = mockClient(SQSClient)
 
@@ -42,6 +42,20 @@ describe("getQueueAttributes function", () => {
         })
 
         const res = await getQueueAttributes("exampleQueueUrl", sqsMock)
+		expect(res).toBeTruthy()
+	})
+})
+
+describe("setQueueAttributes function", () => {
+
+	test("Should return a response from aws after sending required params", async() => {
+		
+        sqsMock.on(SetQueueAttributesCommand).resolves({
+            //insert example json stub here
+            $metadata: undefined
+        })
+
+        const res = await setQueueAttributes("exampleQueueUrl", {}, sqsMock)
 		expect(res).toBeTruthy()
 	})
 })
