@@ -18,7 +18,7 @@ const attributes = {
 }
 const client = new SNSClient(attributes)
 
-async function createTopic(topicName:string, clientToUse: SNSClient | any = client){
+async function createTopic(topicName:string, clientToUse: SNSClient | any=client){
     try{
         const attributes = {
             Name: topicName
@@ -32,11 +32,12 @@ async function createTopic(topicName:string, clientToUse: SNSClient | any = clie
     }
 }
 
-async function subscribeSQStoSNS(topicArn:string, protocol:string){
+async function subscribeSQStoSNS(topicArn:string, queueArn:string, protocol:string='sqs', clientToUse: SNSClient | any=client){
     try{
         const attributes = {
             TopicArn: topicArn,
-            Protocol: protocol
+            Protocol: protocol,
+            Endpoint: queueArn
         }
         const command = new SubscribeCommand(attributes)
         const result = await client.send(command)
