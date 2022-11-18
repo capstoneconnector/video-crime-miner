@@ -1,0 +1,21 @@
+Option 1:
+C:\Users\Student\Desktop\CS495\Crime Video Processor\video-crime-miner\resources\Test Video CLI.mp4
+
+Option 2:
+Test Video CLI.mp4
+
+Backup:
+Option 1:
+C:\Users\Student\Desktop\CS495\Crime Video Processor\video-crime-miner\node-video-crime-miner\resources\Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4
+
+Option 2:
+Crowded People Walking Down Oxford Street London 4K UHD Stock Video Footage-ng8Wivt52K0.mp4
+
+
+
+DEMO FOR ITERATION 1:
+
+Option 1:
+C:\Users\Student\Desktop\CS495\Crime Video Processor\video-crime-miner\node-video-crime-miner\resources\Crowd of People 2 Second Demo Clip.mp4
+Option 2:
+Crowd of People 2 Second Demo Clip.mp4
