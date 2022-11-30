@@ -13,6 +13,7 @@ import { MediaComponent } from './media/media.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
 import { StatsComponent } from './stats/stats.component';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StatsComponent } from './stats/stats.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    IonicModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
