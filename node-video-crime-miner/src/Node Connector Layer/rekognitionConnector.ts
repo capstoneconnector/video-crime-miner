@@ -11,7 +11,8 @@ async function UploadVideo(form:any){
     const response = await fetch(url, {
         method: 'POST',
         body: content,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} })
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} 
+    })
       
     if (!response.ok) {
         /* Handle */ 
