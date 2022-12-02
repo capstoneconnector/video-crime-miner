@@ -1,10 +1,10 @@
 <h1>Upload File</h1>
 
-<!-- <script src="../../../out/src/node/rekognitionConnector.js"></script> -->
-
-<form action="" onsubmit="return false">
-  <input type="file" id="filetoupload">
-  <br>
-  <input type="text" id="userInput" />
-  <input type="submit" onclick="UploadVideoOrImage(document.getElementById('filetoupload').files[0])"/>
+<form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">      
+  <div>
+    <input type="file" name="userFile" (change)="onFileSelect($event)" />
+  </div>
+  <div>
+    <button type="submit">Upload</button>
+  </div>
 </form>
