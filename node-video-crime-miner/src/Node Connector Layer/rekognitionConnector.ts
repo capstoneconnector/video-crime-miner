@@ -24,6 +24,7 @@ async function UploadVideo(form:any){
         const asString = ""//new TextDecoder("utf-8").decode(response.body);
         // and further:
         const asJSON = JSON.parse(asString);  // implicitly 'any', make sure to verify type on runtime.
+        return asJSON
     }
 }
 
