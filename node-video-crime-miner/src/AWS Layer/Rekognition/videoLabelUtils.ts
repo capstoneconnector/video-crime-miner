@@ -15,6 +15,8 @@ var attributes = {
       secretAccessKey : secretAccessKey
   }
 }
+//console.log("VIDEOLABELUTILS ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
 async function startLabelDetection(bucketName:string, videoName:string) {

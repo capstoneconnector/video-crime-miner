@@ -16,6 +16,8 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
+//console.log("SQS CLIENT ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client = new SQSClient(attributes)
 
 async function createQueue(queueName:string){

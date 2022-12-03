@@ -1,10 +1,7 @@
-import * as dotenv from "dotenv"
+
 import * as fs  from 'fs'
 import * as path from 'path'
 import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand} from '@aws-sdk/client-s3'
-
-dotenv.config({ path: '../../../.env' })
-
 
 const region = process.env['REGION'] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
@@ -17,6 +14,7 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
+//console.log("S3CONNECTOR ENV VAR ATTRIBUTES")
 //console.log(attributes)
 const client  = new S3Client(attributes)
 

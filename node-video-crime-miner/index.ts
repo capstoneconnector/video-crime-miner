@@ -1,17 +1,20 @@
-import * as dotenv from "dotenv"
-dotenv.config({path:'../.env'})
+import * as envConfig from './envConfig.js'
+envConfig.default
+
 import express, { Express, Request, Response } from 'express'
-import { upload } from './src/AWS Layer/s3Connector.js'
+import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
 import multer, {FileFilterCallback} from 'multer'
 
 const app: Express = express()
 
 // Allows many types of request headers
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  next()
-})
+app.use(
+  function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+  }
+)
 
 // Root stuff
 app.get('/', (req: Request, res: Response) => {
@@ -19,7 +22,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 // Uploading file
-app.post('/users/:userId/upload', (req: Request, res: Response) => {
+app.post('/upload', (req: Request, res: Response) => {
   try {
     /*
     const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
@@ -40,18 +43,18 @@ app.post('/users/:userId/upload', (req: Request, res: Response) => {
   }
 })
 
-app.get('/files', (req: Request, res: Response) => {
+app.get('/files', async (req: Request, res: Response) => {
+  const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
     return res.status(200).json({
-      test: "test",
-      message: 'File uploaded successfully'
+      uploadedFiles: files
     })
   } catch (err) {
     res.status(500).send(err)
   }
 })
 
-const NODE_PORT = process.env['NODE_PORT'] //|| "8000"
+const NODE_PORT = process.env['NODE_PORT'] || "8000"
 app.listen(NODE_PORT, () => {
   console.log(`⚡️  [Node Server]: Server is running at https://localhost:${NODE_PORT}  ⚡️`)
 })
