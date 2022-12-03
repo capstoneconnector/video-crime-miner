@@ -3,9 +3,10 @@ import * as fs  from 'fs'
 import * as path from 'path'
 import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand} from '@aws-sdk/client-s3'
 
-dotenv.config({ path: "../../../.env"})
+dotenv.config({ path: '../../../.env' })
 
-const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
+
+const region = process.env['REGION'] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
@@ -16,8 +17,9 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
-
+//console.log(attributes)
 const client  = new S3Client(attributes)
+
 
 async function createBucket(bucketName: string) {
 
@@ -78,7 +80,7 @@ async function listObjects(bucket:string) {
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
-
+		console.log(result)
 		return result || {error: "Could not upload " + file + " to " + bucket}
 
 	} catch (e) {
@@ -89,8 +91,8 @@ async function listObjects(bucket:string) {
  }
 
 // Testing code
- listObjects("video-crime-miner-video-test-bucket") // an example
-// listBuckets() //another example
+//listObjects("video-crime-miner-video-test-bucket") // an example
+//listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack to get AWS ACL access
 
 export { createBucket, listBuckets, listObjects, upload }

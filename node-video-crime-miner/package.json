@@ -33,6 +33,7 @@
     "@types/express-fileupload": "^1.4.1",
     "@types/jest": "^29.2.0",
     "@types/lodash": "^4.14.191",
+    "@types/multer": "^1.4.7",
     "@types/node": "^18.11.9",
     "aws-sdk-client-mock": "^2.0.0",
     "dotenv": "^16.0.3",
@@ -59,6 +60,7 @@
     "find-config": "^1.0.0",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

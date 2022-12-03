@@ -1,70 +1,66 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { FileService } from 'src/app/file.service';
 
 @Component({
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+ selector: 'app-upload',
+ templateUrl: './upload.component.html',
+ styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent {
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) { }
-  
-  SERVER_URL = "http://localhost:8000/users/1/upload";
-  uploadForm!: FormGroup;
+  selectedFiles?: FileList;
+  currentFile?: File;
+  progress = 0;
+  message = '';
 
-  ngOnInit(){
-    this.uploadForm = this.formBuilder.group({
-      userFile: ['']
-    });
+  fileInfos?: Observable<any>;
+
+  constructor(private uploadService: FileService) { }
+
+  ngOnInit(): void {
+    this.fileInfos = this.uploadService.getFiles();
   }
 
-  onFileSelect(event:any) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.uploadForm.get('userFile')!.setValue(file);
-    }
+  selectFile(event: any): void {
+    this.selectedFiles = event.target.files;
   }
 
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('file', this.uploadForm.get('userFile')!.value);
-    console.log("submitting ")
-    return this.httpClient.post<any>(this.SERVER_URL, formData).subscribe((res) => console.log(res))
-  }
+  upload(): void {
+    this.progress = 0;
 
-}
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0);
 
-/*
-<script>
-  //This script helps the upload send the correct parameters to the backend server
-  const form = document.getElementById("uploadForm");
-  console.log(form)
+      if (file) {
+        this.currentFile = file;
 
-  form.addEventListener("submit", submitForm);
-  function submitForm(e) {
-    e.preventDefault();
-    console.log("LOOK AT  ME")
-    try{
-      const files = document.getElementById("userFiles");
-      const formData = new FormData();
-      for(let i =0; i < files.files.length; i++) {
-              formData.append("files", files.files[i]);
-      }
-      fetch("http://localhost:8000/users/1/upload", {
-          method: 'POST',
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data"
+        this.uploadService.upload(this.currentFile).subscribe({
+          next: (event: any) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.progress = Math.round(100 * event.loaded / event.total);
+            } else if (event instanceof HttpResponse) {
+              this.message = event.body.message;
+              this.fileInfos = this.uploadService.getFiles();
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+            this.progress = 0;
+
+            if (err.error && err.error.message) {
+              this.message = err.error.message;
+            } else {
+              this.message = 'Could not upload the file!';
+            }
+
+            this.currentFile = undefined;
           }
-      })
-          .then((res) => console.log(res))
-          .catch((err) => ("Error occured: ", err));
-    }catch (e){
-      console.log(e)
+        });
+      }
+
+      this.selectedFiles = undefined;
     }
   }
-  
-</script>
-*/
+}

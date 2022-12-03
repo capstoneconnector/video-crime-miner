@@ -15,6 +15,7 @@ import { StatsComponent } from './stats/stats.component';
 
 import { FormsModule }   from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FileListComponent } from './file-list/file-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MediaComponent,
     SettingsComponent,
     ReportsComponent,
-    StatsComponent
+    StatsComponent,
+    FileListComponent
   ],
   imports: [
     HttpClientModule,
