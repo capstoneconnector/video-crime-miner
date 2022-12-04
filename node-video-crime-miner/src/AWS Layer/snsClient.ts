@@ -16,15 +16,17 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
+//console.log("SNS CLIENT ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client = new SNSClient(attributes)
 
-async function createTopic(topicName:string){
+async function createTopic(topicName:string, clientToUse: SNSClient | any=client){
     try{
         const attributes = {
             Name: topicName
         }
         const command = new CreateTopicCommand(attributes)
-        const result = await client.send(command)
+        const result = await clientToUse.send(command)
         return result || {error:"Error"}
     }catch(e){
         console.log(e)
@@ -32,11 +34,12 @@ async function createTopic(topicName:string){
     }
 }
 
-async function subscribeSQStoSNS(topicArn:string, protocol:string){
+async function subscribeSQStoSNS(topicArn:string, queueArn:string, protocol:string='sqs', clientToUse: SNSClient | any=client){
     try{
         const attributes = {
             TopicArn: topicArn,
-            Protocol: protocol
+            Protocol: protocol,
+            Endpoint: queueArn
         }
         const command = new SubscribeCommand(attributes)
         const result = await client.send(command)

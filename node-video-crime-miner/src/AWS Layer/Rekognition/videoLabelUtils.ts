@@ -6,6 +6,7 @@ dotenv.config({ path: "../../../.env"})
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
+const roleArn = process.env["AWS_ROLE_ARN"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
 
 // Create the Rekognition Client
 var attributes = {
@@ -15,9 +16,11 @@ var attributes = {
       secretAccessKey : secretAccessKey
   }
 }
+//console.log("VIDEOLABELUTILS ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
-async function startLabelDetection(bucketName:string, videoName:string) {
+async function startLabelDetection(bucketName:string, videoName:string, snsTopicArn:string, clientToUse:RekognitionClient | any=client) {
   try {
     var attributes = {
       Video: { 
@@ -25,12 +28,16 @@ async function startLabelDetection(bucketName:string, videoName:string) {
           Name: videoName,
           Bucket: bucketName,
         }
+      },
+      NotificationChannel:{
+        RoleArn: roleArn, 
+        SNSTopicArn: snsTopicArn
       }
     }
 
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
     const command = new StartLabelDetectionCommand(attributes)
-    const result = await client.send(command)
+    const result = await clientToUse.send(command)
     return result.JobId || {error:"Couldn't start faces detection"}
   } catch (e) {
     console.log('error', e)
@@ -40,7 +47,7 @@ async function startLabelDetection(bucketName:string, videoName:string) {
   }
 }
 
-async function getLabelDetectionResults(id: string) {
+async function getLabelDetectionResults(id: string, clientToUse:RekognitionClient | any=client) {
   try {
     const parameters = {
         JobId: id
@@ -49,7 +56,7 @@ async function getLabelDetectionResults(id: string) {
     var finished = false
     var result
     while(!finished){
-        result = await client.send(command)
+        result = await clientToUse.send(command)
         if (result.JobStatus == "SUCCEEDED") {
             finished = true;
         }
