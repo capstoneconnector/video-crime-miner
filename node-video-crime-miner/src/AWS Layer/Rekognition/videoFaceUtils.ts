@@ -15,6 +15,8 @@ var attributes = {
         secretAccessKey : secretAccessKey
     }
 }
+//console.log("VIDEOFACEUTILS ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
 async function startVideoFacesDetection(bucketName:string, videoName:string){

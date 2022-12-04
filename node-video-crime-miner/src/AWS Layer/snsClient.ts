@@ -16,6 +16,8 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
+//console.log("SNS CLIENT ENV VAR ATTRIBUTES")
+//console.log(attributes)
 const client = new SNSClient(attributes)
 
 async function createTopic(topicName:string, clientToUse: SNSClient | any=client){

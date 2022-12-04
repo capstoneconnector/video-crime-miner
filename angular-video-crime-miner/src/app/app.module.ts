@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
 import { UploadComponent } from './upload/upload.component';
@@ -14,6 +13,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { ReportsComponent } from './reports/reports.component';
 import { StatsComponent } from './stats/stats.component';
 
+import { FormsModule }   from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FileListComponent } from './file-list/file-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,11 +28,15 @@ import { StatsComponent } from './stats/stats.component';
     MediaComponent,
     SettingsComponent,
     ReportsComponent,
-    StatsComponent
+    StatsComponent,
+    FileListComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
