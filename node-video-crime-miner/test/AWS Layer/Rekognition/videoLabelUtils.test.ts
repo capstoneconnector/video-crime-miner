@@ -2,21 +2,29 @@ import { mockClient } from "aws-sdk-client-mock"
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
 import { startLabelDetection, getLabelDetectionResults } from "../../../src/AWS Layer/Rekognition/videoLabelUtils"
 
+import { SNSClient } from "@aws-sdk/client-sns"
+
+
 var rekognitionMock = mockClient(RekognitionClient)
 
-describe ("createTopicAndQueue function", () => {
+var snsMock = mockClient(SNSClient)
+
+
+describe ("startLabelDetection function", () => {
     
     it("returns valid jobid on success", async() => {
 
         const inputBucket:string = "example-bucket"
         const inputFile:string = "C:/fakepath/example.mp4"
+        const testSNSTopicArn: string = "exampleSNSTopicArn"
         const output = "174a0134113639a384838cb4800b0e2b567ba160769516dd17804ba66aeb53f5"
 
         rekognitionMock.on(StartLabelDetectionCommand).resolves({
             //insert example json stub here
+            "JobId": output
         })
 
-        const response = await startLabelDetection(inputBucket, inputFile)
+        const response = await startLabelDetection(inputBucket, inputFile, testSNSTopicArn, rekognitionMock)
         expect(response).toBe(output)
     })
 })
@@ -24,7 +32,25 @@ describe ("createTopicAndQueue function", () => {
 describe ("runLabelDetectionAndGetResults function", () => {
 
     it("Analyzes video in given s3 bucket and returns report 2", async() => {
-        const response = ""
+        
+        
+
+        //const response = ""
+        rekognitionMock.on(StartLabelDetectionCommand).resolves({
+            //insert example json stub here
+            "JobId": "exampleJobId"
+        })
+        const labelDetectJobID = await startLabelDetection("example-bucket", "C:/fakepath/example.mp4", 
+        "exampleSNSTopicArn", rekognitionMock)
+
+        rekognitionMock.on(GetLabelDetectionCommand).resolves({
+            //insert example json stub here
+            "JobStatus": "SUCCEEDED"
+        })
+
+        // this will be the result
+        const response = getLabelDetectionResults(labelDetectJobID.JobId, rekognitionMock)
+
         console.log("Response: " + String(response))
         expect(response).toBeTruthy()
     })
