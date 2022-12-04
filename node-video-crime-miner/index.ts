@@ -2,11 +2,11 @@ import * as envConfig from './envConfig.js' //very first thing we do is intializ
 envConfig.default //load in global .env variables
 
 import express, { Express, Request, Response } from 'express'
-import * as postgres from './postgres/db.config.js'
 import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
+import {getCases} from './postgres/db.cases.js'
 
 const app: Express = express()
-const db = postgres
+//const db = postgres
 
 // Allows many types of request headers
 app.use(
@@ -22,10 +22,10 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
 })
 
+/* GET cases listing. */
 app.get('/cases', async (req: Request, res: Response) => {
   try {
-    const result = await db.getCases()
-    /* GET quotes listing. */
+    const result = await getCases()
     res.status(200).json({
       data: result
     })
