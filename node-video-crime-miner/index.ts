@@ -1,16 +1,20 @@
-import * as envConfig from './envConfig.js' //very first thing we do is intialize .env variables via first import
-envConfig.default //load in .env variables
+/* SERVER CREATION AND DEPENDENCIES */
+// The very first thing we do is intialize .env variables via first import
+import * as envConfig from './envConfig.js'
+envConfig.default
 
+// Now import the Express server and start it
 import express, { Express, Request, Response } from 'express'
-import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
-import {getCases, createNewCase} from './postgres/db.cases.js'
-
 const app: Express = express()
 
+// Imports used for completing various backend tasks for different requests from client
+import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
+import { getCases, createNewCase } from './postgres/db.cases.js'
+
+/* SERVER CONFIGURATION */
 // For parsing form data
 app.use(express.json()) // Used to parse JSON bodies
 app.use(express.urlencoded({ extended: false })) //Parse URL-encoded bodies
-app.use(express.static("public"))
 
 // Allows many types of request headers
 app.use(
@@ -21,12 +25,14 @@ app.use(
   }
 )
 
-// Root stuff
+/* SERVER ROUTES */
+
+/* GET root */
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
 })
 
-/* GET cases */
+/* GET all cases */
 app.get('/cases', async (req: Request, res: Response) => {
   try {
     const result = await getCases()
@@ -47,13 +53,6 @@ app.get('/cases', async (req: Request, res: Response) => {
 /* POST a new case */
 app.post('/cases', async (req: Request, res: Response) => {
   try {
-    /*
-    res.json({
-      name: name,
-      description: description,
-      tags: tags
-    })
-    */
     const result = await createNewCase(req.body.name, req.body.description, req.body.tags)
     res.status(200).json(result)
   } catch (err:any) {
@@ -67,29 +66,11 @@ app.post('/cases', async (req: Request, res: Response) => {
   }
 })
 
-app.post('/uploadCase', (req: Request, res: Response) => {
-  try {
-    return res.status(200).json({
-      test: "test",
-      message: 'File uploaded successfully'
-    })
-  } catch (err:any) {
-    console.log("We have errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
-})
-
-// Uploading file
+/* POST a new file */
 app.post('/upload', (req: Request, res: Response) => {
   try {
-    
     const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
     console.log(jobId)
-    
     return res.status(200).json({
       test: "test",
       message: 'File uploaded successfully'
@@ -105,13 +86,11 @@ app.post('/upload', (req: Request, res: Response) => {
   }
 })
 
-//Getting files
+/* GET all files in S3 Bucket */
 app.get('/files', async (req: Request, res: Response) => {
   const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
-    return res.status(200).json(
-      files
-    )
+    return res.status(200).json(files)
   } catch (err) {
     res.status(500).send(err)
   }
