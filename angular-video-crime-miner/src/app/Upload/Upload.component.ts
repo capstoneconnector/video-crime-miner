@@ -20,7 +20,7 @@ export class UploadComponent {
   constructor(private uploadService: FileService) { }
 
   ngOnInit(): void {
-    this.fileInfos = this.uploadService.getFiles();
+    this.fileInfos = this.uploadService.getFiles()
   }
 
   selectFile(event: any): void {

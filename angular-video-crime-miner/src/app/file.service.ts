@@ -27,7 +27,7 @@ export class FileService {
 }
 
 public getFiles(): Observable<any> {
-  return this.http.get(`${this.baseUrl}/files`);
+  return this.http.get(`${this.baseUrl}/files`)
 }
 
  public download(fileName: string): void {

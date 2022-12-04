@@ -1,5 +1,5 @@
-import * as envConfig from './envConfig.js'
-envConfig.default
+import * as envConfig from './envConfig.js' //very first thing we do is intialize .env variables via first import
+envConfig.default //load in global .env variables
 
 import express, { Express, Request, Response } from 'express'
 import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
@@ -46,9 +46,9 @@ app.post('/upload', (req: Request, res: Response) => {
 app.get('/files', async (req: Request, res: Response) => {
   const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
-    return res.status(200).json({
-      uploadedFiles: files
-    })
+    return res.status(200).json(
+      files
+    )
   } catch (err) {
     res.status(500).send(err)
   }
