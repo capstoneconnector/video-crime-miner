@@ -1,5 +1,5 @@
 import * as envConfig from './envConfig.js' //very first thing we do is intialize .env variables via first import
-envConfig.default //load in global .env variables
+envConfig.default //load in .env variables
 
 import express, { Express, Request, Response } from 'express'
 import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
