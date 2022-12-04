@@ -3,7 +3,6 @@ envConfig.default //load in global .env variables
 
 import express, { Express, Request, Response } from 'express'
 import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
-import multer, {FileFilterCallback} from 'multer'
 
 const app: Express = express()
 
@@ -21,13 +20,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
 })
 
-// Uploading file
-app.post('/upload', (req: Request, res: Response) => {
+app.get('/cases', (req: Request, res: Response) => {
   try {
-    /*
-    const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
-    console.log(jobId)
-    */
     return res.status(200).json({
       test: "test",
       message: 'File uploaded successfully'
@@ -43,6 +37,45 @@ app.post('/upload', (req: Request, res: Response) => {
   }
 })
 
+app.post('/uploadCase', (req: Request, res: Response) => {
+  try {
+    return res.status(200).json({
+      test: "test",
+      message: 'File uploaded successfully'
+    })
+  } catch (err:any) {
+    console.log("We have errored out")
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
+})
+
+// Uploading file
+app.post('/upload', (req: Request, res: Response) => {
+  try {
+    
+    const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
+    console.log(jobId)
+    
+    return res.status(200).json({
+      test: "test",
+      message: 'File uploaded successfully'
+    })
+  } catch (err:any) {
+    console.log("We have errored out")
+    console.log(req.body)
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
+})
+
+//Getting files
 app.get('/files', async (req: Request, res: Response) => {
   const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
