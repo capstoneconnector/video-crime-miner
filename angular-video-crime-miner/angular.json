@@ -3,9 +3,13 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-essentials": {
+    "angular-video-crime-miner": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style":"scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-essentials",
+            "outputPath": "dist/angular-video-crime-miner",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -102,10 +106,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-essentials:build:production"
+              "browserTarget": "angular-video-crime-miner:build:production"
             },
             "development": {
-              "browserTarget": "angular-essentials:build:development"
+              "browserTarget": "angular-video-crime-miner:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -113,7 +117,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-essentials:build"
+            "browserTarget": "angular-video-crime-miner:build"
           }
         },
         "test": {
@@ -140,24 +144,24 @@
         "ionic-cordova-serve": {
           "builder": "@ionic/angular-toolkit:cordova-serve",
           "options": {
-            "cordovaBuildTarget": "angular-essentials:ionic-cordova-build",
-            "devServerTarget": "angular-essentials:serve"
+            "cordovaBuildTarget": "angular-video-crime-miner:ionic-cordova-build",
+            "devServerTarget": "angular-video-crime-miner:serve"
           },
           "configurations": {
             "production": {
-              "cordovaBuildTarget": "angular-essentials:ionic-cordova-build:production",
-              "devServerTarget": "angular-essentials:serve:production"
+              "cordovaBuildTarget": "angular-video-crime-miner:ionic-cordova-build:production",
+              "devServerTarget": "angular-video-crime-miner:serve:production"
             }
           }
         },
         "ionic-cordova-build": {
           "builder": "@ionic/angular-toolkit:cordova-build",
           "options": {
-            "browserTarget": "angular-essentials:build"
+            "browserTarget": "angular-video-crime-miner:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-essentials:build:production"
+              "browserTarget": "angular-video-crime-miner:build:production"
             }
           }
         }
