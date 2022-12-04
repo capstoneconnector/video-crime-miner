@@ -1,10 +1,69 @@
-<h1>Upload File</h1>
+<div class="tabset">
+  <!-- Tab 1 -->
+  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+  <label for="tab1">New Case</label>
+  <!-- Tab 2 -->
+  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+  <label for="tab2">Add Tabs</label>
+  <!-- Tab 3 -->
+  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles">
+  <label for="tab3">Upload Files</label>
 
-<!-- <script src="../../../out/src/node/rekognitionConnector.js"></script> -->
+  <div class="tab-panels">
+    <section id="marzen" class="tab-panel">
+      <div class="card">
+        <div class="card-head">New Case</div>
+        <div class="card-body">
 
+
+          <div class="group">
+            <input type="text" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Case Name</label>
+          </div>
+
+          <div class="group">
+            <input type="text" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Description</label>
+          </div>
+          <input type="submit" onclick=""/>
+        </div>
+    </div>
+
+
+
+  </section>
+    <section id="rauchbier" class="tab-panel">
+      <div class="card">
+        <div class="card-head">Tags</div>
+        <div class="card-body">
+          <input type="text" name="clues" value="" maxlength="100" />
+          <br>
+          <input type="submit" onclick=""/>
+        </div>
+    </div>
+    </section>
+
+
+
+    <section id="dunkles" class="tab-panel">
+      <h2>Upload File</h2>
 <form action="" onsubmit="return false">
   <input type="file" id="filetoupload">
   <br>
   <input type="text" id="userInput" />
   <input type="submit" onclick="UploadVideoOrImage(document.getElementById('filetoupload').files[0])"/>
 </form>
+    </section>
+  </div>
+
+</div>
+
+
+
+
+
+
