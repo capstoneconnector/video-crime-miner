@@ -44,12 +44,14 @@ function resolveInput(userInput:any){
         //label detection video
         console.log("This may take a while...")
         readline.question("Input AWS filename: ", (x:any) => {
+            /*
             startLabelDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
                     console.log(jobId)
                     getLabelDetectionResults(jobId).then((response:any) => {
                         console.log(response)
                     })
             })
+            */
         })
     }else if(userInput=="4"){
         //view files
