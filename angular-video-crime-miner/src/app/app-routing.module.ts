@@ -4,7 +4,7 @@ import { ViewComponent } from './view/view.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MediaComponent } from './media/media.component';
 import { ReportsComponent } from './reports/reports.component';
-import { UploadComponent } from './upload/Upload.component';
+import { UploadComponent } from './upload/upload.component';
 import { SettingsComponent } from './settings/settings.component';
 import { StatsComponent } from './stats/stats.component';
 
