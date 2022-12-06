@@ -10,6 +10,7 @@ const app: Express = express()
 // Imports used for completing various backend tasks for different requests from client
 import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
 import { getCases, createNewCase } from './postgres/db.cases.js'
+import { createNewLabels } from './postgres/db.labels.js'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
@@ -31,6 +32,28 @@ app.use(
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
 })
+
+/* POST AWS result */
+app.post('/labels/:fileName', async (req: Request, res: Response) => {
+  try {
+    var job_id = "" // have to start the job to get the id
+    var input = "" // what is the input for getting labels
+    const result = await createNewLabels(job_id, req.body.input, req.params["fileName"])
+    res.status(200).json({
+      //fileName: req.params["fileName"]
+      result: result
+    })
+  } catch (err:any) {
+    console.log("We have errored out")
+    console.log(req.body)
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
+})
+
 
 /* GET all cases */
 app.get('/cases', async (req: Request, res: Response) => {
@@ -66,6 +89,16 @@ app.post('/cases', async (req: Request, res: Response) => {
   }
 })
 
+/* GET all files in S3 Bucket */
+app.get('/files', async (req: Request, res: Response) => {
+  const files = await listObjects("video-crime-miner-video-test-bucket")
+  try {
+    return res.status(200).json(files)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
 /* POST a new file */
 app.post('/upload', (req: Request, res: Response) => {
   try {
@@ -83,16 +116,6 @@ app.post('/upload', (req: Request, res: Response) => {
       params: req.params,
       query: req.query,
     })
-  }
-})
-
-/* GET all files in S3 Bucket */
-app.get('/files', async (req: Request, res: Response) => {
-  const files = await listObjects("video-crime-miner-video-test-bucket")
-  try {
-    return res.status(200).json(files)
-  } catch (err) {
-    res.status(500).send(err)
   }
 })
 
