@@ -1,6 +1,7 @@
 /* SERVER CREATION AND DEPENDENCIES */
 // The very first thing we do is intialize .env variables via first import
 import * as envConfig from './envConfig.js'
+import { Readable } from 'stream'
 envConfig.default
 
 // Now import the Express server and start it
@@ -97,8 +98,11 @@ app.get('/files', async (req: Request, res: Response) => {
 })
 
 app.get('/download/:file' , async (req:any , res: Response) => {
+	
 	try {
-		await getObjectFromS3("mt-vcm-uploads" , req.params.file, res)
+		var result = await getObjectFromS3("mt-vcm-uploads" , req.params.file)
+		if(result instanceof Readable)
+		result.pipe(res)
 		return res.status(200)
 	} catch (err) {
 		res.status(500).send(err)
