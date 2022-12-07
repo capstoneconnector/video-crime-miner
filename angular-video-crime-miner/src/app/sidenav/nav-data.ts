@@ -7,22 +7,17 @@ export const navbarData = [
   {
       routeLink: 'upload',
       icon: 'fal fa-box-open',
-      label: 'Upload'
-  },
-  {
-      routeLink: 'stats',
-      icon: 'fal fa-chart-bar',
-      label: 'Stats'
+      label: 'New Case'
   },
   {
       routeLink: 'view',
       icon: 'fal fa-tags',
-      label: 'View'
+      label: 'View/Edit Case'
   },
   {
       routeLink: 'reports',
       icon: 'fal fa-file',
-      label: 'Reports'
+      label: 'View Reports'
   },
   {
       routeLink: 'media',
