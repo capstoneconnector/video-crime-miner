@@ -28,12 +28,13 @@ async function startLabelDetection(bucketName:string, videoName:string, clientTo
           Name: videoName,
           Bucket: bucketName,
         }
-      }
+      }/*
       NotificationChannel:{
         RoleArn: roleArn, 
         SNSTopicArn: snsTopicArn
       },
       MinConfidence: 65
+      */
     }
 
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
