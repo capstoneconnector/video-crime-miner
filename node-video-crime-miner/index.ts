@@ -52,7 +52,7 @@ app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
       result
     })
   } catch (err:any) {
-    console.log("app.get('/labels/:fileName') errored out")
+    console.log("app.get('/labels/:jobId') errored out")
     res.status(500).send({
       errormsg: err.message,
       params: req.params,
@@ -65,7 +65,7 @@ app.get('/labels/:fileName', async (req: Request, res: Response) => {
   try {
     var result = await getResultsForFile(req.params["fileName"])
     res.status(200).json({
-      data: result
+      result
     })
   } catch (err:any) {
     console.log("app.get('/labels/:fileName') errored out")
@@ -99,14 +99,11 @@ app.post('/labels/:fileName', async (req: Request, res: Response) => {
   }
 })
 
-
 /* GET all cases */
 app.get('/cases', async (req: Request, res: Response) => {
   try {
-    const result = await getAllCases()
-    res.status(200).json({
-      data: result
-    })
+    var result = await getAllCases()
+    res.status(200).json(result)
   } catch (err:any) {
     console.log("app.get('/cases') errored out")
     console.log(req.body)

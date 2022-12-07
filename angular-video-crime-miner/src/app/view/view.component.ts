@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-view',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewComponent implements OnInit {
 
-  constructor() { }
+  private baseUrl = 'http://localhost:8000';
+  private caseList: string[] = new Array<string>();
+  private caseList$: Subject<string[]> = new Subject<string[]>();
+
+  caseInfos?: Observable<any>;
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.caseInfos = this.getCases()
   }
 
+  public getCases(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/cases`)
+  }
 }

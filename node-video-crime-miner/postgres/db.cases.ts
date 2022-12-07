@@ -5,6 +5,7 @@ async function getAllCases() {
         const query = await pool.query(
             "SELECT * FROM public.case"
         )
+        console.log(query.rows)
         return query.rows
     } catch (e){
         console.log({error:e})
