@@ -1,10 +1,11 @@
 import {pool} from './db.config.js'
 
-async function getCases() {
+async function getAllCases() {
     try {
         const query = await pool.query(
             "SELECT * FROM public.case"
         )
+        console.log(query.rows)
         return query.rows
     } catch (e){
         console.log({error:e})
@@ -25,4 +26,4 @@ async function createNewCase(name:string, description:string, tags:string[]) {
     }
 }
 
-export {getCases, createNewCase}
+export {getAllCases, createNewCase}

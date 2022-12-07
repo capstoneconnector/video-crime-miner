@@ -1,7 +1,25 @@
 <h1>List of Cases</h1>
+
 <div class="card">
-    <div class="card-head">Cases</div>
+    <div class="card-head">All Cases</div>
     <div class="card-body">
-        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let case of caseInfos | async">
+                <td>{{ case.case_id }}</td>
+                <td>{{ case.name }}</td>
+                <td>{{ case.description }}</td>
+                <td>{{ case.tags }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

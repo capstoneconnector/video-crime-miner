@@ -6,7 +6,7 @@ import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
-const roleArn = process.env["AWS_ROLE_ARN"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
+const roleArn = process.env["AWS_ROLE_ARN"] || "AWS ROLE ARN NOT DEFINED IN .ENV"
 
 // Create the Rekognition Client
 var attributes = {
@@ -20,7 +20,7 @@ var attributes = {
 //console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
-async function startLabelDetection(bucketName:string, videoName:string, snsTopicArn:string, clientToUse:RekognitionClient | any=client) {
+async function startLabelDetection(bucketName:string, videoName:string, clientToUse:RekognitionClient | any=client) {
   try {
     var attributes = {
       Video: { 
@@ -28,12 +28,13 @@ async function startLabelDetection(bucketName:string, videoName:string, snsTopic
           Name: videoName,
           Bucket: bucketName,
         }
-      },
+      }/*
       NotificationChannel:{
         RoleArn: roleArn, 
         SNSTopicArn: snsTopicArn
       },
       MinConfidence: 65
+      */
     }
 
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
@@ -43,7 +44,7 @@ async function startLabelDetection(bucketName:string, videoName:string, snsTopic
   } catch (e) {
     console.log('error', e)
         return {
-            error: e
+            startLabelsError: e
         }
   }
 }
