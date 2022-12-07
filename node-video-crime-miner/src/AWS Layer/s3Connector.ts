@@ -1,7 +1,8 @@
 
 import * as fs  from 'fs'
 import * as path from 'path'
-import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand} from '@aws-sdk/client-s3'
+import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand} from '@aws-sdk/client-s3'
+import { Readable } from 'stream'
 
 const region = process.env['REGION'] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
@@ -88,9 +89,28 @@ async function listObjects(bucket:string) {
 	
  }
 
+ async function getObjectFromS3(bucketName:any, file:any, res:any) {
+	try {
+		var attributes = {
+			Bucket: bucketName,
+			Key : file,
+		}
+		var command = new GetObjectCommand(attributes)
+		var response = await client.send(command)
+		if(response.Body instanceof Readable)
+		return response.Body.pipe(res) || {e: "Could not retrieve file from: " + bucketName}
+
+	} catch (e) {
+		console.log('error' , e)
+		return {error: e}
+	}
+
+
+ }
+
 // Testing code
 //listObjects("video-crime-miner-video-test-bucket") // an example
 //listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack to get AWS ACL access
 
-export { createBucket, listBuckets, listObjects, upload }
+export { createBucket, listBuckets, listObjects, upload, getObjectFromS3 }
