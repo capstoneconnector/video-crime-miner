@@ -1,6 +1,6 @@
 import {pool} from './db.config.js'
 
-async function getCases() {
+async function getAllCases() {
     try {
         const query = await pool.query(
             "SELECT * FROM public.case"
@@ -25,4 +25,4 @@ async function createNewCase(name:string, description:string, tags:string[]) {
     }
 }
 
-export {getCases, createNewCase}
+export {getAllCases, createNewCase}
