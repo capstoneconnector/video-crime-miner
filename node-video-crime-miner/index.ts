@@ -1,6 +1,7 @@
 /* SERVER CREATION AND DEPENDENCIES */
 // The very first thing we do is intialize .env variables via first import
 import * as envConfig from './envConfig.js'
+import { Readable } from 'stream'
 envConfig.default
 
 // Now import the Express server and start it
@@ -8,8 +9,9 @@ import express, { Express, Request, Response } from 'express'
 const app: Express = express()
 
 // Imports used for completing various backend tasks for different requests from client
+
 import { createTopic } from './src/AWS Layer/snsClient.js'
-import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
+import { upload, listObjects, getObjectFromS3 } from './src/AWS Layer/s3Connector.js'
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
 import { getAllCases, createNewCase } from './postgres/db.cases.js'
 import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
@@ -133,13 +135,24 @@ app.post('/cases', async (req: Request, res: Response) => {
 
 /* GET all files in S3 Bucket */
 app.get('/files', async (req: Request, res: Response) => {
-  const files = await listObjects("video-crime-miner-video-test-bucket")
+  const files = await listObjects("mt-vcm-uploads")
   try {
     return res.status(200).json(files)
   } catch (err) {
     console.log("app.get('/files') errored out")
     res.status(500).send(err)
   }
+})
+
+app.get('/download/:file' , async (req:any , res: Response) => {
+	try {
+		var result = await getObjectFromS3("mt-vcm-uploads" , req.params.file)
+		if(result instanceof Readable)
+		result.pipe(res)
+		return res.status(200)
+	} catch (err) {
+		res.status(500).send(err)
+	}
 })
 
 /* POST a new file */
@@ -163,5 +176,5 @@ app.post('/upload', (req: Request, res: Response) => {
 
 const NODE_PORT = process.env['NODE_PORT'] || "8000"
 app.listen(NODE_PORT, () => {
-  console.log(`⚡️  [Node Server]: Server is running at https://localhost:${NODE_PORT}  ⚡️`)
+  console.log(`⚡️  [Node Server]: Server is running at http://localhost:${NODE_PORT}  ⚡️`)
 })
