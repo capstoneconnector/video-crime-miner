@@ -15,14 +15,23 @@
           <div class="inputBox">
             <form></form>
             <h2>Basic Case Information</h2>
-            <form>
+            <!--
+            <form #userlogin = "ngForm" (ngSubmit) = "onClickSubmit(userlogin.value)" >
+              <input type = "text" name = "emailid" placeholder = "emailid" ngModel>
+              <br/>
+              <input type = "password" name = "passwd" placeholder = "passwd" ngModel>
+              <br/>
+              <input type = "submit" value = "submit">
+           </form>
+           -->
+            <form #createCase = "ngForm" (ngSubmit) = "submitCase(createCase.value)">
               <label>Name</label>
-              <input  type="text" required>
+              <input type="text" name="name" required ngModel>
               <label>Description</label>
-              <textarea placeholder="Enter a description about the case here " rows="5" name="comment[text]" id="comment_text" cols="30" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+              <input  type="text" name="description" required ngModel>
               <label>Tags</label>
-              <input  type="text">
-              <input type="submit" onclick=""/>
+              <input  type="text" name="tags" required ngModel>
+              <input type = "submit" value = "submit">
             </form>
           </div>
           <br>

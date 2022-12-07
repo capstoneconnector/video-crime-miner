@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileService } from 'src/app/file.service';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 
 @Component({
  selector: 'app-upload',
@@ -16,11 +17,24 @@ export class UploadComponent {
   message = '';
 
   fileInfos?: Observable<any>;
+  private baseUrl = 'http://localhost:8000';
 
-  constructor(private uploadService: FileService) { }
+
+
+  constructor(private uploadService: FileService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fileInfos = this.uploadService.getFiles()
+  }
+
+  submitCase(data:any): Observable<HttpEvent<any>>{
+    const formData = new FormData()
+    formData.append('name', data.name)
+    formData.append('description', data.description)
+    formData.append('tags', data.tags)
+    console.log(formData)
+    const req = new HttpRequest('POST', `${this.baseUrl}/cases`, formData)
+    return this.http.request(req);
   }
 
   selectFile(event: any): void {
