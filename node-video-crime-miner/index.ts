@@ -1,6 +1,7 @@
 /* SERVER CREATION AND DEPENDENCIES */
 // The very first thing we do is intialize .env variables via first import
 import * as envConfig from './envConfig.js'
+import { Readable } from 'stream'
 envConfig.default
 
 // Now import the Express server and start it
@@ -8,7 +9,7 @@ import express, { Express, Request, Response } from 'express'
 const app: Express = express()
 
 // Imports used for completing various backend tasks for different requests from client
-import { upload, listObjects } from './src/AWS Layer/s3Connector.js'
+import { upload, listObjects, getObjectFromS3 } from './src/AWS Layer/s3Connector.js'
 import { getCases, createNewCase } from './postgres/db.cases.js'
 
 /* SERVER CONFIGURATION */
@@ -69,7 +70,7 @@ app.post('/cases', async (req: Request, res: Response) => {
 /* POST a new file */
 app.post('/upload', (req: Request, res: Response) => {
   try {
-    const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
+    const jobId = upload("mt-vcm-uploads", req.body.file)
     console.log(jobId)
     return res.status(200).json({
       test: "test",
@@ -88,7 +89,7 @@ app.post('/upload', (req: Request, res: Response) => {
 
 /* GET all files in S3 Bucket */
 app.get('/files', async (req: Request, res: Response) => {
-  const files = await listObjects("video-crime-miner-video-test-bucket")
+  const files = await listObjects("mt-vcm-uploads")
   try {
     return res.status(200).json(files)
   } catch (err) {
@@ -96,7 +97,20 @@ app.get('/files', async (req: Request, res: Response) => {
   }
 })
 
+app.get('/download/:file' , async (req:any , res: Response) => {
+	
+	try {
+		var result = await getObjectFromS3("mt-vcm-uploads" , req.params.file)
+		if(result instanceof Readable)
+		result.pipe(res)
+		return res.status(200)
+	} catch (err) {
+		res.status(500).send(err)
+	}
+})
+
+
 const NODE_PORT = process.env['NODE_PORT'] || "8000"
 app.listen(NODE_PORT, () => {
-  console.log(`⚡️  [Node Server]: Server is running at https://localhost:${NODE_PORT}  ⚡️`)
+  console.log(`⚡️  [Node Server]: Server is running at http://localhost:${NODE_PORT}  ⚡️`)
 })
