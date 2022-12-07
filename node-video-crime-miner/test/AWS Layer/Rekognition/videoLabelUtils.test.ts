@@ -1,6 +1,6 @@
 import { mockClient } from "aws-sdk-client-mock"
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
-import { startLabelDetection, getLabelDetectionResults } from "../../../src/AWS Layer/Rekognition/videoLabelUtils"
+import { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections } from "../../../src/AWS Layer/Rekognition/videoLabelUtils"
 
 import { SNSClient } from "@aws-sdk/client-sns"
 
@@ -53,6 +53,50 @@ describe ("runLabelDetectionAndGetResults function", () => {
 
         console.log("Response: " + String(response))
         expect(response).toBeTruthy()
+    })
+
+})
+
+describe ("getLabelDetectionChunk function", () => {
+
+    it("Retrieves and returns next batch of labels detected by rekognition", async() => {
+        
+        
+
+        //const response = ""
+        rekognitionMock.on(GetLabelDetectionCommand).resolves({
+            //insert example json stub here
+            JobStatus: "SUCCEEDED",
+            NextToken: "exampleNextToken",
+            Labels: []
+        })
+        const chunkData = await getLabelDetectionChunk("example-id", "exampleToken", rekognitionMock)
+
+        // this will be the result
+        console.log("Response: " + String(chunkData))
+        expect(chunkData).toBeTruthy()
+    })
+
+})
+
+describe ("collectLabelDetections function", () => {
+
+    it("collect all data packets from rekognition job and return list of all detections", async() => {
+        
+        
+
+        //const response = ""
+        rekognitionMock.on(GetLabelDetectionCommand).resolves({
+            //insert example json stub here
+            JobStatus: "SUCCEEDED",
+            NextToken: undefined,
+            Labels: []
+        })
+        var chunkData = await collectLabelDetections("example-id", rekognitionMock)
+
+        // this will be the result
+        console.log("Response: " + String(chunkData))
+        expect(chunkData).toBeTruthy()
     })
 
 })

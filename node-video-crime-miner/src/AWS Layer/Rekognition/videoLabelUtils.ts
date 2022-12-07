@@ -1,7 +1,7 @@
-import * as dotenv from "dotenv"
+
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from "@aws-sdk/client-rekognition"
 
-dotenv.config({ path: "../../../.env"})
+
 
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
@@ -32,7 +32,8 @@ async function startLabelDetection(bucketName:string, videoName:string, clientTo
       NotificationChannel:{
         RoleArn: roleArn, 
         SNSTopicArn: snsTopicArn
-      }
+      },
+      MinConfidence: 65
     }
 
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
@@ -47,10 +48,75 @@ async function startLabelDetection(bucketName:string, videoName:string, clientTo
   }
 }
 
+async function collectLabelDetections (labelDetectJobId:string, clientToUse:RekognitionClient|any=client) {
+
+  // container for detected labels, will be returned at end of function
+  var labelsDetected:Array<any> = []
+
+  // fetch first batch of detected labels and recieve first token
+  var dataCheck = await getLabelDetectionChunk(labelDetectJobId, undefined, clientToUse)
+  
+  // store first batch of labels
+  labelsDetected.push(dataCheck.Labels)
+
+  // tracks current token
+  var tokenToUse = dataCheck.NextToken
+
+  // the last batch will not have a token, ending this loop
+  while (tokenToUse != undefined) {    
+
+    // fetch batch of labels using the current token
+    await getLabelDetectionChunk(labelDetectJobId, tokenToUse, clientToUse).then(async(dataResponse) => {
+        
+        // store labels from new batch
+        labelsDetected.push(dataResponse.Labels)
+        
+        // store new token
+        tokenToUse = dataResponse.NextToken
+
+    })
+  }
+
+  // array of Labels
+  // see https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetLabelDetection.html
+  // section 'Response Syntax', "Labels" Attribute
+return labelsDetected
+}
+
+async function getLabelDetectionChunk(id: string, nextToken:string|undefined=undefined, clientToUse:RekognitionClient | any=client) {
+  try {
+    const parameters = {
+        JobId: id,
+        MaxResults: 20, // number of objects labeled before recieving results
+        NextToken: nextToken // token to recieve next batch
+
+    }
+    var command = new GetLabelDetectionCommand(parameters)
+    var finished = false
+    var result
+    while(!finished){
+        result = await clientToUse.send(command)
+        if (result.JobStatus == "SUCCEEDED") {
+            
+            finished = true;
+            return result
+        }
+
+        
+    }
+    return result || {error: "Could not get Label Detection Results"}
+  } catch (e) {
+  console.log('error', e)
+  }
+}
+
+
 async function getLabelDetectionResults(id: string, clientToUse:RekognitionClient | any=client) {
   try {
     const parameters = {
-        JobId: id
+        JobId: id,
+        MaxResults: 20
+
     }
     const command = new GetLabelDetectionCommand(parameters)
     var finished = false
@@ -61,11 +127,10 @@ async function getLabelDetectionResults(id: string, clientToUse:RekognitionClien
             finished = true;
         }
     }
-    //console.log(result)
     return result || {error: "Could not get Label Detection Results"}
   } catch (e) {
   console.log('error', e)
   }
 }
 
-export { startLabelDetection, getLabelDetectionResults }
+export { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections }
