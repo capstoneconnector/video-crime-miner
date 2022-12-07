@@ -1,8 +1,8 @@
-import * as dotenv from "dotenv"
+
 import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand } from "@aws-sdk/client-sqs"
 import { stringify } from "querystring"
 
-dotenv.config({ path: "/.env"})
+
 
 // AWS .env variables
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
@@ -56,7 +56,8 @@ async function getQueueUrl(queueName: string, clientToUse: SQSClient | any=clien
 async function getQueueAttributes(queueUrl:string, clientToUse: SQSClient | any=client){
     try{
         const attributes = {
-            QueueUrl: queueUrl
+            QueueUrl: queueUrl,
+            AttributeNames: ['QueueArn']
         }
         const command = new GetQueueAttributesCommand(attributes)
         const result = await clientToUse.send(command)
@@ -67,7 +68,7 @@ async function getQueueAttributes(queueUrl:string, clientToUse: SQSClient | any=
     }
 }
 
-async function setQueueAttributes(queueUrl:string, attributesInJson:Record<string, string>, clientToUse: SQSClient | any=client){
+async function setQueueAttributes(queueUrl:string, attributesInJson:Record<string, string>|any, clientToUse: SQSClient | any=client){
     // This was in the attributes const before, not sure if it belongs there now
     /*
     const policy = {
@@ -88,11 +89,11 @@ async function setQueueAttributes(queueUrl:string, attributesInJson:Record<strin
         ]
       }
     */
-
+      console.log("Policy: " + JSON.stringify(attributesInJson))
     try{
         const attributes = {
             QueueUrl: queueUrl,
-            Attributes: attributesInJson //The above commented out portion was here, but should it always be hardcoded? Not sure!
+            Attributes: { Policy: JSON.stringify(attributesInJson) }  //The above commented out portion was here, but should it always be hardcoded? Not sure!
         }
         const command = new SetQueueAttributesCommand(attributes)
         const result = await clientToUse.send(command)
