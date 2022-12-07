@@ -34,10 +34,10 @@ app.use(
 
 /* GET root */
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server')
+  res.send('Video Crime Miner Express + TypeScript Server')
 })
 
-/* GET AWS Results by Job Id */
+/* GET AWS Label Results by Job Id */
 app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
   try {
     var result = await getResultsForJob(req.params["jobId"])
@@ -48,7 +48,7 @@ app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
       updateJobResults(req.params["jobId"], result["result"]) // update the db entry
     }
 
-    // JobStatus for the AWS Rekognition return is: IN_PROGRESS | SUCCEEDED | FAILED
+    // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
     res.status(200).json({
       status: result["result"]["JobStatus"],
       result
@@ -105,6 +105,7 @@ app.post('/labels/:fileName', async (req: Request, res: Response) => {
 app.get('/cases', async (req: Request, res: Response) => {
   try {
     var result = await getAllCases()
+    console.log(result)
     res.status(200).json(result)
   } catch (err:any) {
     console.log("app.get('/cases') errored out")
@@ -147,8 +148,9 @@ app.get('/files', async (req: Request, res: Response) => {
 app.get('/download/:file' , async (req:any , res: Response) => {
 	try {
 		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file)
-		if(result instanceof Readable)
-		result.pipe(res)
+		if(result instanceof Readable){
+      result.pipe(res)
+    }
 		return res.status(200)
 	} catch (err) {
 		res.status(500).send(err)
