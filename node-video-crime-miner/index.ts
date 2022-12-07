@@ -9,13 +9,17 @@ import express, { Express, Request, Response } from 'express'
 const app: Express = express()
 
 // Imports used for completing various backend tasks for different requests from client
+
+import { createTopic } from './src/AWS Layer/snsClient.js'
 import { upload, listObjects, getObjectFromS3 } from './src/AWS Layer/s3Connector.js'
-import { getCases, createNewCase } from './postgres/db.cases.js'
+import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
+import { getAllCases, createNewCase } from './postgres/db.cases.js'
+import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
 app.use(express.json()) // Used to parse JSON bodies
-app.use(express.urlencoded({ extended: false })) //Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: false })) // Used to parse URL-encoded bodies
 
 // Allows many types of request headers
 app.use(
@@ -30,18 +34,81 @@ app.use(
 
 /* GET root */
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server')
+  res.send('Video Crime Miner Express + TypeScript Server')
+})
+
+/* GET AWS Label Results by Job Id */
+app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
+  try {
+    var result = await getResultsForJob(req.params["jobId"])
+
+    // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
+    if(result["result"] == null){
+      result["result"] = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
+      updateJobResults(req.params["jobId"], result["result"]) // update the db entry
+    }
+
+    // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
+    res.status(200).json({
+      status: result["result"]["JobStatus"],
+      result
+    })
+  } catch (err:any) {
+    console.log("app.get('/labels/:jobId') errored out")
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+    })
+  }
+})
+
+/* GET AWS Labels Results for a file */
+app.get('/labels/:fileName', async (req: Request, res: Response) => {
+  try {
+    var result = await getResultsForFile(req.params["fileName"])
+    res.status(200).json({
+      result
+    })
+  } catch (err:any) {
+    console.log("app.get('/labels/:fileName') errored out")
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+    })
+  }
+})
+
+/* POST new AWS Labels Result */
+app.post('/labels/:fileName', async (req: Request, res: Response) => {
+  try {
+    //const snsTopic = await createTopic(req.params["fileName"])
+    const job_id = await startLabelDetection("video-crime-miner-video-test-bucket", req.params["fileName"])
+    const inputTags = req.body.input.trim().split(",") // Putting the input tag list into array form
+    const created = await createNewLabels(job_id, inputTags, req.params["fileName"])
+
+    res.status(200).json({
+      jobid: job_id,
+      created: created
+    })
+  } catch (err:any) {
+    console.log("app.post('/labels/:fileName') errored out")
+    console.log(req.body)
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
 })
 
 /* GET all cases */
 app.get('/cases', async (req: Request, res: Response) => {
   try {
-    const result = await getCases()
-    res.status(200).json({
-      data: result
-    })
+    var result = await getAllCases()
+    console.log(result)
+    res.status(200).json(result)
   } catch (err:any) {
-    console.log("We have errored out")
+    console.log("app.get('/cases') errored out")
     console.log(req.body)
     res.status(500).send({
       errormsg: err.message,
@@ -57,27 +124,7 @@ app.post('/cases', async (req: Request, res: Response) => {
     const result = await createNewCase(req.body.name, req.body.description, req.body.tags)
     res.status(200).json(result)
   } catch (err:any) {
-    console.log("We have errored out")
-    console.log(req.body)
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
-})
-
-/* POST a new file */
-app.post('/upload', (req: Request, res: Response) => {
-  try {
-    const jobId = upload("mt-vcm-uploads", req.body.file)
-    console.log(jobId)
-    return res.status(200).json({
-      test: "test",
-      message: 'File uploaded successfully'
-    })
-  } catch (err:any) {
-    console.log("We have errored out")
+    console.log("app.post('/cases') errored out")
     console.log(req.body)
     res.status(500).send({
       errormsg: err.message,
@@ -89,26 +136,45 @@ app.post('/upload', (req: Request, res: Response) => {
 
 /* GET all files in S3 Bucket */
 app.get('/files', async (req: Request, res: Response) => {
-  const files = await listObjects("mt-vcm-uploads")
+  const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
     return res.status(200).json(files)
   } catch (err) {
+    console.log("app.get('/files') errored out")
     res.status(500).send(err)
   }
 })
 
 app.get('/download/:file' , async (req:any , res: Response) => {
-	
 	try {
-		var result = await getObjectFromS3("mt-vcm-uploads" , req.params.file)
-		if(result instanceof Readable)
-		result.pipe(res)
+		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file)
+		if(result instanceof Readable){
+      result.pipe(res)
+    }
 		return res.status(200)
 	} catch (err) {
 		res.status(500).send(err)
 	}
 })
 
+/* POST a new file */
+app.post('/upload', (req: Request, res: Response) => {
+  try {
+    const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
+    console.log(jobId)
+    return res.status(200).json({
+      message: 'File uploaded successfully'
+    })
+  } catch (err:any) {
+    console.log("app.post('/upload') We have errored out")
+    console.log(req.body)
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
+})
 
 const NODE_PORT = process.env['NODE_PORT'] || "8000"
 app.listen(NODE_PORT, () => {

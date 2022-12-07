@@ -24,7 +24,7 @@ describe ("startLabelDetection function", () => {
             "JobId": output
         })
 
-        const response = await startLabelDetection(inputBucket, inputFile, testSNSTopicArn, rekognitionMock)
+        const response = await startLabelDetection(inputBucket, inputFile, rekognitionMock)
         expect(response).toBe(output)
     })
 })
@@ -41,7 +41,7 @@ describe ("runLabelDetectionAndGetResults function", () => {
             "JobId": "exampleJobId"
         })
         const labelDetectJobID = await startLabelDetection("example-bucket", "C:/fakepath/example.mp4", 
-        "exampleSNSTopicArn", rekognitionMock)
+        rekognitionMock)
 
         rekognitionMock.on(GetLabelDetectionCommand).resolves({
             //insert example json stub here

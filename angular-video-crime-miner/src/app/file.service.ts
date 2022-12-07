@@ -18,7 +18,7 @@ export class FileService {
   formData.append('file', file, file.name);
   formData.append('test', 'hello world')
 
-  const req = new HttpRequest('POST', `${this.baseUrl}/users/1/upload`, formData, {
+  const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {
     reportProgress: true,
     responseType: 'json'
   });
