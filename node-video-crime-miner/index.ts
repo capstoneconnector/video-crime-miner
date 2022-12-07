@@ -135,7 +135,7 @@ app.post('/cases', async (req: Request, res: Response) => {
 
 /* GET all files in S3 Bucket */
 app.get('/files', async (req: Request, res: Response) => {
-  const files = await listObjects("mt-vcm-uploads")
+  const files = await listObjects("video-crime-miner-video-test-bucket")
   try {
     return res.status(200).json(files)
   } catch (err) {
@@ -146,7 +146,7 @@ app.get('/files', async (req: Request, res: Response) => {
 
 app.get('/download/:file' , async (req:any , res: Response) => {
 	try {
-		var result = await getObjectFromS3("mt-vcm-uploads" , req.params.file)
+		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file)
 		if(result instanceof Readable)
 		result.pipe(res)
 		return res.status(200)
