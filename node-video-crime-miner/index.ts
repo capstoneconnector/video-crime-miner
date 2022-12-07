@@ -118,6 +118,22 @@ app.get('/cases', async (req: Request, res: Response) => {
   }
 })
 
+/* GET particular case details */
+app.get('/cases/:caseId', async (req: Request, res: Response) => {
+  try {
+    var result = ""
+    res.status(200).json(result)
+  } catch (err:any) {
+    console.log("app.get('/cases') errored out")
+    console.log(req.body)
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      query: req.query,
+    })
+  }
+})
+
 /* POST a new case */
 app.post('/cases', async (req: Request, res: Response) => {
   try {
