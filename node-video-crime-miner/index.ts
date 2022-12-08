@@ -11,10 +11,12 @@ const app: Express = express()
 // Imports used for completing various backend tasks for different requests from client
 
 import { createTopic } from './src/AWS Layer/snsClient.js'
-import { upload, listObjects, getObjectFromS3 } from './src/AWS Layer/s3Connector.js'
+import { upload, listObjects, getObjectFromS3, uploadWithFile } from './src/AWS Layer/s3Connector.js'
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
 import { getAllCases, createNewCase } from './postgres/db.cases.js'
 import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
+import path from 'path'
+import * as fs  from 'fs'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
@@ -163,7 +165,7 @@ app.get('/files', async (req: Request, res: Response) => {
 
 app.get('/download/:file' , async (req:any , res: Response) => {
 	try {
-		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file)
+		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file[0])
 		if(result instanceof Readable){
       result.pipe(res)
     }
@@ -174,12 +176,15 @@ app.get('/download/:file' , async (req:any , res: Response) => {
 })
 
 /* POST a new file */
-app.post('/upload', (req: Request, res: Response) => {
+app.post('/upload', async (req: Request, res: Response) => {
   try {
-    const jobId = upload("video-crime-miner-video-test-bucket", req.body.file)
-    console.log(jobId)
+    //var fileStream = fs.createReadStream(req.body.file)
+    //var fileName = path.basename(file)
+    const saveFile = ""
+    const result= await uploadWithFile("video-crime-miner-video-test-bucket", req.body.file)
+    console.log(result)
     return res.status(200).json({
-      message: 'File uploaded successfully'
+      result
     })
   } catch (err:any) {
     console.log("app.post('/upload') We have errored out")
