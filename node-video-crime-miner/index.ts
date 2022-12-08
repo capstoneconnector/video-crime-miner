@@ -104,7 +104,6 @@ app.post('/labels/:fileName', async (req: Request, res: Response) => {
 app.get('/cases', async (req: Request, res: Response) => {
   try {
     var result = await getAllCases()
-    console.log(result)
     res.status(200).json(result)
   } catch (err:any) {
     console.log("app.get('/cases') errored out")
@@ -135,6 +134,7 @@ app.get('/cases/:caseId', async (req: Request, res: Response) => {
 
 /* POST a new case */
 app.post('/cases', async (req: Request, res: Response) => {
+  console.log("in cases")
   try {
     const result = await createNewCase(req.body.name, req.body.description, req.body.tags)
     res.status(200).json(result)
