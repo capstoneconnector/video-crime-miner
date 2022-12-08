@@ -83,6 +83,25 @@ async function listObjects(bucket:string) {
 
 	} catch (e) {
 		console.log('error', e)
+		return {S3Error: e}
+	}
+	
+ }
+
+ async function uploadWithFile(bucket:string, file:File) {
+	try {
+		var attributes = {
+			Bucket: bucket,
+			Key: "example file",
+			Body: file
+		}
+		const command = new PutObjectCommand(attributes)
+		const result = await client.send(command)
+		console.log(result)
+		return result || {error: "Could not upload " + file + " to " + bucket}
+
+	} catch (e) {
+		console.log('error', e)
 		return {error: e}
 	}
 	
@@ -111,4 +130,4 @@ async function listObjects(bucket:string) {
 //listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack to get AWS ACL access
 
-export { createBucket, listBuckets, listObjects, upload, getObjectFromS3 }
+export { createBucket, listBuckets, listObjects, upload, getObjectFromS3, uploadWithFile }
