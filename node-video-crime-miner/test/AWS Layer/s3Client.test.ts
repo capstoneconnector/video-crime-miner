@@ -2,6 +2,7 @@ var createBucketMock = jest.fn().mockReturnValue("Bucket Created")
 var listBucketsMock = jest.fn().mockReturnValue("Buckets Listed")
 var listObjectsMock = jest.fn().mockReturnValue("Objects Listed")
 var uploadMock = jest.fn().mockReturnValue("File successfully Uploaded")
+var getObjectFromS3Mock = jest.fn().mockReturnValue("File Successfully Downloaded")
 
 describe("createBucket function", () => {
 
@@ -39,6 +40,19 @@ describe("upload function", () => {
 
 	it("Should return successfull response after uploading video file", async () => {
 		const res = uploadMock("Example bucket" , "File")
+		expect(res).toBeTruthy()
+	})
+})
+
+describe("download function", () => {
+
+	it("Should return successfull response after uploading image file", async () => {
+		const res = getObjectFromS3Mock("Example bucket" , "File")
+		expect(res).toBeTruthy()
+	})
+
+	it("Should return successfull response after uploading video file", async () => {
+		const res = getObjectFromS3Mock("Example bucket" , "File")
 		expect(res).toBeTruthy()
 	})
 })
