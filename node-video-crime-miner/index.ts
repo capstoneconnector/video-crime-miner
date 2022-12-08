@@ -134,7 +134,6 @@ app.get('/cases/:caseId', async (req: Request, res: Response) => {
 
 /* POST a new case */
 app.post('/cases', async (req: Request, res: Response) => {
-  console.log("in cases")
   try {
     const result = await createNewCase(req.body.name, req.body.description, req.body.tags)
     res.status(200).json(result)
