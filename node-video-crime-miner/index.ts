@@ -10,13 +10,10 @@ const app: Express = express()
 
 // Imports used for completing various backend tasks for different requests from client
 
-import { createTopic } from './src/AWS Layer/snsClient.js'
 import { upload, listObjects, getObjectFromS3, uploadWithFile } from './src/AWS Layer/s3Connector.js'
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
 import { getAllCases, createNewCase } from './postgres/db.cases.js'
 import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
-import path from 'path'
-import * as fs  from 'fs'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
