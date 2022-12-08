@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileService } from 'src/app/file.service';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
@@ -27,14 +27,15 @@ export class UploadComponent {
     this.fileInfos = this.uploadService.getFiles()
   }
 
-  submitCase(data:any): Observable<HttpEvent<any>>{
-    const formData = new FormData()
-    formData.append('name', data.name)
-    formData.append('description', data.description)
-    formData.append('tags', data.tags)
-    console.log(formData)
-    const req = new HttpRequest('POST', `${this.baseUrl}/cases`, formData)
-    return this.http.request(req);
+  submitCase(data:any): void{
+    let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
+    let options = {headers:headers}
+    let body = new URLSearchParams()
+    body.append('name', data.name)
+    body.append('description', data.description)
+    body.append('tags', data.tags)
+    const req = this.http.post(`${this.baseUrl}/cases`, body.toString(), options)
+    req.subscribe()
   }
 
   selectFile(event: any): void {
