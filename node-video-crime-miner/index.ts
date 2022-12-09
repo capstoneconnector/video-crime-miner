@@ -14,6 +14,7 @@ import { upload, listObjects, getObjectFromS3, uploadWithFile } from './src/AWS 
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
 import { getAllCases, createNewCase } from './postgres/db.cases.js'
 import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
+import { createNewFileRow } from './postgres/db.files.js'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
@@ -40,23 +41,18 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
   try {
     var result = await getResultsForJob(req.params["jobId"])
-
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-    if(result["result"] == null){
-      result["result"] = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
-      updateJobResults(req.params["jobId"], result["result"]) // update the db entry
-    }
-
+      console.log("in null check")
+      var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
+      console.log(newResult)
+      await updateJobResults(req.params["jobId"], newResult) // update the db entry
+    result = newResult
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
-    res.status(200).json({
-      status: result["result"]["JobStatus"],
-      result
-    })
+    res.status(200).json(result)
   } catch (err:any) {
     console.log("app.get('/labels/:jobId') errored out")
     res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
+      errormsg: err.message
     })
   }
 })
@@ -174,11 +170,10 @@ app.get('/download/:file' , async (req:any , res: Response) => {
 /* POST a new file */
 app.post('/upload', async (req: Request, res: Response) => {
   try {
-    //var fileStream = fs.createReadStream(req.body.file)
-    //var fileName = path.basename(file)
     const saveFile = ""
-    const result= await uploadWithFile("video-crime-miner-video-test-bucket", req.body.file)
-    console.log(result)
+    const result= await upload("video-crime-miner-video-test-bucket", req.body.file)
+    const dbresult = await createNewFileRow(req.body.file.name, "", 4)
+    console.log({s3: result, db: dbresult})
     return res.status(200).json({
       result
     })

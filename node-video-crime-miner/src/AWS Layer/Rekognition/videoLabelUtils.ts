@@ -128,7 +128,7 @@ async function getLabelDetectionResults(id: string, clientToUse:RekognitionClien
             finished = true;
         }
     }
-    return result || {error: "Could not get Label Detection Results"}
+    return result || {videoLabelError: "Could not get Label Detection Results"}
   } catch (e) {
   console.log('error', e)
   }
