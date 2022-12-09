@@ -9,7 +9,8 @@ async function createNewFileRow(name:string, notes:string,  case_id:number) {
         return {result: "success!"}
     } catch (e){
         console.log({error:e})
-        return e
+        return {}
+        //return {dbError:e}
     }
 }
 

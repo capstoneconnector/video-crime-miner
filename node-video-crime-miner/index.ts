@@ -83,7 +83,7 @@ app.post('/labels/:fileName', async (req: Request, res: Response) => {
 
     res.status(200).json({
       jobid: job_id,
-      created: created
+      //created: created
     })
   } catch (err:any) {
     console.log("app.post('/labels/:fileName') errored out")
