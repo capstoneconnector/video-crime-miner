@@ -87,7 +87,7 @@ async function listObjects(bucket:string) {
 	}
 	
  }
-
+ /* TODO: Finish this so you can upload a file with the file object! */
  async function uploadWithFile(bucket:string, file:File) {
 	try {
 		var attributes = {
