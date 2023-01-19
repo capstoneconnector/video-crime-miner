@@ -31,30 +31,12 @@ app.use(
 )
 
 /* SERVER ROUTES */
+import routes from './src/express-routes/index.js'
+app.use(routes)
 
 /* GET root */
 app.get('/', (req: Request, res: Response) => {
   res.send('Video Crime Miner Express + TypeScript Server')
-})
-
-/* GET AWS Label Results by Job Id */
-app.get('/labels/job/:jobId', async (req: Request, res: Response) => {
-  try {
-    var result = await getResultsForJob(req.params["jobId"])
-    // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-      console.log("in null check")
-      var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
-      console.log(newResult)
-      await updateJobResults(req.params["jobId"], newResult) // update the db entry
-    result = newResult
-    // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
-    res.status(200).json(result)
-  } catch (err:any) {
-    console.log("app.get('/labels/:jobId') errored out")
-    res.status(500).send({
-      errormsg: err.message
-    })
-  }
 })
 
 /* GET AWS Labels Results for a file */
