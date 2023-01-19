@@ -8,18 +8,13 @@ jobs:
       - run: echo "🎉 Testing triggered by a ${{ github.event_name }} event."
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: Run Node Test suite
-        uses: actions/setup-node@v3
-        with: 
           node-version: ${{ matrix.node-version }}
       - name: Install Modules and Run Jest
         uses: actions/setup-node@v3
+        with: 
+          node-version: ${{ matrix.node-version }}
         uses: stefanoeb/jest-action@1.0.3
         working-directory: node-video-crime-miner
-      - run: |
-          npm install
-          npm run test
-        working-directory: node-video-crime-miner
+      - run: npm install
+      - run: npm run test
       - run: echo "🍏 This job's status is ${{ job.status }}."
