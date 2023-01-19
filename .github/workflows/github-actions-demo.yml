@@ -11,6 +11,6 @@ jobs:
       - name: Install Modules and Run Jest
         working-directory: node-video-crime-miner
         uses: actions/setup-node@v3
-      - run: npm install
+        run: npm install
       - run: npm run test
       - run: echo "🍏 This job's status is ${{ job.status }}."
