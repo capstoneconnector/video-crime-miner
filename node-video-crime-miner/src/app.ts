@@ -1,7 +1,6 @@
 /* SERVER CREATION AND DEPENDENCIES */
 // The very first thing we do is intialize .env variables via first import
 import * as envConfig from './envConfig.js'
-import { Readable } from 'stream'
 envConfig.default
 
 // Now import the Express server and start it
@@ -23,7 +22,7 @@ app.use(
 )
 
 /* SERVER ROUTES */
-import routes from './src/express-routes/index.js'
+import routes from './express-routes/index.js'
 app.use(routes)
 
 /* Example GET at root for testing if the server is working! */
