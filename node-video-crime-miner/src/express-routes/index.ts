@@ -30,4 +30,18 @@ router.get('/cases/:caseId', fetchCaseById)
 /* POST a new case */
 router.post('/cases', createNewCase)
 
+
+
+/* FILE ROUTES */
+import { fetchAllFiles, fetchFileByName, createAndUploadFile } from './api/files.js'
+
+/* GET all files in S3 Bucket */
+router.get('/files', fetchAllFiles)
+
+/* GET file in S3 Bucket by File Name */
+router.get('/files/download/:file' , fetchFileByName)
+
+/* POST a new file */
+router.post('/files/upload', createAndUploadFile)
+
 export default router
