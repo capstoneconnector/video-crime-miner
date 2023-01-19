@@ -8,7 +8,6 @@ jobs:
       - run: echo "🎉 Testing triggered by a ${{ github.event_name }} event."
       - name: Check out repository code
         uses: actions/checkout@v3
-          node-version: ${{ matrix.node-version }}
       - name: Install Modules and Run Jest
         uses: actions/setup-node@v3
         with: 
