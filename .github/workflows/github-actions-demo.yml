@@ -14,4 +14,6 @@ jobs:
           node-version: '16'
       - run: npm install
         working-directory: node-video-crime-miner
+      - run: npm run test
+        working-directory: node-video-crime-miner
       - run: echo "🍏 This job's status is ${{ job.status }}."
