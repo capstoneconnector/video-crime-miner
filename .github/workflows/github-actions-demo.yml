@@ -19,5 +19,6 @@ jobs:
       - run: |
           ls ${{ github.workspace }}
           cd node-video-crime-miner
+          ls ${{ github.workspace }}
           npm run test
       - run: echo "🍏 This job's status is ${{ job.status }}."
