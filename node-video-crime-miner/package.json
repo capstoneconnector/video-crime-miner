@@ -15,10 +15,10 @@
   "scripts": {
     "remakedb": "cd src/postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
     "create": "npm run build && npm run test",
-    "start": "cd out/ && node ./index.js",
-    "cli": "cd out/src/cli/ && node ./main.js",
+    "start": "cd out/ && node ./app.js",
+    "cli": "cd out/src/cli/ && node ./app.js",
     "build": "tsc -p .",
-    "refresh": "tsc -p . && cd out/ && node ./index.js",
+    "refresh": "tsc -p . && cd out/ && node ./app.js",
     "test": "jest",
     "cover": "jest --coverage"
   },
