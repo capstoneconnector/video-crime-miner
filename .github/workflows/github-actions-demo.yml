@@ -9,10 +9,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Install Modules and Run Jest
-        uses: actions/setup-node@v3
+        uses: [actions/setup-node@v3, stefanoeb/jest-action@1.0.3]
         with: 
           node-version: ${{ matrix.node-version }}
-        uses: stefanoeb/jest-action@1.0.3
         working-directory: node-video-crime-miner
       - run: npm install
       - run: npm run test
