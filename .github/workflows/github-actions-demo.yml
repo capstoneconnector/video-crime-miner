@@ -14,15 +14,12 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: ${{ matrix.node-version }}
-      - name: Install Modules
-        run: npm install
-        working-directory: node-video-crime-miner
-      - name: Run Jest
+      - name: Install Modules and Run Jest
+        uses: actions/setup-node@v3
         uses: stefanoeb/jest-action@1.0.3
+        working-directory: node-video-crime-miner
       - run: |
-          ls ${{ github.workspace }}
-          cd node-video-crime-miner
-          ls ${{ github.workspace }}
+          npm install
           npm run test
         working-directory: node-video-crime-miner
       - run: echo "🍏 This job's status is ${{ job.status }}."
