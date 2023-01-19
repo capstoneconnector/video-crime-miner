@@ -2,8 +2,6 @@
 import { Router } from 'express';
 const router = Router();
 
-
-
 /* LABEL DETECTION ROUTES */
 import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, createNewLabelDetectionJob } from './api/labels.js'
 
