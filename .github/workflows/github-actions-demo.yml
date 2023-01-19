@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 Testing triggered by a ${{ github.event_name }} event."
