@@ -39,45 +39,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Video Crime Miner Express + TypeScript Server')
 })
 
-/* GET AWS Labels Results for a file */
-app.get('/labels/:fileName', async (req: Request, res: Response) => {
-  try {
-    var result = await getResultsForFile(req.params["fileName"])
-    res.status(200).json({
-      result
-    })
-  } catch (err:any) {
-    console.log("app.get('/labels/:fileName') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-    })
-  }
-})
-
-/* POST new AWS Labels Result */
-app.post('/labels/:fileName', async (req: Request, res: Response) => {
-  try {
-    //const snsTopic = await createTopic(req.params["fileName"])
-    const job_id = await startLabelDetection("video-crime-miner-video-test-bucket", req.params["fileName"])
-    const inputTags = req.body.input.trim().split(",") // Putting the input tag list into array form
-    const created = await createNewLabels(job_id, inputTags, req.params["fileName"])
-
-    res.status(200).json({
-      jobid: job_id,
-      //created: created
-    })
-  } catch (err:any) {
-    console.log("app.post('/labels/:fileName') errored out")
-    console.log(req.body)
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
-})
-
 /* GET all cases */
 app.get('/cases', async (req: Request, res: Response) => {
   try {
