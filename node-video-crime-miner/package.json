@@ -13,7 +13,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "remakedb": "cd postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
+    "remakedb": "cd src/postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
     "create": "npm run build && npm run test",
     "start": "cd out/ && node ./index.js",
     "cli": "cd out/src/cli/ && node ./main.js",

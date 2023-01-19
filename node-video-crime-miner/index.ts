@@ -12,9 +12,9 @@ const app: Express = express()
 
 import { upload, listObjects, getObjectFromS3, uploadWithFile } from './src/AWS Layer/s3Connector.js'
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
-import { getAllCases, createNewCase } from './postgres/db.cases.js'
-import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './postgres/db.labels.js'
-import { createNewFileRow } from './postgres/db.files.js'
+import { getAllCases, createNewCase } from './src/postgres/db.cases.js'
+import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './src/postgres/db.labels.js'
+import { createNewFileRow } from './src/postgres/db.files.js'
 
 /* SERVER CONFIGURATION */
 // For parsing form data
