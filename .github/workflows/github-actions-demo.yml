@@ -14,6 +14,8 @@ jobs:
         uses: actions/setup-node@v3
         with: 
           node-version: ${{ matrix.node-version }}
+      - name: Install Modules
+        run: npm
       - name: Run Jest
         uses: stefanoeb/jest-action@1.0.3
       - run: |
