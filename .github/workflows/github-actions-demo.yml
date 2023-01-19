@@ -19,7 +19,7 @@ jobs:
         working-directory: node-video-crime-miner
       - name: Run Jest
         uses: stefanoeb/jest-action@1.0.3
-        run: |
+      - run: |
           ls ${{ github.workspace }}
           cd node-video-crime-miner
           ls ${{ github.workspace }}
