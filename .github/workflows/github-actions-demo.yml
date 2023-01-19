@@ -16,4 +16,10 @@ jobs:
         working-directory: node-video-crime-miner
       - run: npm run test
         working-directory: node-video-crime-miner
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+  
+      - name: Tests ✅
+        if: ${{ success() }}
+        run: echo "Node Jest tests have passed!"
+      - name: Tests 🚨
+        if: ${{ failure() }}
+        run: echo "One or more Node Jest tests have failed!"
