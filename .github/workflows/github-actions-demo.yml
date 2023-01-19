@@ -8,4 +8,9 @@ jobs:
       - run: echo "🎉 Testing triggered by a ${{ github.event_name }} event."
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Install dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - run: npm install
       - run: echo "🍏 This job's status is ${{ job.status }}."
