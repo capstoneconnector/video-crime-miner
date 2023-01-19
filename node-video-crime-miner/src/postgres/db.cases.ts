@@ -14,7 +14,7 @@ async function getAllCases() {
     }
 }
 
-async function createNewCase(name:string, description:string, tags:string[]) {
+async function insertNewCase(name:string, description:string, tags:string[]) {
     try {
         const query = await pool.query(
             "INSERT INTO public.case (name, description, tags) VALUES ($1, $2, $3)",
@@ -27,4 +27,4 @@ async function createNewCase(name:string, description:string, tags:string[]) {
     }
 }
 
-export {getAllCases, createNewCase}
+export {getAllCases, insertNewCase}

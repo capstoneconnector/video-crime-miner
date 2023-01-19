@@ -12,7 +12,7 @@ const app: Express = express()
 
 import { upload, listObjects, getObjectFromS3, uploadWithFile } from './src/AWS Layer/s3Connector.js'
 import { startLabelDetection, getLabelDetectionResults } from './src/AWS Layer/Rekognition/videoLabelUtils.js'
-import { getAllCases, createNewCase } from './src/postgres/db.cases.js'
+import { getAllCases, insertNewCase } from './src/postgres/db.cases.js'
 import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from './src/postgres/db.labels.js'
 import { createNewFileRow } from './src/postgres/db.files.js'
 
@@ -37,54 +37,6 @@ app.use(routes)
 /* GET root */
 app.get('/', (req: Request, res: Response) => {
   res.send('Video Crime Miner Express + TypeScript Server')
-})
-
-/* GET all cases */
-app.get('/cases', async (req: Request, res: Response) => {
-  try {
-    var result = await getAllCases()
-    res.status(200).json(result)
-  } catch (err:any) {
-    console.log("app.get('/cases') errored out")
-    console.log(req.body)
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
-})
-
-/* GET particular case details */
-app.get('/cases/:caseId', async (req: Request, res: Response) => {
-  try {
-    var result = ""
-    res.status(200).json(result)
-  } catch (err:any) {
-    console.log("app.get('/cases') errored out")
-    console.log(req.body)
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
-})
-
-/* POST a new case */
-app.post('/cases', async (req: Request, res: Response) => {
-  try {
-    const result = await createNewCase(req.body.name, req.body.description, req.body.tags)
-    res.status(200).json(result)
-  } catch (err:any) {
-    console.log("app.post('/cases') errored out")
-    console.log(req.body)
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query,
-    })
-  }
 })
 
 /* GET all files in S3 Bucket */
