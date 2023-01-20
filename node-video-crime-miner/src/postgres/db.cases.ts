@@ -18,7 +18,7 @@ async function getCaseById(id:string){
             "SELECT * FROM public.case WHERE case_id=($1)",
             [id]
         )
-        return query.rows
+        return query.rows[0]
     } catch (e){
         console.log({error:e})
         return e
