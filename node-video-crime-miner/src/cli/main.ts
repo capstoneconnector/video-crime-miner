@@ -1,7 +1,9 @@
 import {upload, listObjects} from "../AWS Layer/s3Connector.js"
 import {startVideoFacesDetection, getVideoFacesDetectionOutput} from '../AWS Layer/Rekognition/videoFaceUtils.js'
-import { startLabelDetection, getLabelDetectionResults } from '../AWS Layer/Rekognition/videoLabelUtils.js'
+import { startLabelDetection, getLabelDetectionResults, collectLabelDetections } from '../AWS Layer/Rekognition/videoLabelUtils.js'
 import * as reader from "readline"
+
+const bucketName = process.env["REKOG_BUCKET_NAME"] || "AWS ROLE ARN NOT DEFINED IN .ENV"
 
 var readline = reader.createInterface({
     input: process.stdin,
@@ -26,36 +28,34 @@ function resolveInput(userInput:any){
     }else if(userInput=="1"){
         //upload a file
         readline.question("Input file path: ", (x:any) => {
-            upload("video-crime-miner-video-test-bucket", x).then((response:any) => {
+            upload(bucketName, x).then((response:any) => {
                 console.log(response)
             })
         })
     }else if(userInput=="2"){
         //scan video faces
         readline.question("Input AWS filename: ", (x:any) => {
-            startVideoFacesDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
+            startVideoFacesDetection(bucketName, x).then((jobId:any) => {
                     console.log(jobId)
                     getVideoFacesDetectionOutput(jobId).then((response:any) => {
                         console.log(response)
                     })
             })
         })
-    }else if(userInput=="3"){
+    } else if (userInput=="3") {
         //label detection video
-        console.log("This may take a while...")
         readline.question("Input AWS filename: ", (x:any) => {
-            /*
-            startLabelDetection("video-crime-miner-video-test-bucket", x).then((jobId:any) => {
+            var keywords:Array<string> = ["Horse"] // Enter keyword for filter
+            startLabelDetection(bucketName, x, keywords).then((jobId:any) => {
                     console.log(jobId)
-                    getLabelDetectionResults(jobId).then((response:any) => {
-                        console.log(response)
+                    collectLabelDetections(jobId).then((response:any) => {   
                     })
             })
-            */
+                    
         })
     }else if(userInput=="4"){
         //view files
-        listObjects("video-crime-miner-video-test-bucket")
+        listObjects(bucketName)
     }else{
         console.log("ERROR: invalid choice")
     }
