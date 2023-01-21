@@ -20,7 +20,7 @@ var attributes = {
 //console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
-async function startLabelDetection(bucketName:string, videoName:string, clientToUse:RekognitionClient | any=client) {
+async function startLabelDetection(bucketName:string, videoName:string, labelFilters:Array<string>=[], clientToUse:RekognitionClient | any=client) {
   try {
     var attributes = {
       Video: { 
@@ -28,7 +28,14 @@ async function startLabelDetection(bucketName:string, videoName:string, clientTo
           Name: videoName,
           Bucket: bucketName,
         }
-      }/*
+      },
+      Features: ["GENERAL_LABELS"],
+      Settings: {
+        GeneralLabels: {
+            LabelInclusionFilters: labelFilters // Enter terms to filter here
+        }
+    }
+      /*
       NotificationChannel:{
         RoleArn: roleArn, 
         SNSTopicArn: snsTopicArn
@@ -36,10 +43,11 @@ async function startLabelDetection(bucketName:string, videoName:string, clientTo
       MinConfidence: 65
       */
     }
-
+    console.log(JSON.stringify(attributes))
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
     const command = new StartLabelDetectionCommand(attributes)
     const result = await clientToUse.send(command)
+    console.log(JSON.stringify(result))
     return result.JobId || {error:"Couldn't start faces detection"}
   } catch (e) {
     console.log('error', e)
@@ -70,6 +78,17 @@ async function collectLabelDetections (labelDetectJobId:string, clientToUse:Reko
     await getLabelDetectionChunk(labelDetectJobId, tokenToUse, clientToUse).then(async(dataResponse) => {
         
         // store labels from new batch
+        
+        Object.keys(dataResponse).forEach(function(key) {
+          if (key == 'Labels') {
+            dataResponse[key].forEach(function(item:any) {
+              //if (item["Name"] == "Fence") {
+              console.log("\n\n" + JSON.stringify(item))
+              //}
+            })
+          //console.log('Key : ' + key + ', Value : ' + JSON.stringify(dataResponse[key]))
+          }
+        })
         labelsDetected.push(dataResponse.Labels)
         
         // store new token
@@ -128,7 +147,7 @@ async function getLabelDetectionResults(id: string, clientToUse:RekognitionClien
             finished = true;
         }
     }
-    return result || {videoLabelError: "Could not get Label Detection Results"}
+    return result || {error: "Could not get Label Detection Results"}
   } catch (e) {
   console.log('error', e)
   }

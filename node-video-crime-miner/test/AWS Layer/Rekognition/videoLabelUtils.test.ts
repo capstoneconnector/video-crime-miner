@@ -16,6 +16,7 @@ describe ("startLabelDetection function", () => {
 
         const inputBucket:string = "example-bucket"
         const inputFile:string = "C:/fakepath/example.mp4"
+        const inputKeywords:Array<string> = ["ExampleLabel"]
         const testSNSTopicArn: string = "exampleSNSTopicArn"
         const output = "174a0134113639a384838cb4800b0e2b567ba160769516dd17804ba66aeb53f5"
 
@@ -24,7 +25,7 @@ describe ("startLabelDetection function", () => {
             "JobId": output
         })
 
-        const response = await startLabelDetection(inputBucket, inputFile, rekognitionMock)
+        const response = await startLabelDetection(inputBucket, inputFile, inputKeywords, rekognitionMock)
         expect(response).toBe(output)
     })
 })
@@ -40,8 +41,7 @@ describe ("runLabelDetectionAndGetResults function", () => {
             //insert example json stub here
             "JobId": "exampleJobId"
         })
-        const labelDetectJobID = await startLabelDetection("example-bucket", "C:/fakepath/example.mp4", 
-        rekognitionMock)
+        const labelDetectJobID = await startLabelDetection("example-bucket", "C:/fakepath/example.mp4", ["exampleLabel"],rekognitionMock)
 
         rekognitionMock.on(GetLabelDetectionCommand).resolves({
             //insert example json stub here

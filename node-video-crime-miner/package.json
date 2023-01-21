@@ -16,7 +16,7 @@
     "remakedb": "cd src/postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
     "create": "npm run build && npm run test",
     "start": "cd out/src/ && node ./app.js",
-    "cli": "cd out/src/cli/ && node ./app.js",
+    "cli": "cd out/src/cli/ && node ./main.js",
     "build": "tsc -p .",
     "refresh": "tsc -p . && cd out/src/ && node ./app.js",
     "test": "jest",
@@ -48,7 +48,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "@aws-sdk/client-rekognition": "^3.202.0",
+    "@aws-sdk/client-rekognition": "^3.254.0",
     "@aws-sdk/client-s3": "^3.209.0",
     "@aws-sdk/client-sns": "^3.204.0",
     "@aws-sdk/client-sqs": "^3.204.0",
