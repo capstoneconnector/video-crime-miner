@@ -43,11 +43,11 @@ async function startLabelDetection(bucketName:string, videoName:string, labelFil
       MinConfidence: 65
       */
     }
-    console.log(JSON.stringify(attributes))
+    //console.log(JSON.stringify(attributes))
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
     const command = new StartLabelDetectionCommand(attributes)
     const result = await clientToUse.send(command)
-    console.log(JSON.stringify(result))
+    //console.log(JSON.stringify(result))
     return result.JobId || {error:"Couldn't start faces detection"}
   } catch (e) {
     console.log('error', e)

@@ -11,9 +11,7 @@ async function fetchLabelDetectionJob(req: Request, res: Response, next: NextFun
   try {
     var result = await getResultsForJob(req.params["jobId"])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-      console.log("in null check")
       var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
-      console.log(newResult)
       await updateJobResults(req.params["jobId"], newResult) // update the db entry
     result = newResult
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
