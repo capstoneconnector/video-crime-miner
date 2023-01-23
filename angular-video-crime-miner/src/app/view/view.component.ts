@@ -9,11 +9,11 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class ViewComponent implements OnInit {
 
-  private baseUrl = 'http://localhost:8000';
-  private caseList: string[] = new Array<string>();
-  private caseList$: Subject<string[]> = new Subject<string[]>();
+  private baseUrl = 'http://localhost:8000'
+  private caseList: string[] = new Array<string>()
+  private caseList$: Subject<string[]> = new Subject<string[]>()
 
-  caseInfos?: Observable<any>;
+  caseInfos?: Observable<any>
 
   constructor(private http: HttpClient) { }
 

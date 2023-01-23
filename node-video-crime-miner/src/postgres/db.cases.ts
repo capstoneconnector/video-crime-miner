@@ -9,8 +9,19 @@ async function getAllCases() {
     } catch (e){
         console.log({error:e})
         return e
-    } finally {
-        
+    }
+}
+
+async function getCaseById(id:string){
+    try{
+        const query = await pool.query(
+            "SELECT * FROM public.case WHERE case_id=($1)",
+            [id]
+        )
+        return query.rows[0]
+    } catch (e){
+        console.log({error:e})
+        return e
     }
 }
 
@@ -27,4 +38,4 @@ async function insertNewCase(name:string, description:string, tags:string[]) {
     }
 }
 
-export {getAllCases, insertNewCase}
+export {getAllCases, insertNewCase, getCaseById}

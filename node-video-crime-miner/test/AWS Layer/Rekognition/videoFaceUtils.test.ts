@@ -42,15 +42,14 @@ describe("getVideoFacesDetectionOutput function", () => {
         '$metadata': {
           httpStatusCode: 200,
           requestId: '3f2de1e2-bdd5-4393-9f7e-123f2751f09e',
-          extendedRequestId: undefined,
-          cfId: undefined,
+          "extendedRequestId": '00000000',
+          cfId: '0000000',
           attempts: 1,
           totalRetryDelay: 0
         },
-        Faces: [],
         JobStatus: 'SUCCEEDED',
-        NextToken: undefined,
-        StatusMessage: undefined,
+        NextToken: '00000000',
+        StatusMessage: '00000000',
         VideoMetadata: {
           Codec: 'h264',
           ColorRange: 'LIMITED',
