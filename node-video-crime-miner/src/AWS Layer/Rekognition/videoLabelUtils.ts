@@ -6,6 +6,7 @@ import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
+const bucketName = process.env["REKOG_BUCKET_NAME"] || "REKOG BUCKET NAME NOT DEFINED IN .ENV"
 const roleArn = process.env["AWS_ROLE_ARN"] || "AWS ROLE ARN NOT DEFINED IN .ENV"
 
 // Create the Rekognition Client
@@ -19,8 +20,9 @@ var attributes = {
 //console.log("VIDEOLABELUTILS ENV VAR ATTRIBUTES")
 //console.log(attributes)
 const client  = new RekognitionClient(attributes)
+console.log(bucketName)
 
-async function startLabelDetection(bucketName:string, videoName:string, labelFilters:Array<string>=[], clientToUse:RekognitionClient | any=client) {
+async function startLabelDetection(videoName:string, labelFilters:Array<string> = [], clientToUse:RekognitionClient | any=client) {
   try {
     var attributes = {
       Video: { 

@@ -11,8 +11,8 @@ async function fetchLabelDetectionJob(req: Request, res: Response, next: NextFun
   try {
     var result = await getResultsForJob(req.params["jobId"])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-      var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
-      await updateJobResults(req.params["jobId"], newResult) // update the db entry
+    var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
+    await updateJobResults(req.params["jobId"], newResult) // update the db entry
     result = newResult
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
     res.status(200).json(result)
@@ -43,18 +43,22 @@ async function fetchAllLabelDetectionForFile(req: Request, res: Response, next: 
 /* POST new AWS Labels Job for File */
 async function createNewLabelDetectionJob(req: Request, res: Response, next: NextFunction) {
   try {
+    // Transform JSON object into native JS array
+    var keywords:Array<string> = ["Horse"] // Enter keyword for filter
+    //for (var label in req.body.labels){
+    //  keywords.push(label)
+    //}
+
     //const snsTopic = await createTopic(req.params["fileName"])
-    const job_id = await startLabelDetection("video-crime-miner-video-test-bucket", req.params["fileName"])
-    const inputTags = req.body.input.trim().split(",") // Putting the input tag list into array form
-    const created = await createNewLabels(job_id, inputTags, req.params["fileName"])
+    const job_id = await startLabelDetection(req.params["fileName"], keywords)
+    const created = await createNewLabels(job_id, keywords, req.params["fileName"])
 
     res.status(200).json({
       jobid: job_id,
-      //created: created
+      labels: req.body.labels
     })
   } catch (err:any) {
     console.log("app.post('/labels/:fileName') errored out")
-    console.log(req.body)
     res.status(500).send({
       errormsg: err.message,
       params: req.params,
