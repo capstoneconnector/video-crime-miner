@@ -12,6 +12,11 @@ async function fetchLabelDetectionJob(req: Request, res: Response, next: NextFun
     var result = await getResultsForJob(req.params["jobId"])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
     var newResult = await getLabelDetectionResults(req.params["jobId"]) // Get results for the id
+    //Now let's trim down the result to only include labels and video metadata
+    newResult = {
+      Labels: newResult.Labels,
+      VideoMetadata: newResult.VideoMetadata
+    }
     await updateJobResults(req.params["jobId"], newResult) // update the db entry
     result = newResult
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
@@ -45,7 +50,6 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
   try {
     // Filter keywords
     var keywords = req.body.labels || []
-
     //const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await startLabelDetection(req.params["fileName"], keywords)
     const created = await createNewLabels(job_id, keywords, req.params["fileName"])

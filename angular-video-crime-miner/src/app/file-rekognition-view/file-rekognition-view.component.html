@@ -1,4 +1,5 @@
-<h1>Job **Job Id Here**</h1>
+<h2>AWS Result</h2>
+<h3><b>Job ID:</b> {{this.getJobId()}}</h3>
 
 <div class="card">
     <div class="card-head">
@@ -18,18 +19,32 @@
     </div>
     <table class="rwd-table">
         <thead>
-            <th>No.</th>
-            <th>Label</th>
-            <th>Timestamp</th>
-            <th>Link</th>
+            <th>Label Name</th>
+            <th>Other Aliases</th>
+            <th>Label Parents</th>
+            <th>Label Categories</th>
+            <th>Confidence Level</th>
+            <th>Timestamp in Milliseconds</th>
         </thead>
         <tbody>
-            <tr *ngFor="let label of labels | async">
+            <tr *ngFor="let label of this.getLabels()">
+
+                <td>{{label.Name}}</td>
+                <td *ngFor="let alias of label.Aliases">{{alias.Name}}</td>
+                <td>{{label.Parents}}</td>
+                <td *ngFor="let category of label.Categories">{{category.Name}}</td>
+                <td>{{label.Confidence}}</td>
+                <td>{{label.Timestamp}}</td>
+
+                <!-- 
                 <td data-th="No.">1</td>
-                <td data-th="Name">{{ label.name }}</td>
-                <td data-th="Timestamp">{{ label.timestamp }}</td>
+                <td data-th="Name">{{ label.Aliases }}</td>
+                <td data-th="Timestamp">{{ label.Timestamp }}</td>
                 <td data-th="Link">**Link To Media Page Here**</td>
+                -->
             </tr>
         </tbody>
     </table>
 </div>
+<p style = "color:green">{{this.strLabels}}</p>
+<p style = "color:purple">{{this.strVideoData}}</p>

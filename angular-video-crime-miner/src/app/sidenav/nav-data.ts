@@ -24,9 +24,11 @@ export const navbarData = [
       icon: 'fal fa-camera',
       label: 'Media'
   },
+  /*
   {
       routeLink: 'settings',
       icon: 'fal fa-cog',
       label: 'Settings'
   },
+  */
 ];
