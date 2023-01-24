@@ -95,7 +95,7 @@ INSERT INTO public."case"(
     VALUES ('Tire Thief On Campus', 'Somebody is stealing spare tires off cars!', ARRAY ['car', 'truck', 'tire'], ARRAY ['Suspect is Isaac']);
 INSERT INTO public."case"(
     name, description, tags, notes) 
-    VALUES ('Fraud in BSU', 'Someone has been cashing fraudulent checks', ARRAY ['checks', 'money', 'suit'], ARRAY ['Witness is Eric']);
+    VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric']);
 
 -- insert file rows
 INSERT INTO public.file(
@@ -111,12 +111,12 @@ INSERT INTO public.file(
 -- Insert awsoutput rows
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', JSON '{"result": null}', 'robbery.mp4', ARRAY ['car', 'truck', 'red shirt']);
+    VALUES ('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', JSON '{}', 'robbery.mp4', ARRAY ['car', 'truck', 'red shirt']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{"result": null}', 'tires.mp4', ARRAY ['tire']);
+    VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{}', 'tires.mp4', ARRAY ['tire']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{"result": null}', 'tires.mp4', ARRAY ['checks', 'money', 'suit']);
+    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', 'tires.mp4', ARRAY ['checks', 'money', 'suit']);
 
 \q
