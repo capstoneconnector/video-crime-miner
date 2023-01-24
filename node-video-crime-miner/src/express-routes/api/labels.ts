@@ -43,8 +43,8 @@ async function fetchAllLabelDetectionForFile(req: Request, res: Response, next: 
 /* POST new AWS Labels Job for File */
 async function createNewLabelDetectionJob(req: Request, res: Response, next: NextFunction) {
   try {
-    // Transform JSON object into native JS array
-    var keywords = req.body.labels || []// Enter keyword for filter
+    // Filter keywords
+    var keywords = req.body.labels || []
 
     //const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await startLabelDetection(req.params["fileName"], keywords)
@@ -52,6 +52,7 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
 
     res.status(200).json({
       jobid: job_id,
+      database: created,
       labels: req.body.labels || []
     })
   } catch (err:any) {
