@@ -21,6 +21,9 @@ app.use(
   }
 )
 
+// Allows JSON reading from RAW body
+app.use(express.json())
+
 /* SERVER ROUTES */
 import routes from './express-routes/index.js'
 app.use(routes)

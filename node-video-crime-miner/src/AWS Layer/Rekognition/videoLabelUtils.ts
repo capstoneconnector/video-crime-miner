@@ -20,7 +20,6 @@ var attributes = {
 //console.log("VIDEOLABELUTILS ENV VAR ATTRIBUTES")
 //console.log(attributes)
 const client  = new RekognitionClient(attributes)
-console.log(bucketName)
 
 async function startLabelDetection(videoName:string, labelFilters:Array<string> = [], clientToUse:RekognitionClient | any=client) {
   try {

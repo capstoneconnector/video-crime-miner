@@ -106,7 +106,7 @@ INSERT INTO public.file(
     VALUES ('tires.mp4', 'BSU security footage', 'no notes', 2);
 INSERT INTO public.file(
     s3_name, title, notes, case_id) 
-    VALUES ('fraudulentCheck.png', 'Copy of signed fraudulent check', 'Used fake name on signature', 3);
+    VALUES ('Crowd of People 2 Second Demo Clip.mp4', 'Copy of signed fraudulent check', 'Used fake name on signature', 3);
 
 -- Insert awsoutput rows
 INSERT INTO public.awsoutput(
@@ -117,6 +117,6 @@ INSERT INTO public.awsoutput(
     VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{"result": null}', 'tires.mp4', ARRAY ['tire']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{"result": null}', 'fraudulentCheck.png', ARRAY ['checks', 'money', 'suit']);
+    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{"result": null}', 'tires.mp4', ARRAY ['checks', 'money', 'suit']);
 
 \q

@@ -44,10 +44,7 @@ async function fetchAllLabelDetectionForFile(req: Request, res: Response, next: 
 async function createNewLabelDetectionJob(req: Request, res: Response, next: NextFunction) {
   try {
     // Transform JSON object into native JS array
-    var keywords:Array<string> = ["Horse"] // Enter keyword for filter
-    //for (var label in req.body.labels){
-    //  keywords.push(label)
-    //}
+    var keywords = req.body.labels || []// Enter keyword for filter
 
     //const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await startLabelDetection(req.params["fileName"], keywords)
@@ -55,7 +52,7 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
 
     res.status(200).json({
       jobid: job_id,
-      labels: req.body.labels
+      labels: req.body.labels || []
     })
   } catch (err:any) {
     console.log("app.post('/labels/:fileName') errored out")
