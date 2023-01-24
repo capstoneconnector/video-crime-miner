@@ -1,0 +1,35 @@
+<h1>Job **Job Id Here**</h1>
+
+<div class="card">
+    <div class="card-head">
+        **File Name Here** Output Information
+    </div>
+    <div class="card-body">
+        <b>Labels Scanned For:</b> **Labels List Here**
+    </div>
+    <div class="card-body">
+        <b>Time Completed:</b> **Time Here**
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-head">
+        Labels Found
+    </div>
+    <table class="rwd-table">
+        <thead>
+            <th>No.</th>
+            <th>Label</th>
+            <th>Timestamp</th>
+            <th>Link</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let label of labels | async">
+                <td data-th="No.">1</td>
+                <td data-th="Name">{{ label.name }}</td>
+                <td data-th="Timestamp">{{ label.timestamp }}</td>
+                <td data-th="Link">**Link To Media Page Here**</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
