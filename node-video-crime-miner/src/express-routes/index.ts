@@ -3,7 +3,7 @@ import { Router } from 'express';
 const router = Router();
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, createNewLabelDetectionJob } from './api/labels.js'
+import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, createNewLabelDetectionJob } from './api/api.labels.js'
 
 /* GET AWS Label Results by Job Id */
 router.get('/labels/job/:jobId', fetchLabelDetectionJob)
@@ -17,7 +17,7 @@ router.post('/labels/:fileName', createNewLabelDetectionJob)
 
 
 /* CASE ROUTES */
-import { fetchAllCases, fetchCaseById, createNewCase } from './api/cases.js'
+import { fetchAllCases, fetchCaseById, createNewCase } from './api/api.cases.js'
 
 /* GET all cases */
 router.get('/cases', fetchAllCases)
@@ -31,7 +31,7 @@ router.post('/cases', createNewCase)
 
 
 /* FILE ROUTES */
-import { fetchAllFiles, fetchFileByName, createAndUploadFile } from './api/files.js'
+import { fetchAllFiles, fetchFileByName, createAndUploadFile } from './api/api.files.js'
 
 /* GET all files in S3 Bucket */
 router.get('/files', fetchAllFiles)
