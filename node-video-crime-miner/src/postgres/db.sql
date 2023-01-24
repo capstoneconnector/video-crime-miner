@@ -89,10 +89,10 @@ ALTER TABLE IF EXISTS public.awsoutput
 -- insert case rows
 INSERT INTO public."case"(
     name, description, tags, notes) 
-    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['car', 'truck', 'red shirt'], ARRAY ['Suspect is Jacob']);
+    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['Gun', 'Person', 'Truck'], ARRAY ['Suspect is Jacob']);
 INSERT INTO public."case"(
     name, description, tags, notes) 
-    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['car', 'truck', 'tire'], ARRAY ['Suspect is Isaac']);
+    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['Fish'], ARRAY ['Suspect is Isaac']);
 INSERT INTO public."case"(
     name, description, tags, notes) 
     VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric']);
@@ -117,6 +117,6 @@ INSERT INTO public.awsoutput(
     VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{}', '[DEMO]Fish Video', ARRAY ['tire']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', 'tires.mp4', ARRAY ['checks', 'money', 'suit']);
+    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', '[DEMO] Crowd of People 2 Second Demo Clip.mp4', ARRAY ['checks', 'money', 'suit']);
 
 \q
