@@ -1,5 +1,7 @@
 
-
+html * {
+  overflow: auto;
+}
 // More practical CSS...
 // using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
 
@@ -8,6 +10,8 @@ $breakpoint-alpha: 480px; // adjust to your needs
 .rwd-table {
   margin: 1em 0;
   min-width: 300px; // adjust to your needs
+  table-layout: fixed;
+  width: 100%;
 
   tr {
     border-top: 1px solid #ddd;
@@ -20,7 +24,6 @@ $breakpoint-alpha: 480px; // adjust to your needs
 
   td {
     display: block;
-
     &:first-child {
       padding-top: .5em;
     }
@@ -58,6 +61,7 @@ $breakpoint-alpha: 480px; // adjust to your needs
         padding-right: 0;
       }
     }
+    border: 1px solid black;
 
   }
 

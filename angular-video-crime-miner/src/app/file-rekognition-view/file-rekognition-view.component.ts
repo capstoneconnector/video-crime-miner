@@ -3,11 +3,12 @@ import { Observable, Subject } from 'rxjs'
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http'
 import { ActivatedRoute } from '@angular/router'
 import { TranscribeService } from 'aws-sdk'
+import { json } from 'stream/consumers'
 
 @Component({
   selector: 'app-file-rekognition-view',
   templateUrl: './file-rekognition-view.component.html',
-  styleUrls: ['./file-rekognition-view.component.scss']
+  styleUrls: ['./file-rekognition-view.component.scss'],
 })
 export class FileRekognitionViewComponent implements OnInit {
 
@@ -15,6 +16,7 @@ export class FileRekognitionViewComponent implements OnInit {
   private jobId!: string
   private videoData?: JSON
   private labels?: JSON
+  private labelTotal?: JSON
   strLabels?: string // Dev purposes
   strVideoData?: string // Dev purposes
 
@@ -24,14 +26,12 @@ export class FileRekognitionViewComponent implements OnInit {
     this.jobId = this.route.snapshot.paramMap.get('jobId') || '1'
     this.requestLabels().subscribe(awsResult => {
       this.videoData = awsResult.VideoMetadata
-      //this.labels = this.flatten(awsResult.Labels)
-      this.labels = this.mapper(awsResult.Labels)
-      //this.labels = awsResult.Labels
-
-      // Dev purposes
-      this.strLabels = JSON.stringify(this.labels)
-      this.strVideoData = JSON.stringify(this.videoData)
+      this.labels = this.tablePrepper(awsResult.Labels)
+      this.labelTotal = this.sumTotalLabelOccurrences(this.labels)
     })
+    // Dev purposes
+    this.strLabels = JSON.stringify(this.labels)
+    this.strVideoData = JSON.stringify(this.videoData)
   }
 
   public requestLabels(): Observable<any> {
@@ -46,46 +46,49 @@ export class FileRekognitionViewComponent implements OnInit {
     return this.labels
   }
 
-  public flatten(obj: any) {
-    return Object.keys(obj).reduce((acc:any, current) => {
-      const _key = `${current}`
-      const currentValue = obj[current]
-      if (Array.isArray(currentValue) || Object(currentValue) === currentValue) {
-        Object.assign(acc, this.flatten(currentValue))
-      } else {
-        acc[_key] = currentValue
-      }
-      return acc
-    }, {})
+  public getLabelTotal(){
+    return this.labelTotal
   }
 
-  public mapper(obj:any){
+  public sumTotalLabelOccurrences(obj:any){
+    return obj.reduce((accumulator:any, object:any) => accumulator + object.length, 0)
+  }
+
+  public tablePrepper(obj:any){
     var result = obj.map(
-      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents}}:any) => 
-      ({Name, Aliases, Parents, Categories, Confidence, Timestamp})
+      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances:{length}}}:any) => 
+      ({Name, Aliases, Parents, Categories, Confidence, Timestamp, length})
     )
-    result.Aliases = JSON.stringify(result.Aliases)
+    result = this.resolveArraysForTable(result)
     return result
-
   }
-  /*
-    public flatten(obj: any) {
-    var newObj = JSON
-    for(var key in obj){
-      Object.keys(key).reduce((acc:any, current) => {
-        const _key = `${current}`
-        const currentValue = obj[current]
-        if (Array.isArray(currentValue) || Object(currentValue) === currentValue) {
-          Object.assign(acc, this.flatten(currentValue))
-        } else {
-          acc[_key] = currentValue
-        }
-        newObj+=acc
-      }, {})
+
+  private resolveArraysForTable(obj:any){
+    // For each label we need to convert possible arrays into comma-separated strings
+    for(var i = 0; i < obj.length; i++) {
+      var label = obj[i]
+      var tmp = ""
+      
+      // Resolve Aliases
+      for(var j = 0; j<label.Aliases.length; j++){
+        tmp += label.Aliases[j].Name + ", "
+      }
+      label.Aliases = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
+
+      // Resolve Parents
+      for(var j = 0; j<label.Parents.length; j++){
+        tmp += label.Parents[j].Name + ", "
+      }
+      label.Parents = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
+
+      // Resolve Categories
+      tmp = ""
+      for(var j = 0; j<label.Categories.length; j++){
+        tmp += label.Categories[j].Name + ", "
+      }
+      label.Categories = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
     }
-    //labelsList = Object.assign({}, labelsList)
-    return newObj
-  }
-  */
 
+    return obj
+  }
 }

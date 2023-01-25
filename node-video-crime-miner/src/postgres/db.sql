@@ -23,7 +23,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 
 -- Table: public.case
 
--- DROP TABLE IF EXISTS public."case";
+DROP TABLE IF EXISTS public."case" CASCADE;
 
 CREATE TABLE IF NOT EXISTS public."case"
 (
@@ -45,7 +45,7 @@ ALTER TABLE IF EXISTS public."case"
 
 -- Table: public.file
 
--- DROP TABLE IF EXISTS public.file;
+DROP TABLE IF EXISTS public.file CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.file
 (
@@ -66,7 +66,7 @@ ALTER TABLE IF EXISTS public.file
     OWNER to postgres;
 -- Table: public.awsoutput
 
--- DROP TABLE IF EXISTS public.awsoutput;
+DROP TABLE IF EXISTS public.awsoutput CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.awsoutput
 (
@@ -100,23 +100,23 @@ INSERT INTO public."case"(
 -- insert file rows
 INSERT INTO public.file(
     s3_name, title, notes, case_id) 
-    VALUES ('[DEMO]Real Crime Video.mp4', 'gas station robbery security camera footage', 'no notes', 1);
+    VALUES ('[DEMO] Real Crime Video.mp4', 'gas station robbery security camera footage', 'no notes', 1);
 INSERT INTO public.file(
     s3_name, title, notes, case_id) 
-    VALUES ('[DEMO]Fish Video', 'Fish Poaching Video', 'no notes', 2);
+    VALUES ('[DEMO] Fish Video.mp4', 'Fish Poaching Video', 'no notes', 2);
 INSERT INTO public.file(
     s3_name, title, notes, case_id) 
-    VALUES ('[DEMO] Crowd of People 2 Second Demo Clip.mp4', 'Video for hit and run', 'The perp was wearing sunglasses in this video', 3);
+    VALUES ('[DEMO] Crowd of People.mp4', 'Video for hit and run', 'The perp was wearing sunglasses in this video', 3);
 
 -- Insert awsoutput rows
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', JSON '{}', '[DEMO]Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt']);
+    VALUES ('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', JSON '{}', '[DEMO] Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{}', '[DEMO]Fish Video', ARRAY ['tire']);
+    VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{}', '[DEMO] Fish Video.mp4', ARRAY ['tire']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', '[DEMO] Crowd of People 2 Second Demo Clip.mp4', ARRAY ['checks', 'money', 'suit']);
+    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', '[DEMO] Crowd of People.mp4', ARRAY ['checks', 'money', 'suit']);
 
 \q
