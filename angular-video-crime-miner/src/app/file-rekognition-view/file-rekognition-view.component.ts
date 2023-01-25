@@ -59,6 +59,7 @@ export class FileRekognitionViewComponent implements OnInit {
       ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances:{length}}}:any) => 
       ({Name, Aliases, Parents, Categories, Confidence, Timestamp, length})
     )
+
     result = this.resolveArraysForTable(result)
     return result
   }

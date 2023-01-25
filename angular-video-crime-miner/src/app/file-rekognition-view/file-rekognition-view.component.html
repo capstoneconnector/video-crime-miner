@@ -30,7 +30,7 @@
                 <th>Other Aliases</th>
                 <th>Label Parents</th>
                 <th>Label Categories</th>
-                <th>Number of Occurrences</th>
+                <th>Possible Number of Occurrences</th>
                 <th>Confidence Level</th>
                 <th>Timestamp in Milliseconds</th>
             </thead>
@@ -38,9 +38,6 @@
                 <tr *ngFor="let label of this.getLabels()">
                     <td>{{label.Name}}</td>
                     <td>{{label.Aliases}}</td>
-                    <!--
-                    <td *ngFor="let parent of label.Parents; let isLast = last">{{parent.Name}}{{isLast ? 'None' : ', '}}</td>
-                    -->
                     <td>{{label.Parents}}</td>
                     <td>{{label.Categories}}</td>
                     <td>{{label.length}}</td>
