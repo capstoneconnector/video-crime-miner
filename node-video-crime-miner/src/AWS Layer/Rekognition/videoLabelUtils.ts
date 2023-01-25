@@ -6,6 +6,7 @@ import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand
 const region = process.env["REGION"] || "REGION NOT DEFINED IN .ENV"
 const accessKeyId = process.env["AWS_ACCESS_KEY_ID"] || "AWS ACCESS KEY NOT DEFINED IN .ENV"
 const secretAccessKey = process.env["AWS_SECRET_ACCESS_KEY"] || "AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV"
+const bucketName = process.env["REKOG_BUCKET_NAME"] || "REKOG BUCKET NAME NOT DEFINED IN .ENV"
 const roleArn = process.env["AWS_ROLE_ARN"] || "AWS ROLE ARN NOT DEFINED IN .ENV"
 
 // Create the Rekognition Client
@@ -20,7 +21,7 @@ var attributes = {
 //console.log(attributes)
 const client  = new RekognitionClient(attributes)
 
-async function startLabelDetection(bucketName:string, videoName:string, labelFilters:Array<string>=[], clientToUse:RekognitionClient | any=client) {
+async function startLabelDetection(videoName:string, labelFilters:Array<string> = [], clientToUse:RekognitionClient | any=client) {
   try {
     var attributes = {
       Video: { 
@@ -43,11 +44,11 @@ async function startLabelDetection(bucketName:string, videoName:string, labelFil
       MinConfidence: 65
       */
     }
-    console.log(JSON.stringify(attributes))
+    //console.log(JSON.stringify(attributes))
     // Returns jobId to get when it's finished by getVideoFacesDetectionOutput
     const command = new StartLabelDetectionCommand(attributes)
     const result = await clientToUse.send(command)
-    console.log(JSON.stringify(result))
+    //console.log(JSON.stringify(result))
     return result.JobId || {error:"Couldn't start faces detection"}
   } catch (e) {
     console.log('error', e)
