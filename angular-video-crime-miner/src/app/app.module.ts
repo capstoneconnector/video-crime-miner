@@ -4,7 +4,7 @@ import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UploadComponent } from './upload/upload.component';
+import { UploadComponent } from './upload/Upload.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { BodyComponent } from './body/body.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,6 +18,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule }   from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileListComponent } from './file-list/file-list.component';
+import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekognition-view.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FileListComponent } from './file-list/file-list.component';
     SettingsComponent,
     ReportsComponent,
     StatsComponent,
-    FileListComponent
+    FileListComponent,
+    FileRekognitionViewComponent
   ],
   imports: [
     HttpClientModule,

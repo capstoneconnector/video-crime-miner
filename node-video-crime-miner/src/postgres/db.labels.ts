@@ -1,10 +1,10 @@
 import {pool} from './db.config.js'
 
-async function createNewLabels(job_id:string, tags:string, file_id:string) {
+async function createNewLabels(job_id:string, keywords:Array<string>, file_id:string) {
     try {
         const query = await pool.query(
             "INSERT INTO public.awsoutput (job_id, tags, file_id) VALUES ($1, $2, $3)",
-            [job_id, tags, file_id]
+            [job_id, keywords, file_id]
         )
         return {result: "success!"}
     } catch (e){

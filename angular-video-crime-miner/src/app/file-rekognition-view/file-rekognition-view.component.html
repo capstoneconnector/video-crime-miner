@@ -1,0 +1,54 @@
+<h2><b><U>LABEL DETECTION OUTPUT</U></b></h2>
+<p><b>Job ID:</b> {{this.getJobId()}}</p>
+
+<!-- First Card: File Information and General Context Information -->
+<div class="card">
+    <div class="card-head">
+        <U>GENERAL INFORMATION</U>
+    </div>
+    <div class="card-body">
+        <b>File Processed:</b> **File Name Here**
+    </div>
+    <div class="card-body">
+        <b>Labels Scanned For:</b> **Labels List Here**
+    </div>
+    <div class="card-body">
+        <b>Time Completed:</b> **Time Here**
+    </div>
+</div>
+
+<!-- Second Card: Label Detection Results -->
+<div class="card">
+    <div class="card-head">
+        <U>LABEL DETECTION RESULTS</U>
+    </div>
+    <div class="card-body">
+        Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps
+        <table class="rwd-table">
+            <thead>
+                <th>Label Name</th>
+                <th>Other Aliases</th>
+                <th>Label Parents</th>
+                <th>Label Categories</th>
+                <th>Possible Number of Occurrences</th>
+                <th>Confidence Level</th>
+                <th>Timestamp in Milliseconds</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let label of this.getLabels()">
+                    <td>{{label.Name}}</td>
+                    <td>{{label.Aliases}}</td>
+                    <td>{{label.Parents}}</td>
+                    <td>{{label.Categories}}</td>
+                    <td>{{label.length}}</td>
+                    <td>{{label.Confidence}}</td>
+                    <td>{{label.Timestamp}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p style = "color:green">{{this.strLabels}}</p>
+<p style = "color:purple">{{this.strVideoData}}</p>
+<p style = "color:blue"></p>
