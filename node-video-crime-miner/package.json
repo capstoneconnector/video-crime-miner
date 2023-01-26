@@ -20,7 +20,8 @@
     "build": "tsc -p .",
     "refresh": "tsc -p . && cd out/src/ && node ./app.js",
     "test": "jest",
-    "cover": "jest --coverage"
+    "cover": "jest --coverage",
+    "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,14 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^18.11.9",
     "@types/pg": "^8.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
     "aws-sdk-client-mock": "^2.0.0",
     "dotenv": "^16.0.3",
-    "eslint": "8.26.0",
+    "eslint": "^8.32.0",
+    "eslint-config-standard-with-typescript": "^31.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.3.1",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
