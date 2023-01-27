@@ -73,7 +73,7 @@
           *ngFor="let file of fileInfos | async"
         >
           <li class="list-group-item">
-            <a href="http://localhost:8000/download/{{file.Key}}" >{{ file.Key }}</a>
+            <a href="http://localhost:8000/files/download/{{file.Key}}" >{{ file.Key }}</a>
           </li>
         </ul>
       </div>
