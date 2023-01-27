@@ -15,8 +15,7 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
-//console.log("S3CONNECTOR ENV VAR ATTRIBUTES")
-//console.log(attributes)
+
 const client  = new S3Client(attributes)
 
 
@@ -88,9 +87,9 @@ async function listObjects(bucket:string) {
 	}
 	
  }
- /* TODO: Finish this so you can upload a file with the file object! */
+ 
  async function uploadWithFile(bucket:string, body:any, key:any) {
-	let buffer = Buffer.concat(body)
+	let buffer = Buffer.concat([body])
 	
 	try {
 		var attributes = {
