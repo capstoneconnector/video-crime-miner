@@ -14,7 +14,7 @@
         <div class="card-body">
           <div class="inputBox">
             <form></form>
-            <h2>Basic Case Information</h2>
+            <h2>New Case Information</h2>
             <!--
             <form #userlogin = "ngForm" (ngSubmit) = "onClickSubmit(userlogin.value)" >
               <input type = "text" name = "emailid" placeholder = "emailid" ngModel>
@@ -27,10 +27,17 @@
             <form #createCase = "ngForm" (ngSubmit) = "submitCase(createCase.value)">
               <label>Name</label>
               <input type="text" name="name" required ngModel>
+              <label>Date</label>
+              <input  type="text" name="date" required ngModel>
+              <label>Date of Case</label>
+              <input  type="text" name="dateofcase" required ngModel>
+              <label>Location</label>
+              <input type="text" name="location" required ngModel>
+              <label>Important Labels</label>
+              <input type="text" name="name" required ngModel>
               <label>Description</label>
-              <input  type="text" name="description" required ngModel>
-              <label>Tags</label>
-              <input  type="text" name="tags" required ngModel>
+              <input type="text" name="description" required ngModel>
+              <br>
               <input type = "submit" value = "submit">
             </form>
           </div>
@@ -39,10 +46,11 @@
       </div>
     </section>
 
+
     <section id="dunkles" class="tab-panel">
-      <h2>Upload File</h2>
-      <div class="row">
-        <div class="col-8">
+      <div class="card">
+      <h1 class="card-head" >Upload File</h1>
+        <div class="card-body">
           <label class="btn btn-default p-0">
             <input type="file" (change)="selectFile($event)" />
           </label>

@@ -15,7 +15,7 @@ export const navbarData = [
       label: 'View/Edit Case'
   },
   {
-      routeLink: 'reports',
+      routeLink: 'file-rekognition-view/:jobId',
       icon: 'fal fa-file',
       label: 'View Reports'
   },
