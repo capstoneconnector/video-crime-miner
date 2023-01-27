@@ -35,11 +35,9 @@ async function fetchFileByName(req: any, res: Response, next: NextFunction) {
 async function createAndUploadFile(req: any, res: any, next: NextFunction) {
     
 	try {
-        //var result= await uploadWithFile("mt-vcm-uploads", req.body.data , req.body.name)
-		var result = "debugging"
-		console.log(req)
-        //const dbresult = await createNewFileRow(req.body.file.name, "", 4)
-        console.log({s3: result})
+        var result= await uploadWithFile("mt-vcm-uploads", req.files.file.data , req.files.file.name)
+        const dbresult = await createNewFileRow(req.body.file.name, "", 4)
+        console.log({s3: result, db: dbresult})
         return res.status(200).json({
           result
         })
