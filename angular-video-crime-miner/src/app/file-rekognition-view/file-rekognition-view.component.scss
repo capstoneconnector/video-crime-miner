@@ -106,3 +106,78 @@ h1 {
     color: rgb(0, 0, 0);
   }
 }
+
+
+.card1 {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2rem;
+  background-color: rgb(186, 196, 226);
+  margin: 2rem 2rem 2rem 2rem;
+  box-shadow: 1 1rem 1rem #000000;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2rem;
+  background-color: rgb(255, 255, 255);
+  margin: 2rem 2rem 2rem 2rem;
+  box-shadow: 1.5rem 1.5rem #b5b5b5;
+}
+
+/* ===========================
+   ====== Search Box ======
+   =========================== */
+
+   .search
+   {
+     border: 2px solid #000000;
+     overflow: auto;
+     border-radius: 5px;
+     -moz-border-radius: 5px;
+     -webkit-border-radius: 5px;
+   }
+
+   .search input[type="text"]
+   {
+     border: 0px;
+     width: 20%;
+     padding: 10px 10px;
+   }
+
+   .search input[type="text"]:focus
+   {
+     outline: 0;
+   }
+
+   .search input[type="submit"]
+   {
+     border: 0px;
+     background: none;
+     background-color: #434040;
+     color: #fff;
+     float: right;
+     padding: 10px;
+     -moz-border-radius-top-right: 5px;
+     -webkit-border-radius-top-right: 5px;
+     -moz-border-radius-bottom-right: 5px;
+     -webkit-border-radius-bottom-right: 5px;
+           cursor:pointer;
+   }
+
+   /* ===========================
+      ====== Medua Query for Search Box ======
+      =========================== */
+
+   @media only screen and (min-width : 150px) and (max-width : 780px)
+   {
+
+
+     .search
+     {
+       width: 50%;
+       margin: 0 auto;
+     }
+
+   }
+

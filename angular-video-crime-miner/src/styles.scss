@@ -11,7 +11,7 @@
     .card-head {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid #edf1f7;
-        font-size: 1rem;
+        font-size: 1.8rem;
         font-weight: 600;
     }
 
@@ -87,4 +87,21 @@ label {
   margin-bottom: 4px;
   display: block;
   text-transform: uppercase;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #2d3436;
+  background-image: linear-gradient(315deg, #2d3436 0%, #d3d3d3 20%);
+
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px     rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--background);
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px     rgba(0,0,0,0.5);
 }
