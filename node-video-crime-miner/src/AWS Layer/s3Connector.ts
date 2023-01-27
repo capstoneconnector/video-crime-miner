@@ -88,17 +88,18 @@ async function listObjects(bucket:string) {
 	
  }
  /* TODO: Finish this so you can upload a file with the file object! */
- async function uploadWithFile(bucket:string, file:File) {
+ async function uploadWithFile(bucket:string, body:any, key:any) {
+	var fileStream = fs.createReadStream(body)
 	try {
 		var attributes = {
 			Bucket: bucket,
-			Key: "example file",
-			Body: file
+			Key: key,
+			Body: fileStream
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
 		console.log(result)
-		return result || {error: "Could not upload " + file + " to " + bucket}
+		return result || {error: "Could not upload " + key + " to " + bucket}
 
 	} catch (e) {
 		console.log('error', e)
