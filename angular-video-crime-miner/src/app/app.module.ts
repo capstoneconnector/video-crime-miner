@@ -10,9 +10,9 @@ import { BodyComponent } from './body/body.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ViewComponent } from './view/view.component';
 import { MediaComponent } from './media/media.component';
-import { SettingsComponent } from './settings/settings.component';
+
 import { ReportsComponent } from './reports/reports.component';
-import { StatsComponent } from './stats/stats.component';
+
 import { IonicModule } from '@ionic/angular';
 
 import { FormsModule }   from '@angular/forms';
@@ -29,9 +29,8 @@ import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekog
     DashboardComponent,
     ViewComponent,
     MediaComponent,
-    SettingsComponent,
     ReportsComponent,
-    StatsComponent,
+
     FileListComponent,
     FileRekognitionViewComponent
   ],
