@@ -40,6 +40,6 @@ router.get('/files', fetchAllFiles)
 router.get('/files/download/:file' , fetchFileByName)
 
 /* POST a new file */
-router.post('/files/upload', createAndUploadFile)
+router.post('/upload', createAndUploadFile)
 
 export default router

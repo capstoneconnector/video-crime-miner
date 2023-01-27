@@ -3,6 +3,8 @@
 import * as envConfig from './envConfig.js'
 envConfig.default
 
+import cors from 'cors'
+
 // Now import the Express server and start it
 import express, { Express, Request, Response } from 'express'
 const app: Express = express()
@@ -21,11 +23,16 @@ app.use(
   }
 )
 
+app.use(cors({origin:true, credentials: true}));
+
+app.use(fileUpload())
+
 // Allows JSON reading from RAW body
 app.use(express.json())
 
 /* SERVER ROUTES */
 import routes from './express-routes/index.js'
+import fileUpload from 'express-fileupload'
 app.use(routes)
 
 /* Example GET at root for testing if the server is working! */
