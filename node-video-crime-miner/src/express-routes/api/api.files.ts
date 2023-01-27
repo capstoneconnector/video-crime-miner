@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { upload, listObjects, getObjectFromS3, uploadWithFile } from '../../AWS Layer/s3Connector.js'
+import { upload, listObjects, getObjectFromS3, uploadWithFile} from '../../AWS Layer/s3Connector.js'
 import { createNewFileRow } from '../../postgres/db.files.js'
 import { Readable } from 'stream'
 
@@ -32,18 +32,19 @@ async function fetchFileByName(req: any, res: Response, next: NextFunction) {
 }
 
 /* POST a new file */
-async function createAndUploadFile(req: any, res: Response, next: NextFunction) {
-    try {
-        const saveFile = ""
-        const result= await upload("mt-vcm-uploads", req.body.file)
-        const dbresult = await createNewFileRow(req.body.file.name, "", 4)
-        console.log({s3: result, db: dbresult})
+async function createAndUploadFile(req: any, res: any, next: NextFunction) {
+    
+	try {
+        //var result= await uploadWithFile("mt-vcm-uploads", file.body , file.body.name)
+		var result = "debugging"
+		console.log(req)
+        //const dbresult = await createNewFileRow(req.body.file.name, "", 4)
+        console.log({s3: result})
         return res.status(200).json({
           result
         })
       } catch (err:any) {
         console.log("app.post('/upload') We have errored out")
-        console.log(req.body)
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
