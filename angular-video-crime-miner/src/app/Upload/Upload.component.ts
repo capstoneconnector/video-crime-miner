@@ -3,6 +3,7 @@ import { HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileService } from 'src/app/file.service';
 import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { BodyComponent } from '../body/body.component';
 
 @Component({
  selector: 'app-upload',
@@ -62,13 +63,15 @@ export class UploadComponent {
       if (file) {
         this.currentFile = file;
 
+		let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
+    	let body = new URLSearchParams()
+
 		let formData = new FormData();
 		formData.set("name", this.name)
-		formData.set("file", this.file)
+		body.append("data", this.file)
 
-		this.http
-		.post(this.baseUrl + "/upload", formData)
-		.subscribe((response:any) => {})
+		var req = this.http.post(this.baseUrl + "/upload", formData)
+		req.subscribe()
 
         this.uploadService.upload(this.currentFile).subscribe({
           next: (event: any) => {
