@@ -3,6 +3,8 @@
 import * as envConfig from './envConfig.js'
 envConfig.default
 
+import cors from 'cors'
+
 // Now import the Express server and start it
 import express, { Express, Request, Response } from 'express'
 const app: Express = express()
@@ -20,6 +22,8 @@ app.use(
     next()
   }
 )
+
+app.use(cors({origin:true, credentials: true}));
 
 // Allows JSON reading from RAW body
 app.use(express.json())
