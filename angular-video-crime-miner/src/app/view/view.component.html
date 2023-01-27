@@ -8,8 +8,12 @@
                 <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Description</th>
+                <th>Date</th>
+                <th>Date of Case</th>
+                <th>Location</th>
                 <th>Tags</th>
+                <th>Description</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +22,11 @@
                 <td data-th="Name"><a href="localhost:8000/cases/{{ case.case_id }}">{{ case.name }}</a></td>
                 <td data-th="Description">{{ case.description }}</td>
                 <td data-th="Tags">{{ case.tags }}</td>
+                <td data-th="Location">{{ case.location}}</td>
+                <td data-th="Date">{{ case.date }}</td>
+                <td data-th="DateOfCase">{{ case.DateOfCase}</td>
             </tr>
+
             </tbody>
         </table>
     </div>
