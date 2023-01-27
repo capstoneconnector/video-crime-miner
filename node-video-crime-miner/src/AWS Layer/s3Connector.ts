@@ -1,6 +1,7 @@
 
 import * as fs  from 'fs'
 import * as path from 'path'
+import buffer from 'buffer'
 import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand} from '@aws-sdk/client-s3'
 
 const region = process.env['REGION'] || "REGION NOT DEFINED IN .ENV"
@@ -89,12 +90,13 @@ async function listObjects(bucket:string) {
  }
  /* TODO: Finish this so you can upload a file with the file object! */
  async function uploadWithFile(bucket:string, body:any, key:any) {
-	var fileStream = fs.createReadStream(body)
+	let buffer = Buffer.concat(body)
+	
 	try {
 		var attributes = {
 			Bucket: bucket,
 			Key: key,
-			Body: fileStream
+			Body: buffer
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
