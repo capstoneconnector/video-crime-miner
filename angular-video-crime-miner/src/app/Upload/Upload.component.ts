@@ -71,7 +71,7 @@ export class UploadComponent {
 		body.append("data", this.file)
 
 		var req = this.http.post(this.baseUrl + "/upload", formData)
-		req.subscribe()
+		console.log(req)
 
         this.uploadService.upload(this.currentFile).subscribe({
           next: (event: any) => {
