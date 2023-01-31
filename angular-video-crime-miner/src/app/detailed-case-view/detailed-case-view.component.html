@@ -1,3 +1,5 @@
+<h1>DETAILED CASE INFORMATION</h1>
+
 <!-- Card 1: Case Information -->
 <div class="card">
     <div class="card-head">Case Info</div>
@@ -11,10 +13,22 @@
 </div>
 
 <!-- Card 2: Different Files in the Case -->
-
 <div class="card">
     <div class="card-head">Related Files</div>
-    <div class="card-body">Stuff</div>
+    <div class="card-body">
+        <table class="rwd-table">
+            <thead>
+                <th>File Name</th>
+                <th>Notes</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let file of this.getCaseFiles()">
+                    <td>{{file.name}}</td>
+                    <td>{{file.notes}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Card 3: Different Outputs of the Case -->
