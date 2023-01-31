@@ -15,8 +15,6 @@ export class DetailedCaseViewComponent implements OnInit {
   private caseInfo?: JSON
   private caseFiles?: JSON
   private caseOutputs?: JSON
-  public str?: string
-  public json?: JSON
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
@@ -53,9 +51,7 @@ export class DetailedCaseViewComponent implements OnInit {
   public requestCaseOutputs(obj:any): Observable<any> {
     var names = this.getFileS3Names(obj)
     var body:Object = {files: names}
-    var exampleObject:Object = {files: ["[DEMO] Crowd of People.mp4","[DEMO] Fish Video.mp4","[DEMO] Real Crime Video.mp4"]}
-    //this.str = exampleObject.toString()
-    this.str = obj
+
     return this.http.post(`${this.baseUrl}/labels/multifile`, body)
   }
 
