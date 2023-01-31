@@ -19,6 +19,7 @@ import { FormsModule }   from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileListComponent } from './file-list/file-list.component';
 import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekognition-view.component';
+import { DetailedCaseViewComponent } from './detailed-case-view/detailed-case-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekog
     ReportsComponent,
 
     FileListComponent,
-    FileRekognitionViewComponent
+    FileRekognitionViewComponent,
+    DetailedCaseViewComponent
   ],
   imports: [
     HttpClientModule,

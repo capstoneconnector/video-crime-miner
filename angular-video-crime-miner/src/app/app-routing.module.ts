@@ -6,6 +6,7 @@ import { MediaComponent } from './media/media.component';
 import { ReportsComponent } from './reports/reports.component';
 import { UploadComponent } from './upload/Upload.component';
 import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekognition-view.component';
+import { DetailedCaseViewComponent } from './detailed-case-view/detailed-case-view.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'view', component: ViewComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'media', component: MediaComponent},
-  {path: 'file-rekognition-view/:jobId', component: FileRekognitionViewComponent}
+  {path: 'file-rekognition-view/:jobId', component: FileRekognitionViewComponent},
+  {path: 'detailed-case-view/:caseId', component: DetailedCaseViewComponent}
 ];
 
 @NgModule({
