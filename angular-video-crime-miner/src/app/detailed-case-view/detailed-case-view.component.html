@@ -1,35 +1,41 @@
-<p>detailed-case-view works!</p>
+<!-- Card 1: Case Information -->
 <div class="card">
-    <div class="card-head">Reports</div>
+    <div class="card-head">Case Info</div>
     <div class="card-body">
-      <div class="search">
-        <form class="search-form">
-          <input type="text" placeholder="Search for cases">
-          <input type="submit" value="Submit">
-        </form>
-      </div>
+        <div><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
+        <div><b>Case Name:</b> {{getCaseInfo().name}}</div>
+        <div><b>Case Description:</b> {{getCaseInfo().description}}</div>
+        <div><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
+        <div><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+    </div>
+</div>
+
+<!-- Card 2: Different Files in the Case -->
+
+<div class="card">
+    <div class="card-head">Related Files</div>
+    <div class="card-body">Stuff</div>
+</div>
+
+<!-- Card 3: Different Outputs of the Case -->
+<div class="card">
+    <div class="card-head">Outputs Run</div>
+    <div class="card-body">
       <table class="rwd-table">
         <thead>
-            <th>Case Number</th>
-            <th>Case Name</th>
-            <th>Date Created</th>
-            <th>View More</th>
-  
+            <th>File Name</th>
+            <th>Labels Run</th>
+            <th>Job ID</th>
+            <th>View Results</th>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+            <tr *ngFor="let output of this.getCaseOutputs()">
+                <td>{{output.file_id}}</td>
+                <td>{{output.tags}}</td>
+                <td>{{output.job_id}}</td>
+                <td data-th="Name"><a [routerLink]="['/file-rekognition-view/', output.job_id]">Click to View Results</a></td>
             </tr>
         </tbody>
       </table>
-  
     </div>
-  </div>
-  
-  <div class="card1">
-  <h2><b><U>LABEL DETECTION OUTPUT</U></b></h2>
-  <p><b>Job ID:</b></p>
-  
+</div>
