@@ -11,8 +11,8 @@ router.get('/labels/job/:jobId', fetchLabelDetectionJob)
 /* GET AWS Labels Results for a file */
 router.get('/labels/file/:fileName', fetchAllLabelDetectionForFile)
 
-/* GET AWS Labels Results for a list of files */
-router.get('/labels/multifile', fetchAllLabelDetectionForMultipleFiles)
+/* GET (Using POST to have JSON body to specify array of file names) AWS Labels Results for a list of files */
+router.post('/labels/multifile', fetchAllLabelDetectionForMultipleFiles)
 
 /* POST new AWS Labels Job for File */
 router.post('/labels/file/:fileName', createNewLabelDetectionJob)

@@ -23,10 +23,12 @@ export class DetailedCaseViewComponent implements OnInit {
     this.requestCaseInfo().subscribe(res => {
       this.caseInfo = res
     })
-    this.requestCaseFiles().subscribe(res => {
+    
+    this.requestCaseFiles(this.caseFiles).subscribe(res => {
       this.caseFiles = res
     })
-    var fileS3Names = {}
+    
+    var fileS3Names = this.caseFiles
     this.requestCaseOutputs(fileS3Names).subscribe(res => {
       this.caseOutputs = res
     })
@@ -40,7 +42,7 @@ export class DetailedCaseViewComponent implements OnInit {
     return this.caseInfo
   }
 
-  public requestCaseFiles(): Observable<any> {
+  public requestCaseFiles(obj:any): Observable<any> {
     return this.http.get(`${this.baseUrl}/files/case/${this.caseId}`)
   }
 
@@ -49,8 +51,13 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   public requestCaseOutputs(obj:any): Observable<any> {
-    
-    return this.http.get(`${this.baseUrl}/labels/multifile/`)
+    var tmp = []
+    for (var i = 0; i<obj.length; i++){ // Build array of file ids
+      tmp.push(obj[i].s3_name)
+    }
+    var body = {files:tmp}
+
+    return this.http.post(`${this.baseUrl}/labels/multifile/`, body)
   }
 
   public getCaseOutputs(): any {

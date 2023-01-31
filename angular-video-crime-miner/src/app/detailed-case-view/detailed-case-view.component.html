@@ -19,11 +19,13 @@
         <div class="card-body">
             <table class="rwd-table">
                 <thead>
+                    <th>File ID</th>
                     <th>File Name</th>
                     <th>Notes</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let file of this.getCaseFiles()">
+                        <td>{{file.s3_name}}</td>
                         <td>{{file.title}}</td>
                         <td>{{file.notes}}</td>
                     </tr>
