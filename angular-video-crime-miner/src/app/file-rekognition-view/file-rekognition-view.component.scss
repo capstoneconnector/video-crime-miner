@@ -1,6 +1,7 @@
 
-html * {
-  overflow: auto;
+.page-content {
+  height:100%;
+  overflow-y: auto;
 }
 // More practical CSS...
 // using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
@@ -92,7 +93,7 @@ h1 {
   background: #bcc0c4;
   color: #fff;
   border-radius: .4em;
-  overflow: hidden;
+  overflow: auto;
   tr {
     border-color: lighten(#000000, 50%);
   }
