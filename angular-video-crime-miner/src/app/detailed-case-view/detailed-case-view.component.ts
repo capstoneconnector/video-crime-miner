@@ -26,9 +26,10 @@ export class DetailedCaseViewComponent implements OnInit {
     this.requestCaseFiles().subscribe(res => {
       this.caseFiles = res
     })
-    //this.requestCaseOutputs().subscribe(res => {
-    //  this.outputs = res
-    //})
+    var fileS3Names = {}
+    this.requestCaseOutputs(fileS3Names).subscribe(res => {
+      this.caseOutputs = res
+    })
   }
 
   public requestCaseInfo(): Observable<any> {
@@ -47,11 +48,11 @@ export class DetailedCaseViewComponent implements OnInit {
     return this.caseFiles
   }
 
-/*
-  public requestCaseOutputs(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/labels/case/${this.caseId}`)
+  public requestCaseOutputs(obj:any): Observable<any> {
+    
+    return this.http.get(`${this.baseUrl}/labels/multifile/`)
   }
-*/
+
   public getCaseOutputs(): any {
     return this.caseOutputs
   }

@@ -26,6 +26,32 @@ async function getResultsForFile(fileName:string){
     }
 }
 
+async function getResultsForMultipleFiles(fileNames:any){
+    try {
+        var params = [];
+        for(var i = 1; i <= fileNames.length; i++) {
+          params.push('$' + i);
+        }
+        /*
+        var inject = ""
+        for (var i = 0; i<fileNames.length; i++){
+            inject+= "'" + fileNames[i] + "'" + ", "
+        }
+        inject = inject.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
+        inject = '{' + inject + '}'
+        console.log(inject)
+        */
+        const queryText = "SELECT job_id, file_id, tags FROM public.awsoutput WHERE file_id IN (" + params.join(',') + ")"
+        const query = await pool.query(
+            queryText, fileNames
+        )
+        return query.rows
+    } catch (e){
+        console.log({databaseError:e})
+        return {databaseError:e}
+    }
+}
+
 async function getResultsForJob(jobId:string){
     try {
         const query = await pool.query(
@@ -52,4 +78,4 @@ async function updateJobResults(jobId:string, result:JSON){
     }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults }
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults }

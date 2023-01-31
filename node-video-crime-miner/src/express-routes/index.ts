@@ -3,16 +3,19 @@ import { Router } from 'express';
 const router = Router();
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, createNewLabelDetectionJob } from './api/api.labels.js'
+import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from './api/api.labels.js'
 
 /* GET AWS Label Results by Job Id */
 router.get('/labels/job/:jobId', fetchLabelDetectionJob)
 
 /* GET AWS Labels Results for a file */
-router.get('/labels/:fileName', fetchAllLabelDetectionForFile)
+router.get('/labels/file/:fileName', fetchAllLabelDetectionForFile)
+
+/* GET AWS Labels Results for a list of files */
+router.get('/labels/multifile', fetchAllLabelDetectionForMultipleFiles)
 
 /* POST new AWS Labels Job for File */
-router.post('/labels/:fileName', createNewLabelDetectionJob)
+router.post('/labels/file/:fileName', createNewLabelDetectionJob)
 
 
 

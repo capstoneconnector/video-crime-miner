@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { createNewLabels, getResultsForFile, getResultsForJob, updateJobResults } from '../../postgres/db.labels.js'
+import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../postgres/db.labels.js'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
 
 
@@ -37,10 +37,29 @@ async function fetchAllLabelDetectionForFile(req: Request, res: Response, next: 
       result
     })
   } catch (err:any) {
-    console.log("app.get('/labels/:fileName') errored out")
+    console.log("app.get('/labels/file/:fileName') errored out")
     res.status(500).send({
       errormsg: err.message,
       params: req.params,
+    })
+  }
+}
+
+/* GET AWS Labels Results for a file */
+async function fetchAllLabelDetectionForMultipleFiles(req: Request, res: Response, next: NextFunction) {
+  try {
+    // list of file names
+    var fileNames = req.body.files || []
+    var outputs = await getResultsForMultipleFiles(fileNames)
+    res.status(200).json(
+      outputs
+    )
+  } catch (err:any) {
+    console.log("app.get('/labels/multifile') errored out")
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+      body: req.body
     })
   }
 }
@@ -60,7 +79,7 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
       labels: req.body.labels || []
     })
   } catch (err:any) {
-    console.log("app.post('/labels/:fileName') errored out")
+    console.log("app.post('/labels/file/:fileName') errored out")
     res.status(500).send({
       errormsg: err.message,
       params: req.params,
@@ -69,4 +88,4 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
   }
 }
 
-export { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, createNewLabelDetectionJob }
+export { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob }

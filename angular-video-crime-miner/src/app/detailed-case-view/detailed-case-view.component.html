@@ -1,55 +1,57 @@
-<h1>DETAILED CASE INFORMATION</h1>
+<div class="page-content">
+    <h1>DETAILED CASE INFORMATION</h1>
 
-<!-- Card 1: Case Information -->
-<div class="card">
-    <div class="card-head">Case Info</div>
-    <div class="card-body">
-        <div><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-        <div><b>Case Name:</b> {{getCaseInfo().name}}</div>
-        <div><b>Case Description:</b> {{getCaseInfo().description}}</div>
-        <div><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-        <div><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+    <!-- Card 1: Case Information -->
+    <div class="card">
+        <div class="card-head">Case Info</div>
+        <div class="card-body">
+            <div><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
+            <div><b>Case Name:</b> {{getCaseInfo().name}}</div>
+            <div><b>Case Description:</b> {{getCaseInfo().description}}</div>
+            <div><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
+            <div><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+        </div>
     </div>
-</div>
 
-<!-- Card 2: Different Files in the Case -->
-<div class="card">
-    <div class="card-head">Related Files</div>
-    <div class="card-body">
+    <!-- Card 2: Different Files in the Case -->
+    <div class="card">
+        <div class="card-head">Related Files</div>
+        <div class="card-body">
+            <table class="rwd-table">
+                <thead>
+                    <th>File Name</th>
+                    <th>Notes</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let file of this.getCaseFiles()">
+                        <td>{{file.title}}</td>
+                        <td>{{file.notes}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Card 3: Different Outputs of the Case -->
+    <div class="card">
+        <div class="card-head">Outputs Run</div>
+        <div class="card-body">
         <table class="rwd-table">
             <thead>
                 <th>File Name</th>
-                <th>Notes</th>
+                <th>Labels Run</th>
+                <th>Job ID</th>
+                <th>View Results</th>
             </thead>
             <tbody>
-                <tr *ngFor="let file of this.getCaseFiles()">
-                    <td>{{file.name}}</td>
-                    <td>{{file.notes}}</td>
+                <tr *ngFor="let output of this.getCaseOutputs()">
+                    <td>{{output.file_id}}</td>
+                    <td>{{output.tags}}</td>
+                    <td>{{output.job_id}}</td>
+                    <td data-th="Name"><a [routerLink]="['/file-rekognition-view/', output.job_id]">Click to View Results</a></td>
                 </tr>
             </tbody>
         </table>
-    </div>
-</div>
-
-<!-- Card 3: Different Outputs of the Case -->
-<div class="card">
-    <div class="card-head">Outputs Run</div>
-    <div class="card-body">
-      <table class="rwd-table">
-        <thead>
-            <th>File Name</th>
-            <th>Labels Run</th>
-            <th>Job ID</th>
-            <th>View Results</th>
-        </thead>
-        <tbody>
-            <tr *ngFor="let output of this.getCaseOutputs()">
-                <td>{{output.file_id}}</td>
-                <td>{{output.tags}}</td>
-                <td>{{output.job_id}}</td>
-                <td data-th="Name"><a [routerLink]="['/file-rekognition-view/', output.job_id]">Click to View Results</a></td>
-            </tr>
-        </tbody>
-      </table>
+        </div>
     </div>
 </div>
