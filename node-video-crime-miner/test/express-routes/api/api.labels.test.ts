@@ -1,9 +1,9 @@
 import { getMockReq, getMockRes } from "@jest-mock/express"
 import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from "../../../src/express-routes/api/api.labels"
-
-// FetchLabelDetectionJob function test
 import * as dbLabels from "../../../src/postgres/db.labels"
 import * as labelUtils from "../../../src/AWS Layer/Rekognition/videoLabelUtils"
+
+// FetchLabelDetectionJob function test
 describe("fetchLabelDetectionJob function", () => {
     // Mock request, which has no body for this endpoint
     const req = getMockReq()

@@ -22,7 +22,6 @@ async function fetchAllFiles(req: Request, res: Response, next: NextFunction) {
 /* GET all files for a certain case */
 async function fetchFilesByCaseId(req: Request, res: Response, next: NextFunction) {
   try {
-    // TODO: add implementation for getting files for a certain case
     const caseId = +req.params["caseId"] // The + converts caseId to a number type
     const files = await getFilesRelatedToCase(caseId)
     return res.status(200).json(files)
@@ -49,9 +48,9 @@ async function fetchFileByName(req: any, res: Response, next: NextFunction) {
 async function createAndUploadFile(req: any, res: any, next: NextFunction) {
     
 	try {
-        var result= await uploadWithFile(bucket, req.files.file.data , req.files.file.name)
+        var result = await uploadWithFile(bucket, req.files.file.data , req.files.file.name)
         const dbresult = await createNewFileRow(req.body.file.name, "", 4)
-        console.log({s3: result, db: dbresult})
+        //console.log({s3: result, db: dbresult})
         return res.status(200).json({
           result
         })
@@ -60,7 +59,6 @@ async function createAndUploadFile(req: any, res: any, next: NextFunction) {
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
-          query: req.query,
         })
       }
 }
