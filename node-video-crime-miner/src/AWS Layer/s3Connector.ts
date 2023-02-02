@@ -1,6 +1,7 @@
 
 import * as fs  from 'fs'
 import * as path from 'path'
+import buffer from 'buffer'
 import {S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand} from '@aws-sdk/client-s3'
 
 const region = process.env['REGION'] || "REGION NOT DEFINED IN .ENV"
@@ -14,8 +15,7 @@ const attributes = {
         secretAccessKey : secretAccessKey
     }
 }
-//console.log("S3CONNECTOR ENV VAR ATTRIBUTES")
-//console.log(attributes)
+
 const client  = new S3Client(attributes)
 
 
@@ -87,18 +87,20 @@ async function listObjects(bucket:string) {
 	}
 	
  }
- /* TODO: Finish this so you can upload a file with the file object! */
- async function uploadWithFile(bucket:string, file:File) {
+ 
+ async function uploadWithFile(bucket:string, body:any, key:any) {
+	let buffer = Buffer.concat([body])
+	
 	try {
 		var attributes = {
 			Bucket: bucket,
-			Key: "example file",
-			Body: file
+			Key: key,
+			Body: buffer
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
 		console.log(result)
-		return result || {error: "Could not upload " + file + " to " + bucket}
+		return result || {error: "Could not upload " + key + " to " + bucket}
 
 	} catch (e) {
 		console.log('error', e)

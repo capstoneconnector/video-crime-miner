@@ -1,0 +1,27 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} just triggered autotesting with a ${{ github.event_name }} 🚀
+on:  
+  pull_request:
+    branches:
+      - main
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - run: npm install
+        working-directory: node-video-crime-miner
+      - run: npm run test
+        working-directory: node-video-crime-miner
+  
+      - name: Tests ✅
+        if: ${{ success() }}
+        run: echo "Node Jest tests have passed!"
+      - name: Tests 🚨
+        if: ${{ failure() }}
+        run: echo "One or more Node Jest tests have failed!"

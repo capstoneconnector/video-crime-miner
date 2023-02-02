@@ -2,14 +2,16 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { upload, listObjects, getObjectFromS3, uploadWithFile } from '../../AWS Layer/s3Connector.js'
-import { createNewFileRow } from '../../postgres/db.files.js'
+import { upload, listObjects, getObjectFromS3, uploadWithFile} from '../../AWS Layer/s3Connector.js'
+import { createNewFileRow, getFilesRelatedToCase } from '../../postgres/db.files.js'
 import { Readable } from 'stream'
+
+const bucket = process.env["REKOG_BUCKET_NAME"] || "REKOG BUCKET NAME NOT DEFINED"
 
 /* GET all files in S3 Bucket */
 async function fetchAllFiles(req: Request, res: Response, next: NextFunction) {
     try {
-      const files = await listObjects("video-crime-miner-video-test-bucket")
+      const files = await listObjects(bucket)
       return res.status(200).json(files)
     } catch (err) {
       console.log("app.get('/files') errored out")
@@ -17,13 +19,26 @@ async function fetchAllFiles(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+/* GET all files for a certain case */
+async function fetchFilesByCaseId(req: Request, res: Response, next: NextFunction) {
+  try {
+    // TODO: add implementation for getting files for a certain case
+    const caseId = +req.params["caseId"] // The + converts caseId to a number type
+    const files = await getFilesRelatedToCase(caseId)
+    return res.status(200).json(files)
+  } catch (err) {
+    console.log("app.get('/files/case/:caseId') errored out")
+    res.status(500).send(err)
+  }
+}
+
 /* GET file in S3 Bucket by File Name */
 async function fetchFileByName(req: any, res: Response, next: NextFunction) {
     try {
-		var result = await getObjectFromS3("video-crime-miner-video-test-bucket" , req.params.file[0])
-		if(result instanceof Readable){
-      result.pipe(res)
-    }
+		var result = await getObjectFromS3(bucket , req.params.file)
+		if(result instanceof Readable) {
+      	result.pipe(res)
+	}
 		return res.status(200)
 	} catch (err) {
 		res.status(500).send(err)
@@ -31,10 +46,10 @@ async function fetchFileByName(req: any, res: Response, next: NextFunction) {
 }
 
 /* POST a new file */
-async function createAndUploadFile(req: any, res: Response, next: NextFunction) {
-    try {
-        const saveFile = ""
-        const result= await upload("video-crime-miner-video-test-bucket", req.body.file)
+async function createAndUploadFile(req: any, res: any, next: NextFunction) {
+    
+	try {
+        var result= await uploadWithFile(bucket, req.files.file.data , req.files.file.name)
         const dbresult = await createNewFileRow(req.body.file.name, "", 4)
         console.log({s3: result, db: dbresult})
         return res.status(200).json({
@@ -42,7 +57,6 @@ async function createAndUploadFile(req: any, res: Response, next: NextFunction) 
         })
       } catch (err:any) {
         console.log("app.post('/upload') We have errored out")
-        console.log(req.body)
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
@@ -51,4 +65,4 @@ async function createAndUploadFile(req: any, res: Response, next: NextFunction) 
       }
 }
 
-export { fetchAllFiles, fetchFileByName, createAndUploadFile }
+export { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile }

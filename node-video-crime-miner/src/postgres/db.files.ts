@@ -9,9 +9,21 @@ async function createNewFileRow(name:string, notes:string,  case_id:number) {
         return {result: "success!"}
     } catch (e){
         console.log({error:e})
-        return {}
-        //return {dbError:e}
+        return {dbError:e}
     }
 }
 
-export { createNewFileRow }
+async function getFilesRelatedToCase(case_id:number){
+    try{
+        const query = await pool.query(
+            "SELECT * FROM public.file WHERE case_id = $1",
+            [case_id]
+        )
+        return query.rows
+    } catch (e){
+        console.log({error:e})
+        return {dbError:e}
+    }
+}
+
+export { createNewFileRow, getFilesRelatedToCase }
