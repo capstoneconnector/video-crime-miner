@@ -25,7 +25,7 @@ describe('getAllCases function', () => {
         jest.clearAllMocks()
     })
 
-    it('getllCases returns without errors', async () => {
+    it('getAllCases returns without errors', async () => {
         const queryResult = {
             rowCount: 0,
             rows: [
