@@ -1,7 +1,7 @@
 import { getAllCases, insertNewCase, getCaseById } from "../../src/postgres/db.cases"
 import * as pg from "pg"
-import { Pool } from 'pg'
 
+// Mock the Pool of Connection
 jest.mock('pg', () => {
     const mPool = {
         connect: function () {
@@ -19,7 +19,7 @@ describe('getAllCases function', () => {
 
     let mockPool: pg.Pool;
     beforeEach(() => {
-        mockPool = new Pool()
+        mockPool = new pg.Pool()
     });
     afterEach(() => {
         jest.clearAllMocks()
@@ -47,7 +47,7 @@ describe('insertNewCase function', () => {
 
     let mockPool: pg.Pool;
     beforeEach(() => {
-        mockPool = new Pool()
+        mockPool = new pg.Pool()
     });
     afterEach(() => {
         jest.clearAllMocks()
@@ -70,7 +70,7 @@ describe('getCaseById function', () => {
 
     let mockPool: pg.Pool;
     beforeEach(() => {
-        mockPool = new Pool()
+        mockPool = new pg.Pool()
     });
     afterEach(() => {
         jest.clearAllMocks()
