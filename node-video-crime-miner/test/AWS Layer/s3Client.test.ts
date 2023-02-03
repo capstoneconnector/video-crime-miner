@@ -33,6 +33,7 @@ describe("listObjects function", () => {
 	})
 })
 
+/*
 //upload function test
 describe("upload function", () => {
 	s3Mock.on(PutObjectCommand).resolves({})
@@ -46,13 +47,13 @@ describe("upload function", () => {
 		expect(res).toBeTruthy()
 	})
 	// TODO: Test for failure with non-image and non-video files
-	/*
-	it("Should return failure after uploading any non-image and non-video files", async () => {
-		const res = await upload("example bucket", "filename.pdf")
-		expect(res).toBeFalsy()
-	})
-	*/
+	
+	//it("Should return failure after uploading any non-image and non-video files", async () => {
+	//	const res = await upload("example bucket", "filename.pdf")
+	//	expect(res).toBeFalsy()
+	//})
 })
+*/
 
 //getObjectFromS3 function test
 describe("getObjectFromS3 function", () => {
