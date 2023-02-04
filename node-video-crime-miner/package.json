@@ -58,6 +58,7 @@
     "@aws-sdk/client-s3": "^3.209.0",
     "@aws-sdk/client-sns": "^3.204.0",
     "@aws-sdk/client-sqs": "^3.204.0",
+    "@jest-mock/express": "^2.0.1",
     "aws-sdk": "^2.1247.0",
     "body-parser": "^1.20.1",
     "busboy": "^1.6.0",

@@ -8,7 +8,6 @@ async function createNewFileRow(name:string, notes:string,  case_id:number) {
         )
         return {result: "success!"}
     } catch (e){
-        console.log({error:e})
         return {dbError:e}
     }
 }
@@ -21,7 +20,6 @@ async function getFilesRelatedToCase(case_id:number){
         )
         return query.rows
     } catch (e){
-        console.log({error:e})
         return {dbError:e}
     }
 }

@@ -51,7 +51,6 @@ describe ("runLabelDetectionAndGetResults function", () => {
         // this will be the result
         const response = getLabelDetectionResults(labelDetectJobID.JobId, rekognitionMock)
 
-        console.log("Response: " + String(response))
         expect(response).toBeTruthy()
     })
 
@@ -72,8 +71,6 @@ describe ("getLabelDetectionChunk function", () => {
         })
         const chunkData = await getLabelDetectionChunk("example-id", "exampleToken", rekognitionMock)
 
-        // this will be the result
-        console.log("Response: " + String(chunkData))
         expect(chunkData).toBeTruthy()
     })
 
@@ -94,8 +91,6 @@ describe ("collectLabelDetections function", () => {
         })
         var chunkData = await collectLabelDetections("example-id", rekognitionMock)
 
-        // this will be the result
-        console.log("Response: " + String(chunkData))
         expect(chunkData).toBeTruthy()
     })
 
