@@ -3,6 +3,10 @@
     height:100%;
     overflow-y: auto;
   }
+
+  input:disabled{
+    opacity: 0.5;
+  }
   // More practical CSS...
   // using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
 

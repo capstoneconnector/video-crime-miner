@@ -1,5 +1,5 @@
 <div class="page-content">
-    <a [routerLink]="['/detailed-case-view/']"><- Back to Case</a>
+    <a [routerLink]="['/detailed-case-view/', getCaseInfo().case_id]"><- Back to Case</a>
     <h1>NEW LABEL DETECTION</h1>
 
     <!-- Card 1: Case/File Information -->
@@ -22,19 +22,22 @@
     <div class="card">
         <div class="card-head">Step 1: Add Tags</div>
         <div class="card-body">
-            <div><b>Add New Tag:</b> PUT INPUT BOX HERE THEN SUBMIT BUTTON</div>
-            <div>LIST OF TAGS HERE WITH X's TO REMOVE THEM</div>
+            <div>
+                <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
+                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/> 
+                    <input type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3">
+                </form>
+            </div>
         </div>
-        <button>SUBMIT</button>
     </div>
 
+    <!-- Card 3: Verify and Submit -->
     <div class="card">
         <div class="card-head">Step 2: Verify and Submit</div>
         <div class="card-body">
-            <div><b>Add New Tag:</b> PUT INPUT BOX HERE THEN SUBMIT BUTTON</div>
+            <div id="labelsList"></div>
             <div>LIST OF TAGS HERE WITH X's TO REMOVE THEM</div>
         </div>
-        <button>SUBMIT</button>
+        <button type="button" (click)="sendJobCreationRequest()">SUBMIT</button>
     </div>
-    <!--<p style="color:blue;">{{ getFileInfo().name }}</p>-->
 </div>

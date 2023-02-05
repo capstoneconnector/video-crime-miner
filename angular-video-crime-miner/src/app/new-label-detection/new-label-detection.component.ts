@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
 
@@ -17,6 +18,11 @@ export class NewLabelDetectionComponent implements OnInit {
   private fileInfo?: JSON
   private caseId!: number
   private caseInfo?: JSON
+  private labels: string[] = []
+  public textValue: string = ""
+  public newLabelForm: FormGroup = new FormGroup({
+    label: new FormControl("")
+  })
 
   ngOnInit(): void {
     this.fileId = this.route.snapshot.paramMap.get('fileId') || '1'
@@ -29,16 +35,20 @@ export class NewLabelDetectionComponent implements OnInit {
     })
   }
 
-  public getCaseId(): number{
+  public getCaseId(): number {
     return this.caseId
   }
 
-  public getFileInfo(): any{
+  public getFileInfo(): any {
     return this.fileInfo
   }
 
-  public getCaseInfo(): any{
+  public getCaseInfo(): any {
     return this.caseInfo
+  }
+
+  public getLabels(): string[] {
+    return this.labels
   }
 
   public requestFileInfo(): Observable<any> {
@@ -47,6 +57,18 @@ export class NewLabelDetectionComponent implements OnInit {
 
   public requestCaseInfo(): Observable<any> {
     return this.http.get(`${this.baseUrl}/cases/${this.caseId}`)
+  }
+
+  public addNewLabel(): void {
+    var label = this.newLabelForm.value.label
+    this.labels.push(label)
+    this.newLabelForm.reset()
+    this.updateLabelList()
+  }
+
+  private updateLabelList(){
+    var elem:HTMLElement = document.getElementById("labelsList")!
+    elem.innerHTML = this.labels.toString()
   }
 
   public sendJobCreationRequest(): void {
