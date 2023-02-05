@@ -29,4 +29,21 @@ describe('UploadComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy()
   })
+
+  const getFileList = () => {
+    const dt = new DataTransfer();
+    dt.items.add(new File([], 'file.mp4'));
+    return dt.files;
+  };
+
+  it('should run upload() and not return error', () => {
+    component.selectedFiles = getFileList()
+    const res = component.upload()
+    expect(res).toBeUndefined()
+  })
+
+  it('should run submitCase() and not return error', () => {
+    const res = component.submitCase({})
+    expect(res).toBeUndefined()
+  })
 })
