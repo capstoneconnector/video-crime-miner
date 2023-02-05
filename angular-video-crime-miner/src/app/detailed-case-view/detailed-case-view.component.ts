@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { Observable } from 'rxjs'
 
 
 @Component({

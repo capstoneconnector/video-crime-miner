@@ -1,24 +1,40 @@
 <div class="page-content">
-    <a [routerLink]="['/detailed-case-view/1']"><- Back to Case</a>
+    <a [routerLink]="['/detailed-case-view/']"><- Back to Case</a>
     <h1>NEW LABEL DETECTION</h1>
 
-    <!-- Card 1: Case Information -->
+    <!-- Card 1: Case/File Information -->
     <div class="card">
         <div class="card-head">Info</div>
         <div class="card-body">
-            <div><b>File ID:</b></div>
-            <div><b>Case Name:</b></div>
-            <div><b>Case Description:</b></div>
-            <div><b>Case Tags:</b></div>
-            <div><b>Case Notes:</b></div>
+            <div><b><u>File Info</u></b></div>
+            <div *ngIf="getFileInfo()"><b>File ID: </b>{{ getFileInfo().s3_name }}</div>
+            <div *ngIf="getFileInfo()"><b>File Name: </b>{{ getFileInfo().title }}</div>
+            <br>
+            <div><b><u>Case Info</u></b></div>
+            <div *ngIf="getCaseInfo()"><b>Case Name: </b>{{ getCaseInfo().name }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Description: </b>{{ getCaseInfo().description }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Tags: </b>{{ getCaseInfo().tags }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Notes: </b>{{ getCaseInfo().notes }}</div>
         </div>
     </div>
+
+    <!-- Card 2: Add Tags -->
     <div class="card">
-        <div class="card-head">Inputs</div>
+        <div class="card-head">Step 1: Add Tags</div>
         <div class="card-body">
-            <div><b>Tags to Search For:</b> PUT INPUT BOX HERE THEN SUBMIT BUTTON</div>
+            <div><b>Add New Tag:</b> PUT INPUT BOX HERE THEN SUBMIT BUTTON</div>
             <div>LIST OF TAGS HERE WITH X's TO REMOVE THEM</div>
         </div>
         <button>SUBMIT</button>
     </div>
+
+    <div class="card">
+        <div class="card-head">Step 2: Verify and Submit</div>
+        <div class="card-body">
+            <div><b>Add New Tag:</b> PUT INPUT BOX HERE THEN SUBMIT BUTTON</div>
+            <div>LIST OF TAGS HERE WITH X's TO REMOVE THEM</div>
+        </div>
+        <button>SUBMIT</button>
+    </div>
+    <!--<p style="color:blue;">{{ getFileInfo().name }}</p>-->
 </div>
