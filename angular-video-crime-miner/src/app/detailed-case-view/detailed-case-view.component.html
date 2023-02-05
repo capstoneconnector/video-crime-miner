@@ -32,6 +32,18 @@
                 </tbody>
             </table>
         </div>
+        <!-- Card 2.5: Add Labels -->
+        <button mat-button (click)="OpenPopup()
+        ">Add Labels</button>
+
+
+        <ng-template #dialog let-mydata>
+          <ul *ngIf="mydata">
+            <li *ngFor="let label of mydata" >{{label}}</li>
+          </ul>
+          <button mat-button mat-dialog-close="I like turtles..."></button>
+
+        </ng-template>
     </div>
 
     <!-- Card 3: Different Outputs of the Case -->

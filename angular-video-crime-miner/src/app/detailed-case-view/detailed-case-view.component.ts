@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-detailed-case-view',
@@ -10,15 +12,30 @@ import { Observable } from 'rxjs';
 })
 export class DetailedCaseViewComponent implements OnInit {
 
+fromDialog!:string;
+
+@ViewChild('dialogRef')
+dialogRef!: TemplateRef<any>
+
+myFooList = ['Labels']
+
+  OpenPopup(){
+    const myCompDialog = this.dialog.open(this.dialogRef,{data:this.myFooList})
+
+  }
+
   private baseUrl = 'http://localhost:8000'
   private caseId!: string
   private caseInfo?: JSON
   private caseFiles?: JSON
   private caseOutputs?: JSON
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, public dialog:MatDialog) { }
+
+
 
   ngOnInit(): void {
+    this.fromDialog = "I like turtles..."
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
     this.requestCaseInfo().subscribe(res => {
       this.caseInfo = res
@@ -68,3 +85,9 @@ export class DetailedCaseViewComponent implements OnInit {
     }
   }
 }
+
+
+
+
+
+

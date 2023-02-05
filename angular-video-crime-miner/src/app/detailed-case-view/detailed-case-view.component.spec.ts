@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailedCaseViewComponent } from './detailed-case-view.component';
 
+
 describe('DetailedCaseViewComponent', () => {
   let component: DetailedCaseViewComponent;
   let fixture: ComponentFixture<DetailedCaseViewComponent>;
