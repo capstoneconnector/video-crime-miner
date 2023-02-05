@@ -9,11 +9,11 @@
     <div class="card">
         <div class="card-head">Case Info</div>
         <div class="card-body">
-            <div><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-            <div><b>Case Name:</b> {{getCaseInfo().name}}</div>
-            <div><b>Case Description:</b> {{getCaseInfo().description}}</div>
-            <div><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-            <div><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+            <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
         </div>
     </div>
 

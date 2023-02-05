@@ -1,16 +1,15 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { DetailedCaseViewComponent } from './detailed-case-view.component';
+import { ReportsComponent } from './reports.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-
-describe('DetailedCaseViewComponent', () => {
-  let component: DetailedCaseViewComponent;
-  let fixture: ComponentFixture<DetailedCaseViewComponent>;
+describe('ReportsComponent', () => {
+  let component: ReportsComponent;
+  let fixture: ComponentFixture<ReportsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DetailedCaseViewComponent ],
+      declarations: [ ReportsComponent ],
       providers: [
       ],
       imports: [
@@ -20,7 +19,7 @@ describe('DetailedCaseViewComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DetailedCaseViewComponent);
+    fixture = TestBed.createComponent(ReportsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

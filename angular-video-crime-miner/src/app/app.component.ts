@@ -10,6 +10,7 @@ interface SideNavToggle {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   title = 'angular-video-crime-miner';
 
