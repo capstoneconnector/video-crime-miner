@@ -1,0 +1,342 @@
+
+.page-content {
+    height:100%;
+    overflow-y: auto;
+  }
+  // More practical CSS...
+  // using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
+
+  $breakpoint-alpha: 480px; // adjust to your needs
+
+  .rwd-table {
+    margin: 1em 0;
+    min-width: 300px; // adjust to your needs
+    table-layout: fixed;
+    width: 100%;
+
+    tr {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!
+    }
+
+    td {
+      display: block;
+      &:first-child {
+        padding-top: .5em;
+      }
+      &:last-child {
+        padding-bottom: .5em;
+      }
+
+      &:before {
+        content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+        font-weight: bold;
+
+        // optional stuff to make it look nicer
+        width: 6.5em; // magic number :( adjust according to your own content
+        display: inline-block;
+        // end options
+
+        @media (min-width: $breakpoint-alpha) {
+          display: none;
+        }
+      }
+    }
+
+    th, td {
+      text-align: left;
+
+      @media (min-width: $breakpoint-alpha) {
+        display: table-cell;
+        padding: .25em .5em;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+      border: 1px solid black;
+
+    }
+
+
+  }
+
+
+  // presentational styling
+
+  @import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
+
+  body {
+    padding: 0 2em;
+    font-family: Montserrat, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color: rgb(173, 168, 168);
+    background: #eee;
+  }
+
+  h1 {
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #34495E;
+  }
+
+  .rwd-table {
+    background: #bcc0c4;
+    color: #fff;
+    border-radius: .4em;
+    overflow: auto;
+    tr {
+      border-color: lighten(#000000, 50%);
+    }
+    th, td {
+      margin: .5em 1em;
+      @media (min-width: $breakpoint-alpha) {
+        padding: 1em !important;
+      }
+    }
+    th, td:before {
+      color: rgb(0, 0, 0);
+    }
+  }
+
+
+  .card1 {
+    display: flex;
+    flex-direction: column;
+    border-radius: 2rem;
+    background-color: rgb(186, 196, 226);
+    margin: 2rem 2rem 2rem 2rem;
+    box-shadow: 1 1rem 1rem #000000;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 2rem;
+    background-color: rgb(255, 255, 255);
+    margin: 2rem 2rem 2rem 2rem;
+    box-shadow: 1.5rem 1.5rem #b5b5b5;
+  }
+
+  /* ===========================
+     ====== Search Box ======
+     =========================== */
+
+     .search
+     {
+       border: 2px solid #000000;
+       overflow: auto;
+       border-radius: 5px;
+       -moz-border-radius: 5px;
+       -webkit-border-radius: 5px;
+     }
+
+     .search input[type="text"]
+     {
+       border: 0px;
+       width: 20%;
+       padding: 10px 10px;
+     }
+
+     .search input[type="text"]:focus
+     {
+       outline: 0;
+     }
+
+     .search input[type="submit"]
+     {
+       border: 0px;
+       background: none;
+       background-color: #434040;
+       color: #fff;
+       float: right;
+       padding: 10px;
+       -moz-border-radius-top-right: 5px;
+       -webkit-border-radius-top-right: 5px;
+       -moz-border-radius-bottom-right: 5px;
+       -webkit-border-radius-bottom-right: 5px;
+             cursor:pointer;
+     }
+
+     /* ===========================
+        ====== Medua Query for Search Box ======
+        =========================== */
+
+     @media only screen and (min-width : 150px) and (max-width : 780px)
+     {
+
+
+       .search
+       {
+         width: 50%;
+         margin: 0 auto;
+       }
+
+     }
+
+
+     body {
+      background-color:#f7f7f7;
+      font-family:'arial';
+    }
+    .container {
+      margin:auto;
+      max-width:480px;
+    }
+    h1{
+      text-align:center;
+    }
+    tags {
+      display: inline-block;
+      border: 1px solid #DDD;
+      padding-right: 0.3em 0.5em;
+      overflow: hidden;
+      cursor: text;
+    }
+
+    tags:hover {
+      border-color: #CCC;
+    }
+
+    @keyframes tags--bump {
+      30% {
+        box-shadow: 0 0 0 4px #E5E5E5;
+      }
+
+    }
+
+    tags tag {
+      display: inline-block;
+      vertical-align: top;
+      margin: 5px 0 5px 5px;
+      position: relative;
+      cursor: default;
+      white-space: nowrap;
+      transition: .13s ease-out;
+      animation: .3s tags--bump 1 ease-out;
+    }
+
+    tags tag > span {
+      display: inline-block;
+      padding: 0.3em 0.5em;
+      padding-right: 1.5em;
+      border-radius: 3px;
+      color: black;
+      background: #E5E5E5;
+      transition: .13s ease-out;
+    }
+
+    tags tag:hover span {
+      box-shadow: 0 0 0 2px #7AC3FF inset;
+      transition: 50ms;
+    }
+
+    tags tag.tagify--noAnim {
+      animation: none;
+    }
+
+    tags tag.tagify--hide {
+      pointer-events: none;
+      width: 0 !important;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+      margin-right: 0;
+      opacity: 0;
+      transform: scale(0);
+      transition: .3s;
+    }
+
+    @keyframes tagify--pulse {
+      50% {
+        box-shadow: 0 0 0 2px #7AC3FF inset;
+      }
+
+    }
+
+    tags tag.tagify--mark span {
+      animation: .4s tagify--pulse 3 ease-out;
+    }
+
+    tags tag x {
+      font: 14px/15px Serif;
+      width: 14px;
+      height: 14px;
+      text-align: center;
+      border-radius: 50px;
+      position: absolute;
+      right: calc(0.5em - 2px);
+      top: 50%;
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: .2s;
+    }
+
+    tags tag x::after {
+      content: "\00D7";
+    }
+
+    tags tag x:hover {
+      color: white;
+      background: #cc8282;
+    }
+
+    tags tag x:hover + span {
+      box-shadow: 0 0 0 2px #D39494 inset;
+      transition: .2s;
+    }
+
+    tags input,
+    tags textarea {
+      border: 0;
+      display: none;
+    }
+
+    tags div {
+      display: inline-block;
+      min-width: 10px;
+      margin: 5px;
+      padding: 0.3em 0.5em;
+    }
+
+    tags .input {
+      display: block;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    tags .input.placeholder {
+      color: #999;
+    }
+
+    tags .input.placeholder::after {
+      opacity: 1;
+      transform: none;
+      max-width: 200px;
+    }
+
+    tags .input::after {
+      content: attr(data-placeholder);
+      display: inline-block;
+      opacity: 0;
+      max-width: 0;
+      transform: translatex(6px);
+      transition: .15s ease-out;
+    }
+
+    tags .input::before {
+      content: '\200B';
+    }
+
+    tags .input:focus {
+      outline: none;
+    }
+

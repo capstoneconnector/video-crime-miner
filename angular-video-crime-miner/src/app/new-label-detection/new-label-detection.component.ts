@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-new-label-detection',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewLabelDetectionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }

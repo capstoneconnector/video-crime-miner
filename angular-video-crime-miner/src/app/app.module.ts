@@ -32,7 +32,6 @@ import { NewLabelDetectionComponent } from './new-label-detection/new-label-dete
     ViewComponent,
     MediaComponent,
     ReportsComponent,
-
     FileListComponent,
     FileRekognitionViewComponent,
     DetailedCaseViewComponent,
