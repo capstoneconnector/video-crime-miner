@@ -1,3 +1,7 @@
+<script>
+  $('[name=tags]').tagify();
+</script>
+
 <div class="page-content">
     <h1>DETAILED CASE INFORMATION</h1>
 
@@ -42,6 +46,12 @@
             <li *ngFor="let label of mydata" >{{label}}</li>
           </ul>
           <button mat-button mat-dialog-close="I like turtles..."></button>
+          <body>
+            <div class="container">
+              <h1>New Labels</h1>
+            <input name='label' placeholder='Create New Labels' value=''>
+            </div>
+          </body>
 
         </ng-template>
     </div>
