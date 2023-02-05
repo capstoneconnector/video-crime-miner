@@ -26,17 +26,20 @@
                     <th>File ID</th>
                     <th>File Name</th>
                     <th>Notes</th>
+                    <th>New Label Detection</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let file of this.getCaseFiles()">
                         <td>{{file.s3_name}}</td>
                         <td>{{file.title}}</td>
                         <td>{{file.notes}}</td>
+                        <td><a [routerLink]="['/new-label-detection/', file.s3_name]">Start New Label Detection</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <!-- Card 2.5: Add Labels -->
+        <!--
         <button mat-button (click)="OpenPopup()
         ">Add Labels</button>
 
@@ -54,6 +57,7 @@
           </body>
 
         </ng-template>
+        -->
     </div>
 
     <!-- Card 3: Different Outputs of the Case -->
@@ -72,7 +76,7 @@
                     <td>{{output.file_id}}</td>
                     <td>{{output.tags}}</td>
                     <td>{{output.job_id}}</td>
-                    <td data-th="Name"><a [routerLink]="['/file-rekognition-view/', output.job_id]">Click to View Results</a></td>
+                    <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
                 </tr>
             </tbody>
         </table>
