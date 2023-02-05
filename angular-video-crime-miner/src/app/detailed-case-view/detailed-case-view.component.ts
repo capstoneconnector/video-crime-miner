@@ -23,6 +23,9 @@ export class DetailedCaseViewComponent implements OnInit {
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
     this.requestCaseInfo().subscribe(res => {
       this.caseInfo = res
+      if(this.caseInfo == undefined){
+        this.caseInfo = JSON.parse("{}")
+      }
     })
 
     this.requestCaseFiles().subscribe(res => {
