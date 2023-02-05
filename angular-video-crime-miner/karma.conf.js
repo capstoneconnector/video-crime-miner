@@ -20,7 +20,11 @@ module.exports = function (config) {
       type: 'js'
     },
     preprocessors: {
-      "**/*.ts": "karma-typescript"
+      "**/*.ts": "karma-typescript",
+      '**/*.ts': [ 'coverage' ]
+    },
+    mime: {
+      'text/x-typescript': [ 'ts', 'tsx' ]
     },
     client: {
       jasmine: {
