@@ -3,15 +3,25 @@
 
 module.exports = function (config) {
   config.set({
+    singleRun: true,
     basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular', 'karma-typescript'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      "karma-typescript"
     ],
+    // list of files / patterns to load in the browser
+    files: {
+      pattern: 'src/app/**/*.spec.ts',
+      type: 'js'
+    },
+    preprocessors: {
+      "**/*.ts": "karma-typescript"
+    },
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -32,7 +42,7 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'karma-typescript'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
