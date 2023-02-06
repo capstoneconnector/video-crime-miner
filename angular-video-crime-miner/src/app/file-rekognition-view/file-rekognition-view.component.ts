@@ -22,9 +22,9 @@ export class FileRekognitionViewComponent implements OnInit {
     }
   ]
 
-    activeIndex = 0
-    currentVideo = this.videoItems[this.activeIndex]
-    data: any
+  activeIndex = 0
+  currentVideo = this.videoItems[this.activeIndex]
+  data: any
 
   private baseUrl = 'http://localhost:8000'
   private jobId!: string
@@ -34,7 +34,7 @@ export class FileRekognitionViewComponent implements OnInit {
   private videoFileName?: string
   strLabels?: string // Dev purposes
   strVideoData?: string // Dev purposes
-
+  private currentBorderBox: HTMLElement | null = null
 
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
@@ -60,7 +60,6 @@ export class FileRekognitionViewComponent implements OnInit {
     this.strLabels = JSON.stringify(this.labels)
     this.strVideoData = JSON.stringify(this.videoData)
   }
-  
   onPlayerReady(api: VgApiService) {
     this.data = api;
     this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
@@ -84,7 +83,9 @@ export class FileRekognitionViewComponent implements OnInit {
   }
   
 
-
+  public getAssociatedFile(): string {
+    return this.videoFileName!
+  }
 
   public requestLabels(): Observable<any> {
     return this.http.get(`${this.baseUrl}/labels/job/${this.jobId}`)
@@ -109,9 +110,16 @@ export class FileRekognitionViewComponent implements OnInit {
 
   //public getLabelBy
 
-  public seekTimestampInVideo(timestamp:number): void{
-    //this.api.seekTime(0, false)
+  public seekTimestampInVideo(timestamp:number, boxinfo:any): void{
     this.data.seekTime(timestamp)
+    var containerForBox: HTMLElement | null = document.getElementById('containerforbox')
+    this.currentBorderBox?.remove()
+    const newBox : HTMLElement = document.createElement("span")
+
+    newBox.setAttribute("style", `border-style:double;border-color:red;position:absolute;top:${boxinfo.Top * 100}%;left:${boxinfo.Left * 100}%;width:${containerForBox!.getBoundingClientRect().width * boxinfo.Width}px;height:${containerForBox!.getBoundingClientRect().height * boxinfo.Height}px;z-index:2;`)
+
+    containerForBox!.appendChild(newBox)
+    this.currentBorderBox = newBox
   }
 
   public getLabelTotal(){
@@ -124,8 +132,8 @@ export class FileRekognitionViewComponent implements OnInit {
 
   public tablePrepper(obj:any){
     var result = obj.map(
-      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances:{length}}}:any) => 
-      ({Name, Aliases, Parents, Categories, Confidence, Timestamp, length})
+      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances }}:any) => 
+      ({Name, Aliases, Parents, Categories, Confidence, Timestamp, Instances})
     )
 
     result = this.resolveArraysForTable(result)
