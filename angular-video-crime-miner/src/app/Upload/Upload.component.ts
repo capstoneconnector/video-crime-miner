@@ -42,18 +42,6 @@ export class UploadComponent {
       }
     })
   }
-  /*
-  submitCase(data:any): void{
-    let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
-    let options = {headers:headers}
-    let body = new URLSearchParams()
-    body.append('name', data.name)
-    body.append('description', data.description)
-    body.append('tags', data.tags)
-    const req = this.http.post(`${this.baseUrl}/cases`, body.toString(), options)
-    req.subscribe()
-  }
-  */
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files
@@ -84,6 +72,7 @@ export class UploadComponent {
 
 		let formData = new FormData()
 		formData.set("name", this.name)
+    formData.set("case_id", "2")
 		body.append("data", this.file)
 
 		var req = this.http.post(this.baseUrl + "/upload", formData)
