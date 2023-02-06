@@ -2,9 +2,8 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../postgres/db.labels.js'
+import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob } from '../../postgres/db.labels.js'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
-
 
 /* GET AWS Label Results by Job Id */
 async function fetchLabelDetectionJob(req: Request, res: Response, next: NextFunction) {
@@ -88,4 +87,20 @@ async function createNewLabelDetectionJob(req: Request, res: Response, next: Nex
   }
 }
 
-export { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob }
+/* GET file for job id */
+async function fetchFileForJobID(req: Request, res: Response, next: NextFunction) {
+  try {
+    var result = await fetchFileForJob(req.params["jobId"])
+    res.status(200).json({
+      result
+    })
+  } catch (err:any) {
+    console.log("app.get('/labels/file_for_job/:jobId') errored out")
+    res.status(500).send({
+      errormsg: err.message,
+      params: req.params,
+    })
+  }
+}
+
+export { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID }

@@ -56,7 +56,7 @@ async function getResultsForJob(jobId:string){
     }
 }
 
-async function updateJobResults(jobId:string, result:JSON){
+async function updateJobResults(jobId:string, result:any){ // If this is broken, I may have broken it by changing result:JSON to result:any for testing purposes
     try {
         const query = await pool.query(
             "UPDATE public.awsoutput SET result = $1 WHERE job_id = $2",
@@ -69,4 +69,17 @@ async function updateJobResults(jobId:string, result:JSON){
     }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults }
+async function fetchFileForJob(jobId:string){
+    try {
+        const query = await pool.query(
+            "SELECT file_id FROM public.awsoutput WHERE job_id = $1",
+            [ jobId ]
+        )
+        return query.rows[0]
+    } catch (e){
+        console.log({databaseError:e})
+        return {databaseError:e}
+    }
+}
+
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob }

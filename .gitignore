@@ -3,6 +3,7 @@ node_modules
 out
 .env
 dist
+coverage
 #Ignores all compiled javascript files from typescript source created while testing.
 /src/**/*.js
 

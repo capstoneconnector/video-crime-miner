@@ -1,4 +1,5 @@
 <div class="page-content">
+    <!--
     <div class="card">
     <div class="card-head">Reports</div>
     <div class="card-body">
@@ -28,26 +29,23 @@
 
     </div>
     </div>
+    -->
 
     <div class="card1">
         <h2><b><U>LABEL DETECTION OUTPUT</U></b></h2>
         <p><b>Job ID:</b> {{this.getJobId()}}</p>
 
         <!-- First Card: File Information and General Context Information -->
+        <!--
         <div class="card">
             <div class="card-head">
                 <U>GENERAL INFORMATION</U>
             </div>
             <div class="card-body">
-                <b>File Processed:</b> **File Name Here**
-            </div>
-            <div class="card-body">
-                <b>Labels Scanned For:</b> **Labels List Here**
-            </div>
-            <div class="card-body">
-                <b>Time Completed:</b> **Time Here**
+                <b>File Processed:</b> {{this.getAssociatedFile()}}
             </div>
         </div>
+        -->
 
         <!-- Second Card: Label Detection Results -->
         <div class="card">
@@ -55,7 +53,7 @@
                 <U>LABEL DETECTION RESULTS</U>
             </div>
             <div class="card-body">
-                Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps
+                <div *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</div>
                 <table class="rwd-table">
                     <thead>
                         <th>Label Name</th>
@@ -74,12 +72,29 @@
                             <td>{{label.Categories}}</td>
                             <td>{{label.length}}</td>
                             <td>{{label.Confidence}}</td>
-                            <td>{{label.Timestamp}}</td>
+                            <td><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000, label.Instances[0].BoundingBox)">{{label.Timestamp}}</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div> 
+            
+        </div>
+        <!-- Third Card: Video Player -->
+        <div class="card2">
+            <div class="card-head">
+                <U>Basic Video Player</U>
+            </div>
+            
+            <div class="card-body">
+                <vg-player (onPlayerReady)="onPlayerReady($event)" id="containerforbox">
+                    <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" class="videoplayer"> </video>
+                </vg-player>
+            </div>
+        </div>
+
+
     </div>
 </div>
 

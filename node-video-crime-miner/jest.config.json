@@ -1,5 +1,6 @@
 {
     "preset": "ts-jest",
 	"testEnvironment": "node",
-	"modulePathIgnorePatterns": ["<rootDir>/out/"]
+	"modulePathIgnorePatterns": ["<rootDir>/out/"],
+  	"moduleNameMapper": {"^(\\.{1,2}/.*)\\.js$": "$1"}
 }

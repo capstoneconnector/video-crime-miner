@@ -11,11 +11,9 @@ async function fetchAllCases(req: Request, res: Response, next: NextFunction) {
         res.status(200).json(result)
       } catch (err:any) {
         console.log("app.get('/cases') errored out")
-        console.log(req.body)
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
-          query: req.query,
         })
       }
 }
@@ -27,11 +25,9 @@ async function fetchCaseById(req: Request, res: Response, next: NextFunction) {
         res.status(200).json(result)
       } catch (err:any) {
         console.log("app.get('/cases') errored out")
-        console.log(req.body)
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
-          query: req.query,
         })
       }
 }
@@ -43,11 +39,9 @@ async function createNewCase(req: Request, res: Response, next: NextFunction) {
         res.status(200).json(result)
       } catch (err:any) {
         console.log("app.post('/cases') errored out")
-        console.log(req.body)
         res.status(500).send({
           errormsg: err.message,
           params: req.params,
-          query: req.query,
         })
       }
 }

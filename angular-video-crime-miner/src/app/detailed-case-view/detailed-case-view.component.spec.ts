@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { DetailedCaseViewComponent } from './detailed-case-view.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
 
 describe('DetailedCaseViewComponent', () => {
   let component: DetailedCaseViewComponent;
@@ -8,7 +10,13 @@ describe('DetailedCaseViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DetailedCaseViewComponent ]
+      declarations: [ DetailedCaseViewComponent ],
+      providers: [
+      ],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule
+      ]
     })
     .compileComponents();
 

@@ -5,6 +5,11 @@
 
 $breakpoint-alpha: 480px; // adjust to your needs
 
+.page-content {
+  height:100%;
+  overflow-y: auto;
+}
+
 .rwd-table {
   margin: 1em 0;
   min-width: 300px; // adjust to your needs

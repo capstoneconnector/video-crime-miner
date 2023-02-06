@@ -6,6 +6,11 @@
   left: -200vw;
 }
 
+.page-content {
+  height:100%;
+  overflow-y: auto;
+}
+
 .tabset .tab-panel {
   display: none;
 }
