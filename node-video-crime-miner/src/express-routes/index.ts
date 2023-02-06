@@ -49,7 +49,7 @@ router.get('/files/case/:caseId', fetchFilesByCaseId)
 router.get('/files/download/:file' , fetchFileByName)
 
 /* POST a new file */
-router.post('/upload', createAndUploadFile)
+router.post('/upload/:caseId', createAndUploadFile)
 
 /* GET file info from database by S3 File Name (Primary Key) */
 router.get('/files/info/:fileId', fetchFileInfo)
