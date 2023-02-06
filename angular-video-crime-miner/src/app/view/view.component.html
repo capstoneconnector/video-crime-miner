@@ -1,31 +1,35 @@
 <h1>Your Cases</h1>
 
-<div class="card">
-    <div class="card-head">All Cases</div>
-    <div class="card-body">
-        <table class="rwd-table">
-            <thead>
-                <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Date of Case</th>
-                <th>Location</th>
-                <th>Tags</th>
-                <th>Description</th>
-                </tr>
-            </thead>
+<div class="page-content">
+    <div class="card">
+        <div class="card-head">All Cases</div>
+        <div class="card-body">
+            <table class="rwd-table">
+                <thead>
+                    <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <!--
+                    <th>Date of Case</th>
+                    <th>Location</th>
+                    -->
+                    <th>Tags</th>
+                    <th>Description</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-            <tr *ngFor="let case of caseInfos | async">
-                <td data-th="Id">{{ case.case_id }}</td>
-                <td data-th="Name"><a [routerLink]="['/detailed-case-view/', case.case_id]">{{ case.name }}</a></td>
-                <td data-th="Date">{{ case.date }}</td>
-                <!--<td data-th="DateOfCase">{{ case.DateOfCase}}</td> // Could be this, honestly IDK-->
-                <td data-th="Location">{{ case.location}}</td>
-                <td data-th="Tags">{{ case.tags }}</td>
-                <td data-th="Description">{{ case.description }}</td>
-            </tr>
-            </tbody>
-        </table>
+                <tbody>
+                <tr *ngFor="let case of caseInfos | async">
+                    <td data-th="Id">{{ case.case_id }}</td>
+                    <td data-th="Name"><a [routerLink]="['/detailed-case-view/', case.case_id]">{{ case.name }}</a></td>
+                    <!--<td data-th="Date">{{ case.date }}</td>-->
+                    <!--<td data-th="DateOfCase">{{ case.DateOfCase}}</td> // Could be this, honestly IDK-->
+                    <!--<td data-th="Location">{{ case.location}}</td>-->
+                    <td data-th="Tags">{{ case.tags }}</td>
+                    <td data-th="Description">{{ case.description }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

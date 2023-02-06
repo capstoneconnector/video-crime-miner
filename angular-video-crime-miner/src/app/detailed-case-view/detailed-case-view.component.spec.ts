@@ -3,6 +3,7 @@ import { DetailedCaseViewComponent } from './detailed-case-view.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+
 describe('DetailedCaseViewComponent', () => {
   let component: DetailedCaseViewComponent;
   let fixture: ComponentFixture<DetailedCaseViewComponent>;

@@ -24,4 +24,16 @@ async function getFilesRelatedToCase(case_id:number){
     }
 }
 
-export { createNewFileRow, getFilesRelatedToCase }
+async function getFileInfoById(s3_name:string){
+    try{
+        const query = await pool.query(
+            "SELECT * FROM public.file WHERE s3_name = $1",
+            [s3_name]
+        )
+        return query.rows[0]
+    } catch (e){
+        return {dbError:e}
+    }
+}
+
+export { createNewFileRow, getFilesRelatedToCase, getFileInfoById }

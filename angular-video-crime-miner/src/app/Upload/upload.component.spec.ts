@@ -1,5 +1,5 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing'
-import { UploadComponent } from './Upload.component'
+import { UploadComponent } from './upload.component'
 import { RouterTestingModule } from '@angular/router/testing'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
 import { FormsModule } from '@angular/forms'

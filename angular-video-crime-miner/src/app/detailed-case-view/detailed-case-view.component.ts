@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { Observable } from 'rxjs'
+
 
 @Component({
   selector: 'app-detailed-case-view',
@@ -18,6 +19,8 @@ export class DetailedCaseViewComponent implements OnInit {
   private caseOutputs?: JSON
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
+
+
 
   ngOnInit(): void {
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
@@ -72,3 +75,9 @@ export class DetailedCaseViewComponent implements OnInit {
     }
   }
 }
+
+
+
+
+
+

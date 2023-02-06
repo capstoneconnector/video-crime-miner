@@ -1,4 +1,9 @@
+<script>
+  $('[name=tags]').tagify();
+</script>
+
 <div class="page-content">
+    <a [routerLink]="['/view/']"><- Back to Cases</a>
     <h1>DETAILED CASE INFORMATION</h1>
 
     <!-- Card 1: Case Information -->
@@ -22,16 +27,38 @@
                     <th>File ID</th>
                     <th>File Name</th>
                     <th>Notes</th>
+                    <th>New Label Detection</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let file of this.getCaseFiles()">
                         <td>{{file.s3_name}}</td>
                         <td>{{file.title}}</td>
                         <td>{{file.notes}}</td>
+                        <td><a [routerLink]="['/new-label-detection/', file.s3_name]">Start New Label Detection</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <!-- Card 2.5: Add Labels -->
+        <!--
+        <button mat-button (click)="OpenPopup()
+        ">Add Labels</button>
+
+
+        <ng-template #dialog let-mydata>
+          <ul *ngIf="mydata">
+            <li *ngFor="let label of mydata" >{{label}}</li>
+          </ul>
+          <button mat-button mat-dialog-close="I like turtles..."></button>
+          <body>
+            <div class="container">
+              <h1>New Labels</h1>
+            <input name='label' placeholder='Create New Labels' value=''>
+            </div>
+          </body>
+
+        </ng-template>
+        -->
     </div>
 
     <!-- Card 3: Different Outputs of the Case -->
@@ -50,7 +77,7 @@
                     <td>{{output.file_id}}</td>
                     <td>{{output.tags}}</td>
                     <td>{{output.job_id}}</td>
-                    <td data-th="Name"><a [routerLink]="['/file-rekognition-view/', output.job_id]">Click to View Results</a></td>
+                    <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
                 </tr>
             </tbody>
         </table>
