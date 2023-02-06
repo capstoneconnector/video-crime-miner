@@ -64,6 +64,9 @@
                 "input": "node_modules/@ionic/angular/css/flex-utils.css"
               },
               {
+                "input": "node_modules/@videogular/ngx-videogular/fonts/videogular.css"
+              },
+              {
                 "input": "src/theme/variables.css"
               }
             ],

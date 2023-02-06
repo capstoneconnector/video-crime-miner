@@ -69,4 +69,17 @@ async function updateJobResults(jobId:string, result:any){ // If this is broken,
     }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults }
+async function fetchFileForJob(jobId:string){
+    try {
+        const query = await pool.query(
+            "SELECT file_id FROM public.awsoutput WHERE job_id = $1",
+            [ jobId ]
+        )
+        return query.rows[0]
+    } catch (e){
+        console.log({databaseError:e})
+        return {databaseError:e}
+    }
+}
+
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob }

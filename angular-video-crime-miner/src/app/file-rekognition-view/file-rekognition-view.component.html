@@ -42,13 +42,7 @@
                 <U>GENERAL INFORMATION</U>
             </div>
             <div class="card-body">
-                <b>File Processed:</b> **File Name Here**
-            </div>
-            <div class="card-body">
-                <b>Labels Scanned For:</b> **Labels List Here**
-            </div>
-            <div class="card-body">
-                <b>Time Completed:</b> **Time Here**
+                <b>File Processed:</b> {{this.getAssociatedFile()}}
             </div>
         </div>
         -->
@@ -78,12 +72,29 @@
                             <td>{{label.Categories}}</td>
                             <td>{{label.length}}</td>
                             <td>{{label.Confidence}}</td>
-                            <td>{{label.Timestamp}}</td>
+                            <td><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000, label.Instances[0].BoundingBox)">{{label.Timestamp}}</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div> 
+            
+        </div>
+        <!-- Third Card: Video Player -->
+        <div class="card2">
+            <div class="card-head">
+                <U>Basic Video Player</U>
+            </div>
+            
+            <div class="card-body">
+                <vg-player (onPlayerReady)="onPlayerReady($event)" id="containerforbox">
+                    <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" class="videoplayer"> </video>
+                </vg-player>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
