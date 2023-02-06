@@ -35,9 +35,9 @@
     <div class="card">
         <div class="card-head">Step 2: Verify and Submit</div>
         <div class="card-body">
+            <div><b><u>Selected Labels:</u></b></div>
             <div id="labelsList"></div>
-            <div>LIST OF TAGS HERE WITH X's TO REMOVE THEM</div>
         </div>
-        <button type="button" (click)="sendJobCreationRequest()">SUBMIT</button>
+        <button type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0">SUBMIT</button>
     </div>
 </div>

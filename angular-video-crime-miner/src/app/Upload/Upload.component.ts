@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { FileService } from 'src/app/file.service';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
-import { BodyComponent } from '../body/body.component';
+import { Component, OnInit } from '@angular/core'
+import { HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http'
+import { Observable } from 'rxjs'
+import { FileService } from 'src/app/file.service'
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http'
+import { FormControl, FormGroup } from '@angular/forms'
 
 @Component({
  selector: 'app-upload',
@@ -12,22 +12,37 @@ import { BodyComponent } from '../body/body.component';
 })
 export class UploadComponent {
 
-  selectedFiles?: FileList;
-  currentFile?: File;
-  progress = 0;
-  message = '';
-
-  fileInfos?: Observable<any>;
-  private baseUrl = 'http://localhost:8000';
-
-
+  selectedFiles?: FileList
+  currentFile?: File
+  progress = 0
+  message = ''
+  fileInfos?: Observable<any>
+  private baseUrl = 'http://localhost:8000'
+  public newCaseForm: FormGroup = new FormGroup({
+    name: new FormControl(""),
+    description: new FormControl("")
+  })
 
   constructor(private uploadService: FileService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fileInfos = this.uploadService.getFiles()
   }
-
+  
+  public addNewCase(): void {
+    //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
+    var body = {
+      name: this.newCaseForm.value.name,
+      description: this.newCaseForm.value.description,
+      labels: []
+    }
+    this.http.post(`${this.baseUrl}/cases`, body).subscribe((res:any) => {
+      if(false){
+        //this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
+      }
+    })
+  }
+  /*
   submitCase(data:any): void{
     let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
     let options = {headers:headers}
@@ -38,9 +53,10 @@ export class UploadComponent {
     const req = this.http.post(`${this.baseUrl}/cases`, body.toString(), options)
     req.subscribe()
   }
+  */
 
   selectFile(event: any): void {
-    this.selectedFiles = event.target.files;
+    this.selectedFiles = event.target.files
   }
 
   name: string = ''
@@ -55,18 +71,18 @@ export class UploadComponent {
   }
 
   upload(): void {
-    this.progress = 0;
+    this.progress = 0
 
     if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+      const file: File | null = this.selectedFiles.item(0)
 
       if (file) {
-        this.currentFile = file;
+        this.currentFile = file
 
 		let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
     	let body = new URLSearchParams()
 
-		let formData = new FormData();
+		let formData = new FormData()
 		formData.set("name", this.name)
 		body.append("data", this.file)
 
@@ -76,28 +92,28 @@ export class UploadComponent {
         this.uploadService.upload(this.currentFile).subscribe({
           next: (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
-              this.progress = Math.round(100 * event.loaded / event.total);
+              this.progress = Math.round(100 * event.loaded / event.total)
             } else if (event instanceof HttpResponse) {
-              this.message = event.body.message;
-              this.fileInfos = this.uploadService.getFiles();
+              this.message = event.body.message
+              this.fileInfos = this.uploadService.getFiles()
             }
           },
           error: (err: any) => {
-            console.log(err);
-            this.progress = 0;
+            console.log(err)
+            this.progress = 0
 
             if (err.error && err.error.message) {
-              this.message = err.error.message;
+              this.message = err.error.message
             } else {
-              this.message = 'Could not upload the file!';
+              this.message = 'Could not upload the file!'
             }
 
-            this.currentFile = undefined;
+            this.currentFile = undefined
           }
-        });
+        })
       }
 
-      this.selectedFiles = undefined;
+      this.selectedFiles = undefined
     }
   }
 }

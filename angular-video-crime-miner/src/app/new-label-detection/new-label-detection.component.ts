@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 
 @Component({
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs'
 })
 export class NewLabelDetectionComponent implements OnInit {
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
   private baseUrl = 'http://localhost:8000'
   private fileId! : string
@@ -60,6 +60,7 @@ export class NewLabelDetectionComponent implements OnInit {
   }
 
   public addNewLabel(): void {
+    //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
     var label = this.newLabelForm.value.label
     this.labels.push(label)
     this.newLabelForm.reset()
@@ -77,12 +78,18 @@ export class NewLabelDetectionComponent implements OnInit {
     {
       "labels": 
       [
-          "Person",
-          "Hat",
-          "Gun"
+          "Label1",
+          "Label2",
+          "Label3"
       ]
     }
     */
+    var body:Object = {"labels": this.labels}
+    this.http.post(`${this.baseUrl}/labels/file/${this.fileId}`, body).subscribe((res:any) => {
+      if(res.jobId != undefined){
+        this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
+      }
+    })
   }
 
 }
