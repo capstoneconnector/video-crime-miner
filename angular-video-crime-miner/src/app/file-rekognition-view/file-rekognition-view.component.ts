@@ -75,7 +75,7 @@ export class FileRekognitionViewComponent implements OnInit {
   }
   initVdo() {
     this.data.play();
-    this.data.seekTime(9, false)
+    this.data.seekTime(99999999, false)
   }
   startPlaylistVdo(item: any, index: number) {
     this.activeIndex = index;
