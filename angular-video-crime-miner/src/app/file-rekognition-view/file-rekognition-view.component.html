@@ -39,13 +39,7 @@
                 <U>GENERAL INFORMATION</U>
             </div>
             <div class="card-body">
-                <b>File Processed:</b> **File Name Here**
-            </div>
-            <div class="card-body">
-                <b>Labels Scanned For:</b> **Labels List Here**
-            </div>
-            <div class="card-body">
-                <b>Time Completed:</b> **Time Here**
+                <b>File Processed:</b> {{this.getAssociatedFile()}}
             </div>
         </div>
 
@@ -55,7 +49,7 @@
                 <U>LABEL DETECTION RESULTS</U>
             </div>
             <div class="card-body">
-                Found <b>{{this.getLabelTotal()}}</b> Labels Over <b><!--{{this.getLabels().length}}--></b> Timestamps
+                Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps
                 <table class="rwd-table">
                     <thead>
                         <th>Label Name</th>
@@ -74,7 +68,7 @@
                             <td>{{label.Categories}}</td>
                             <td>{{label.length}}</td>
                             <td>{{label.Confidence}}</td>
-                            <td><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000)">{{label.Timestamp}}</button></td>
+                            <td><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000, label.Instances[0].BoundingBox)">{{label.Timestamp}}</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -90,16 +84,9 @@
             </div>
             
             <div class="card-body">
-                <vg-player (onPlayerReady)="onPlayerReady($event)">
-                    <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto">
-                    </video>
+                <vg-player (onPlayerReady)="onPlayerReady($event)" id="containerforbox">
+                    <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto" class="videoplayer"> </video>
                 </vg-player>
-                <ul class="player-list">
-                    <li *ngFor="let vdo of videoItems; let $index = index"
-                      (click)="startPlaylistVdo(vdo, $index)" [class.selected]="vdo === currentVideo">
-                      {{ vdo.name }}
-                    </li>
-                  </ul>
             </div>
         </div>
 
