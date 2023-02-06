@@ -25,6 +25,7 @@ app.use(
 
 app.use(cors({origin:true, credentials: true}));
 
+import fileUpload from 'express-fileupload'
 app.use(fileUpload())
 
 // Allows JSON reading from RAW body
@@ -32,7 +33,6 @@ app.use(express.json())
 
 /* SERVER ROUTES */
 import routes from './express-routes/index.js'
-import fileUpload from 'express-fileupload'
 app.use(routes)
 
 /* Example GET at root for testing if the server is working! */
@@ -45,3 +45,5 @@ const NODE_PORT = process.env['NODE_PORT'] || "8000"
 app.listen(NODE_PORT, () => {
   console.log(`⚡️  [Node Server]: Server is running at http://localhost:${NODE_PORT}  ⚡️`)
 })
+
+export default app

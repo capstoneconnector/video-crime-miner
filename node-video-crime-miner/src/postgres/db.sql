@@ -111,12 +111,12 @@ INSERT INTO public.file(
 -- Insert awsoutput rows
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', JSON '{}', '[DEMO] Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt']);
+    VALUES ('EMPTY JSON EXAMPLE 1', JSON '{}', '[DEMO] Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('8537a6780e0a037fd3bbf076471382ee0c6a1547ba2d39837b9a8bb9160f6ee4', JSON '{}', '[DEMO] Fish Video.mp4', ARRAY ['tire']);
+    VALUES ('EMPTY JSON EXAMPLE 2', JSON '{}', '[DEMO] Fish Video.mp4', ARRAY ['tire']);
 INSERT INTO public.awsoutput(
     job_id, result, file_id, tags) 
-    VALUES ('9a151fd743707783e4a27aee180e1992fa86c317558ac414bc74dd60801ca54a', JSON '{}', '[DEMO] Crowd of People.mp4', ARRAY ['checks', 'money', 'suit']);
+    VALUES ('EMPTY JSON EXAMPLE 3', JSON '{}', '[DEMO] Crowd of People.mp4', ARRAY ['checks', 'money', 'suit']);
 
 \q

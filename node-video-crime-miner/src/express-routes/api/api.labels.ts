@@ -5,7 +5,6 @@ import { Request, Response, NextFunction } from 'express'
 import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob } from '../../postgres/db.labels.js'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
 
-
 /* GET AWS Label Results by Job Id */
 async function fetchLabelDetectionJob(req: Request, res: Response, next: NextFunction) {
   try {

@@ -56,7 +56,7 @@ async function getResultsForJob(jobId:string){
     }
 }
 
-async function updateJobResults(jobId:string, result:JSON){
+async function updateJobResults(jobId:string, result:any){ // If this is broken, I may have broken it by changing result:JSON to result:any for testing purposes
     try {
         const query = await pool.query(
             "UPDATE public.awsoutput SET result = $1 WHERE job_id = $2",

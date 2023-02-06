@@ -14,16 +14,20 @@ export const navbarData = [
       icon: 'fal fa-tags',
       label: 'View/Edit Case'
   },
+  /*
   {
       routeLink: 'file-rekognition-view/:jobId',
       icon: 'fal fa-file',
       label: 'View Reports'
   },
+  */
+ /*
   {
       routeLink: 'media',
       icon: 'fal fa-camera',
       label: 'Media'
   },
+  */
   /*
   {
       routeLink: 'settings',

@@ -49,7 +49,7 @@
                 <U>LABEL DETECTION RESULTS</U>
             </div>
             <div class="card-body">
-                Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps
+                <div *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</div>
                 <table class="rwd-table">
                     <thead>
                         <th>Label Name</th>

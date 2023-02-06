@@ -78,7 +78,6 @@ async function listObjects(bucket:string) {
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
-		console.log(result)
 		return result || {error: "Could not upload " + file + " to " + bucket}
 
 	} catch (e) {
@@ -99,7 +98,6 @@ async function listObjects(bucket:string) {
 		}
 		const command = new PutObjectCommand(attributes)
 		const result = await client.send(command)
-		console.log(result)
 		return result || {error: "Could not upload " + key + " to " + bucket}
 
 	} catch (e) {
