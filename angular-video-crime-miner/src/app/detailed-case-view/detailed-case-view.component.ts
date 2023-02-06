@@ -101,18 +101,7 @@ export class DetailedCaseViewComponent implements OnInit {
     if (file) {
       this.currentFile = file
 
-      let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'})
-      let body = new URLSearchParams()
-
-      let formData = new FormData()
-      formData.set("name", this.name)
-      //formData.set("case_id", this.caseId)
-      body.append("data", this.file)
-      body.append("case_id", this.caseId)
-
-      this.http.post(this.baseUrl + "/upload", formData)
-
-      this.uploadService.upload(this.currentFile).subscribe({
+      this.uploadService.upload(this.currentFile, this.caseId).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * event.loaded / event.total)
@@ -138,5 +127,11 @@ export class DetailedCaseViewComponent implements OnInit {
 
       this.selectedFiles = undefined
     }
+    // Update case files by reloading page (probably bad practice but oh well!)
+    this.requestCaseFiles().subscribe( async res => {
+      const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms))
+      await delay(5000)
+      document.location.reload()
+    })
   }
 }

@@ -78,7 +78,7 @@ export class UploadComponent {
 		var req = this.http.post(this.baseUrl + "/upload", formData)
 		console.log(req)
 
-        this.uploadService.upload(this.currentFile).subscribe({
+        this.uploadService.upload(this.currentFile, "1").subscribe({
           next: (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
               this.progress = Math.round(100 * event.loaded / event.total)

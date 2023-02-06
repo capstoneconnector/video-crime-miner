@@ -47,10 +47,8 @@ async function fetchFileByName(req: any, res: Response, next: NextFunction) {
 /* POST a new file */
 async function createAndUploadFile(req: any, res: any, next: NextFunction) { 
 	try {
-        console.log("API CASEID" + req.files.case_id)
-        console.log("API CASEID" + req.files.file.case_id)
+        const dbresult = await createNewFileRow(req.files.file.name, "", req.params.caseId)
         var result = await uploadWithFile(bucket, req.files.file.data , req.files.file.name)
-        const dbresult = await createNewFileRow(req.files.file.name, "", req.files.case_id)
         //console.log({s3: result, db: dbresult})
         return res.status(200).json({
           result,
