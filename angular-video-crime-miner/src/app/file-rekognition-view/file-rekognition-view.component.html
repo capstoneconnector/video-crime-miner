@@ -72,7 +72,7 @@
                             <td>{{label.Categories}}</td>
                             <td>{{label.length}}</td>
                             <td>{{label.Confidence}}</td>
-                            <td><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000, label.Instances[0].BoundingBox)">{{label.Timestamp}}</button></td>
+                            <td class="timestamp"><button (click)="this.seekTimestampInVideo(label.Timestamp / 1000, label.Instances[0].BoundingBox)">{{label.Timestamp}}</button></td>
                         </tr>
                     </tbody>
                 </table>
