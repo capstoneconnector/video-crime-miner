@@ -3,7 +3,7 @@ import { Router } from 'express';
 const router = Router();
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from './api/api.labels.js'
+import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID } from './api/api.labels.js'
 
 /* GET AWS Label Results by Job Id */
 router.get('/labels/job/:jobId', fetchLabelDetectionJob)
@@ -13,6 +13,9 @@ router.get('/labels/file/:fileName', fetchAllLabelDetectionForFile)
 
 /* GET (Using POST to have JSON body to specify array of file names) AWS Labels Results for a list of files */
 router.post('/labels/multifile', fetchAllLabelDetectionForMultipleFiles)
+
+/* GET file name in S3 Bucket by Job ID */
+router.get('/labels/file_for_job/:jobId', fetchFileForJobID)
 
 /* POST new AWS Labels Job for File */
 router.post('/labels/file/:fileName', createNewLabelDetectionJob)
