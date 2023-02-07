@@ -14,9 +14,14 @@ describe('FileService', () => {
       ]
     });
     service = TestBed.inject(FileService);
-  });
+  })
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-});
+  })
+
+  it('should call remove() without errors', () => {
+    const res = service.remove("example")
+    expect(res).toBeUndefined()
+  })
+})

@@ -1,5 +1,5 @@
 <div class="page-content">
-    <a [routerLink]="['/detailed-case-view/', getCaseInfo().case_id]"><- Back to Case</a>
+    <a *ngIf="getCaseInfo()" [routerLink]="['/detailed-case-view/', getCaseInfo().case_id]"><- Back to Case</a>
     <h1>NEW LABEL DETECTION</h1>
 
     <!-- Card 1: Case/File Information -->
