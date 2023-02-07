@@ -111,15 +111,12 @@ export class DetailedCaseViewComponent implements OnInit {
           }
         },
         error: (err: any) => {
-          console.log(err)
           this.progress = 0
-
           if (err.error && err.error.message) {
             this.message = err.error.message
           } else {
             this.message = 'Could not upload the file!'
           }
-
           this.currentFile = undefined
         }
       })
