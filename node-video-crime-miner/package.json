@@ -21,7 +21,7 @@
     "refresh": "tsc -p . && cd out/src/ && node ./app.js",
     "test": "jest",
     "cover": "jest --coverage",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
