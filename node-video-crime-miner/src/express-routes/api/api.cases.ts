@@ -1,20 +1,33 @@
 /* Required Express imports */
 import { Request, Response, NextFunction } from 'express'
 
+/* Import APIResponse domain model */
+import { standardizeResponse } from "../../model/APIResponse.js"
+
 /* Backend layer imports */
 import { getAllCases, insertNewCase, getCaseById } from '../../postgres/db.cases.js'
+
+const emptyOutput = {
+  data: {},
+  status: false,
+  errors: Array(),
+  message: ""
+}
 
 /* GET all cases */
 async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await getAllCases()
-    res.status(200).json(result)
+    var response = emptyOutput
+    response.data = await getAllCases()
+    response.status = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/cases') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params
-    })
+    response.errors.push(err.message)
+    response.status = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 

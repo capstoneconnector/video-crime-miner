@@ -4,12 +4,12 @@ const standardizeResponse = (payload = {}) => {
     class APIResponse {
 
         _data: {}
-        _status: number
+        _status: boolean
         _errors: any[]
         _message: string
         _timestamp: string
 
-        constructor({data = {}, status = 0, errors = Array(), message = "",}) {
+        constructor({data = {}, status = false, errors = Array(), message = "",}) {
             this._data = data
             this._status = status
             this._errors = errors
@@ -59,7 +59,7 @@ const standardizeResponse = (payload = {}) => {
             this._data = data
         }
 
-        public setStatus(status: number) {
+        public setStatus(status: boolean) {
             this._status = status
         }
 
@@ -74,3 +74,5 @@ const standardizeResponse = (payload = {}) => {
 
     return new APIResponse(payload)
 }
+
+export { standardizeResponse }
