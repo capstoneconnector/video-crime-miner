@@ -14,11 +14,8 @@ const standardizeResponse = (payload = {}) => {
             this._status = status
             this._errors = errors
             this._message = message
-            const now = new Date
-            const timestamp = Date.UTC(
-                now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
-                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())
-            this._timestamp = timestamp.toString()
+            const timestamp = new Date(Date.now()).toUTCString()
+            this._timestamp = timestamp
         }
 
         public convertToJson() {
