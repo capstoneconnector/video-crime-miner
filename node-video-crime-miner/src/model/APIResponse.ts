@@ -4,14 +4,14 @@ const standardizeResponse = (payload = {}) => {
     class APIResponse {
 
         _data: {}
-        _status: boolean
+        _success: boolean
         _errors: any[]
         _message: string
         _timestamp: string
 
-        constructor({data = {}, status = false, errors = Array(), message = "",}) {
+        constructor({data = {}, success = false, errors = Array(), message = "",}) {
             this._data = data
-            this._status = status
+            this._success = success
             this._errors = errors
             this._message = message
             const timestamp = new Date(Date.now()).toUTCString()
@@ -20,7 +20,7 @@ const standardizeResponse = (payload = {}) => {
 
         public convertToJson() {
             return {
-                status: this._status,
+                success: this._success,
                 errors: this._errors,
                 message: this._message,
                 data: this._data,
@@ -34,8 +34,8 @@ const standardizeResponse = (payload = {}) => {
             return this._data
         }
 
-        public getStatus() {
-            return this._status
+        public getSuccess() {
+            return this._success
         }
 
         public getErrors() {
@@ -56,8 +56,8 @@ const standardizeResponse = (payload = {}) => {
             this._data = data
         }
 
-        public setStatus(status: boolean) {
-            this._status = status
+        public setSuccess(success: boolean) {
+            this._success = success
         }
 
         public setErrors(errors: any[]) {

@@ -9,7 +9,7 @@ import { getAllCases, insertNewCase, getCaseById } from '../../postgres/db.cases
 
 const emptyOutput = {
   data: {},
-  status: false,
+  success: false,
   errors: Array(),
   message: ""
 }
@@ -19,13 +19,13 @@ async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
     response.data = await getAllCases()
-    response.status = true
+    response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/cases') errored out")
     response.errors.push(err.message)
-    response.status = false
+    response.success = false
     response = standardizeResponse(response).convertToJson()
     res.status(500).json(response)
   }
@@ -34,28 +34,34 @@ async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
 /* GET particular case details by case Id */
 async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await getCaseById(req.params['caseId'])
-    res.status(200).json(result)
+    var response = emptyOutput
+    response.data = await getCaseById(req.params['caseId'])
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/cases') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
 /* POST a new case */
 async function createNewCase (req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await insertNewCase(req.body.name, req.body.description, req.body.tags)
-    res.status(200).json(result)
+    var response = emptyOutput
+    response.data = await insertNewCase(req.body.name, req.body.description, req.body.tags)
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.post('/cases') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
