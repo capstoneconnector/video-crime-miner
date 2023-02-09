@@ -38,7 +38,7 @@ router.post('/cases', createNewCase)
 /* GET all files in S3 Bucket */
 router.get('/files', fetchAllFiles)
 
-/* GET all files in S3 Bucket */
+/* GET all files in S3 Bucket for a certain case Id */
 router.get('/files/case/:caseId', fetchFilesByCaseId)
 
 /* GET file binary in S3 Bucket by File Name */

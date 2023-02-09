@@ -1,7 +1,7 @@
 /* Required Express imports */
 import { Request, Response, NextFunction } from 'express'
 
-/* Import APIResponse domain model */
+/* Domain model imports */
 import { standardizeResponse } from "../../model/APIResponse.js"
 
 /* Backend layer imports */
