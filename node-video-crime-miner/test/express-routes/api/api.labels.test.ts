@@ -1,5 +1,5 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from '../../../src/express-routes/api/api.labels'
+import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from '../../../src/express-routes/api/api.labels'
 import * as dbLabels from '../../../src/postgres/db.labels'
 import * as labelUtils from '../../../src/AWS Layer/Rekognition/videoLabelUtils'
 
@@ -37,8 +37,8 @@ describe('fetchLabelDetectionJob function', () => {
   })
 })
 
-// fetchAllLabelDetectionForFile function test
-describe('fetchAllLabelDetectionForFile function', () => {
+// fetchLabelDetectionIdsForFile function test
+describe('fetchLabelDetectionIdsForFile function', () => {
   // Mock request, which has no body for this endpoint
   const req = getMockReq()
 
@@ -80,11 +80,11 @@ describe('fetchAllLabelDetectionForFile function', () => {
     }
   )
 
-  // Spies and mock implementations of functions called within fetchAllLabelDetectionForFile function
+  // Spies and mock implementations of functions called within fetchLabelDetectionIdsForFile function
   const getResultsForFileSpy = jest.spyOn(dbLabels, 'getResultsForFile').mockImplementation()
 
-  it('fetchAllLabelDetectionForFile() should call all subfunctions and return valid json', async () => {
-    const result = await fetchAllLabelDetectionForFile(req, res, next)
+  it('fetchLabelDetectionIdsForFile() should call all subfunctions and return valid json', async () => {
+    const result = await fetchLabelDetectionIdsForFile(req, res, next)
     expect(getResultsForFileSpy).toHaveBeenCalled()
     expect(res).toBeDefined()
     expect(res).toBeTruthy()

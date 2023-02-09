@@ -16,7 +16,7 @@ async function createNewLabels (job_id: string, keywords: string[], file_id: str
 async function getResultsForFile (fileName: string) {
   try {
     const query = await pool.query(
-      'SELECT * FROM public.awsoutput WHERE file_id = $1',
+      'SELECT job_id, tags FROM public.awsoutput WHERE file_id = $1',
       [fileName]
     )
     return query.rows

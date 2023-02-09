@@ -5,102 +5,113 @@ import { Request, Response, NextFunction } from 'express'
 import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob } from '../../postgres/db.labels.js'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
 
+/* Domain model imports */
+import { standardizeResponse } from "../../model/APIResponse.js"
+
+const emptyOutput = {
+  data: {},
+  success: false,
+  errors: Array(),
+  message: ""
+}
+
 /* GET AWS Label Results by Job Id */
 async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFunction) {
   try {
-    let result = await getResultsForJob(req.params['jobId'])
+    var response = emptyOutput
+    response.data = await getResultsForJob(req.params['jobId'])
+    //let result = await getResultsForJob(req.params['jobId'])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
     let newResult = await getLabelDetectionResults(req.params['jobId']) // Get results for the id
     // Now let's trim down the result to only include labels and video metadata
-    newResult = {
+    response.data = {
       Labels: newResult.Labels,
       VideoMetadata: newResult.VideoMetadata
     }
     await updateJobResults(req.params['jobId'], newResult) // update the db entry
-    result = newResult
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
-    res.status(200).json(result)
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/labels/:jobId') errored out")
-    res.status(500).send({
-      errormsg: err.message
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
 /* GET AWS Labels Results for a file */
-async function fetchAllLabelDetectionForFile (req: Request, res: Response, next: NextFunction) {
+async function fetchLabelDetectionIdsForFile (req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await getResultsForFile(req.params['fileName'])
-    res.status(200).json({
-      result
-    })
+    var response = emptyOutput
+    response.data = await getResultsForFile(req.params['fileName'])
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/labels/file/:fileName') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
 /* GET AWS Labels Results for a file */
 async function fetchAllLabelDetectionForMultipleFiles (req: Request, res: Response, next: NextFunction) {
   try {
-    // list of file names
-    const fileNames = req.body.files || []
-    const outputs = await getResultsForMultipleFiles(fileNames)
-    res.status(200).json(
-      outputs
-    )
+    var response = emptyOutput
+    const fileNames = req.body.files || [] // list of file names
+    response.data = await getResultsForMultipleFiles(fileNames)
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/labels/multifile') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      body: req.body
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
 /* POST new AWS Labels Job for File */
 async function createNewLabelDetectionJob (req: Request, res: Response, next: NextFunction) {
   try {
-    // Filter keywords
-    const keywords = req.body.labels || []
+    var response = emptyOutput
+    const keywords = req.body.labels || [] // Filter keywords
     // const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await startLabelDetection(req.params['fileName'], keywords)
-    const created = await createNewLabels(job_id, keywords, req.params['fileName'])
-
-    res.status(200).json({
-      jobid: job_id,
-      database: created,
-      labels: req.body.labels || []
-    })
+    await createNewLabels(job_id, keywords, req.params['fileName'])
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.post('/labels/file/:fileName') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params,
-      query: req.query
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
 /* GET file for job id */
 async function fetchFileForJobID (req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await fetchFileForJob(req.params['jobId'])
-    res.status(200).json({
-      result
-    })
+    var response = emptyOutput
+    response.data = await fetchFileForJob(req.params['jobId'])
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
   } catch (err: any) {
     console.log("app.get('/labels/file_for_job/:jobId') errored out")
-    res.status(500).send({
-      errormsg: err.message,
-      params: req.params
-    })
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
   }
 }
 
-export { fetchLabelDetectionJob, fetchAllLabelDetectionForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID }
+export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID }
