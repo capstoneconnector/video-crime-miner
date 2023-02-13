@@ -99,7 +99,7 @@ async function fetchFileInfo (req: any, res: any, next: NextFunction) {
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
   } catch (err: any) {
-    console.log("app.post('/upload') errored out")
+    console.log("app.get('/files/info/:fileId') errored out")
     response.errors.push(err.message)
     response.success = false
     response = standardizeResponse(response).convertToJson()

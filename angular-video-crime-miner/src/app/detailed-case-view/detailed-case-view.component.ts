@@ -33,16 +33,16 @@ export class DetailedCaseViewComponent implements OnInit {
   ngOnInit(): void {
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
     this.requestCaseInfo().subscribe(res => {
-      this.caseInfo = res
+      this.caseInfo = res.data[0]
       if(this.caseInfo == undefined){
         this.caseInfo = JSON.parse("{}")
       }
     })
 
     this.requestCaseFiles().subscribe(res => {
-      this.caseFiles = res
+      this.caseFiles = res.data
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
-        this.caseOutputs = res
+        this.caseOutputs = res.data
       })
     })
     this.fileInfos = this.uploadService.getFiles()

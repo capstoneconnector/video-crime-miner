@@ -17,7 +17,7 @@ export class NewLabelDetectionComponent implements OnInit {
   private fileId! : string
   private fileInfo?: JSON
   private caseId!: number
-  private caseInfo?: JSON
+  public caseInfo?: JSON
   private labels: string[] = []
   public textValue: string = ""
   public newLabelForm: FormGroup = new FormGroup({
@@ -27,10 +27,10 @@ export class NewLabelDetectionComponent implements OnInit {
   ngOnInit(): void {
     this.fileId = this.route.snapshot.paramMap.get('fileId') || '1'
     this.requestFileInfo().subscribe(res => {
-      this.fileInfo = res
-      this.caseId = res.case_id
+      this.fileInfo = res.data
+      this.caseId = res.data[0].case_id
       this.requestCaseInfo().subscribe(res =>{ // Must be nested because requestCaseInfo() relies on this.caseId, set by another subscription
-        this.caseInfo = res
+        this.caseInfo = res.data
       })
     })
   }
