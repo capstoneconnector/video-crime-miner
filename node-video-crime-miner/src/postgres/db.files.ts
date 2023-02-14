@@ -31,7 +31,7 @@ async function getFileInfoById (s3_name: string) {
       'SELECT * FROM public.file WHERE s3_name = $1',
       [s3_name]
     )
-    return query.rows[0]
+    return query.rows
   } catch (e) {
     return { dbError: e }
   }

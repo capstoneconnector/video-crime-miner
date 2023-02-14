@@ -53,13 +53,10 @@ describe('insertNewCase function', () => {
 
   it('insertNewCase returns without errors', async () => {
     const queryResult = {
-      result: 'success!'
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await insertNewCase('example case name', 'example case description', ['tag1', 'tag2'])
-    expect(result).toEqual({
-      result: 'success!'
-    })
+    expect(result).toBeUndefined()
   })
 })
 
