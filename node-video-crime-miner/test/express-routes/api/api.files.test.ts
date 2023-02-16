@@ -56,7 +56,7 @@ describe('fetchFileByName function', () => {
   })
 
   // Spies and mock implementations of functions called within fetchLabelDetectionJob function
-  const getObjectFromS3Spy = jest.spyOn(s3Utils, 'getObjectFromS3').mockImplementation()
+  const getObjectFromS3Spy = jest.spyOn(s3Utils, 'getObjects').mockImplementation()
 
   it('fetchFileByName() should call all subfunctions and return valid json', async () => {
     const result = await fetchFileByName(req, res, next)
@@ -77,7 +77,7 @@ describe('createAndUploadFile function', () => {
   })
 
   // Spies and mock implementations of functions called within fetchLabelDetectionJob function
-  const uploadWithFileSpy = jest.spyOn(s3Utils, 'uploadWithFile').mockImplementation()
+  const uploadWithFileSpy = jest.spyOn(s3Utils, 'uploadFrontEndClient').mockImplementation()
   const createNewFileRowSpy = jest.spyOn(dbFiles, 'createNewFileRow').mockImplementation()
 
   it('createAndUploadFile() should call all subfunctions and return valid json', async () => {
