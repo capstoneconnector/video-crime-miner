@@ -9,6 +9,20 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class ViewComponent implements OnInit {
 
+  show = false;
+
+  openpopup(){
+    this.show = true
+  }
+  closepopup(){
+    this.show = false
+  }
+  closeoverlay(e:any){
+    if(e.target.classList.contains('overlay')){
+      this.show = false
+    }
+  }
+
   private baseUrl = 'http://localhost:8000'
   private caseList: string[] = new Array<string>()
   private caseList$: Subject<string[]> = new Subject<string[]>()
