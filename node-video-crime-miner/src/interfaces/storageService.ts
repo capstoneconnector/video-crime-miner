@@ -1,6 +1,6 @@
 
 /* Backend S3 Storage Service imports */
-import { listObjects, getObjectFromS3, uploadWithFile } from '../AWS Layer/s3Connector.js'
+import { listObjects, getObjects, uploadFrontEndClient } from '../AWS Layer/s3Connector.js'
 
 interface storageService {
 	listObjects(source: string /*parameter type*/): any /*return type*/;
@@ -20,11 +20,11 @@ const s3: storageService = {
 	},
 
 	upload: function (bucket: string, buffer: any, filename: any): any{
-		uploadWithFile(bucket, buffer, filename);
+		uploadFrontEndClient(bucket, buffer, filename);
 	},
 
 	getObject: function (bucket: string, fileName: any): any{
-		getObjectFromS3(bucket, fileName);
+		getObjects(bucket, fileName);
 	}
 
 	/*Import implemented functions here separated by commas*/
