@@ -1,7 +1,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import buffer from 'buffer'
+
 import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 
 const region = process.env['REGION'] || 'REGION NOT DEFINED IN .ENV'
@@ -65,7 +65,7 @@ async function listObjects (bucket: string) {
   }
 }
 
-async function upload (bucket: string, file: string) {
+async function uploadCommandLine (bucket: string, file: string) {
   try {
     const fileStream = fs.createReadStream(file)
     const attributes = {
@@ -82,8 +82,8 @@ async function upload (bucket: string, file: string) {
   }
 }
 
-async function uploadWithFile (bucket: string, body: any, key: any) {
-  const buffer = Buffer.concat([body])
+async function uploadFrontEndClient (bucket: string, body: any, key: any) {
+  var buffer = Buffer.concat([body])
 
   try {
     const attributes = {
@@ -100,7 +100,7 @@ async function uploadWithFile (bucket: string, body: any, key: any) {
   }
 }
 
-async function getObjectFromS3 (bucketName: any, file: any) {
+async function getObjects (bucketName: any, file: any) {
   try {
     const attributes = {
       Bucket: bucketName,
@@ -120,4 +120,4 @@ async function getObjectFromS3 (bucketName: any, file: any) {
 // listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack to get AWS ACL access
 
-export { createBucket, listBuckets, listObjects, upload, getObjectFromS3, uploadWithFile }
+export { createBucket, listBuckets, listObjects, uploadCommandLine, getObjects, uploadFrontEndClient }
