@@ -84,14 +84,16 @@
 		<h2>New Case Information</h2>
 		<div>
 		  <form [formGroup]="newCaseForm" (ngSubmit)="addNewCase()">
-			  <label>Case Name</label>
-			  <input formControlName="name" type="text" value="" placeholder="Case Name Here..."/> 
-			  <label>Case Description</label>
-			  <input formControlName="description" type="text" value="" placeholder="Case Desc Here..."/>
+			  <label>Case Name*</label>
+			  <input formControlName="name" type="text" value="" placeholder="Case Name Here..." [(ngModel)]="nameText"/> 
+			  <label>Case Description*</label>
+			  <input formControlName="description" type="text" value="" placeholder="Case Desc Here..." [(ngModel)]="descText"/>
+			  <div>* = Required</div>
 			  <br>
-			  <input type="submit" value="SUBMIT NEW CASE" [disabled]="">
+			  <input type="submit" value="SUBMIT NEW CASE" [disabled]="!nameText || !descText">
 		  </form>
 	  </div>
+	  <div id="confirmationMsg"></div>
 	  </div>
 	  <br>
 	</div>

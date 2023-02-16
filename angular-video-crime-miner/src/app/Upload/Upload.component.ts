@@ -12,6 +12,9 @@ import { FormControl, FormGroup } from '@angular/forms'
 })
 export class UploadComponent {
 
+  nameText: string = ''
+  descText: string = ''
+
   selectedFiles?: FileList
   currentFile?: File
   progress = 0
@@ -40,6 +43,7 @@ export class UploadComponent {
       if(false){
         //this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
       }
+      document.getElementById("confirmationMsg")!.innerText = "Case Created!"
     })
   }
 
