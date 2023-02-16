@@ -8,22 +8,27 @@ interface storageService {
 
 	getObject(source:string, file: any):  any;
 
+	removeObject(source:string, file:any): any;
+
 	/* ADD more functions a storage serivce has that we may need here*/
 }
 
 const s3 : storageService = {
-
 	// I only imported the functions we need for the angular client for now
 	listObjects: function (bucket: string): any {
-		 listObjects(bucket);
+		listObjects(bucket);
 	},
 
-	upload: function (bucket: string, buffer: any, filename: any): any{
+	upload: function (bucket: string, buffer: any, filename: any): any {
 		uploadFrontEndClient(bucket, buffer, filename);
 	},
 
-	getObject: function (bucket: string, fileName: any): any{
+	getObject: function (bucket: string, fileName: any): any {
 		getObjects(bucket, fileName);
+	}
+	,
+	removeObject: function (source: string, file: any) {
+		throw new Error('Function not implemented.');
 	}
 
 	/*Import implemented functions here separated by commas*/
@@ -42,6 +47,9 @@ const azure : storageService = {
 		throw new Error('Function not implemented.');
 	},
 	getObject: function (source: string, file: any) {
+		throw new Error('Function not implemented.');
+	},
+	removeObject: function (source: string, file: any) {
 		throw new Error('Function not implemented.');
 	}
 }
