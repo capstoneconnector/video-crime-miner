@@ -1,5 +1,5 @@
 <div class="page-content">
-    <a [routerLink]="['/detailed-case-view/', getCaseInfo().case_id]"><- Back to Case</a>
+    <a *ngIf="getCaseInfo()" [routerLink]="['/detailed-case-view/', getCaseInfo()[0].case_id]"><- Back to Case</a>
     <h1>NEW LABEL DETECTION</h1>
 
     <!-- Card 1: Case/File Information -->
@@ -7,14 +7,14 @@
         <div class="card-head">Info</div>
         <div class="card-body">
             <div><b><u>File Info</u></b></div>
-            <div *ngIf="getFileInfo()"><b>File ID: </b>{{ getFileInfo().s3_name }}</div>
-            <div *ngIf="getFileInfo()"><b>File Name: </b>{{ getFileInfo().title }}</div>
+            <div *ngIf="getFileInfo()"><b>File ID: </b>{{ getFileInfo()[0].s3_name }}</div>
+            <div *ngIf="getFileInfo()"><b>File Name: </b>{{ getFileInfo()[0].title }}</div>
             <br>
             <div><b><u>Case Info</u></b></div>
-            <div *ngIf="getCaseInfo()"><b>Case Name: </b>{{ getCaseInfo().name }}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Description: </b>{{ getCaseInfo().description }}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Tags: </b>{{ getCaseInfo().tags }}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Notes: </b>{{ getCaseInfo().notes }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Name: </b>{{ getCaseInfo()[0].name }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Description: </b>{{ getCaseInfo()[0].description }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Tags: </b>{{ getCaseInfo()[0].tags }}</div>
+            <div *ngIf="getCaseInfo()"><b>Case Notes: </b>{{ getCaseInfo()[0].notes }}</div>
         </div>
     </div>
 
@@ -22,6 +22,8 @@
     <div class="card">
         <div class="card-head">Step 1: Add Tags</div>
         <div class="card-body">
+            <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
+            <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
             <div>
                 <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
                     <input formControlName="label" type="text" value="" placeholder="Custom Tag"/> 
@@ -35,9 +37,13 @@
     <div class="card">
         <div class="card-head">Step 2: Verify and Submit</div>
         <div class="card-body">
+            <div>Note: After clicking submit, return go back in the top left corner to see the label detection job</div>
             <div><b><u>Selected Labels:</u></b></div>
             <div id="labelsList"></div>
         </div>
         <button type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0">SUBMIT</button>
+    </div>
+    <div>
+        {{ getCaseInfo() }}
     </div>
 </div>

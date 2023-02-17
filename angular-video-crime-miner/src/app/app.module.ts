@@ -22,6 +22,11 @@ import { FileRekognitionViewComponent } from './file-rekognition-view/file-rekog
 import { DetailedCaseViewComponent } from './detailed-case-view/detailed-case-view.component';
 import { NewLabelDetectionComponent } from './new-label-detection/new-label-detection.component';
 
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +50,10 @@ import { NewLabelDetectionComponent } from './new-label-detection/new-label-dete
     IonicModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
 
   ],
   providers: [],
