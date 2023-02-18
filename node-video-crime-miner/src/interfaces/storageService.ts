@@ -1,7 +1,7 @@
 
 /* Backend S3 Storage Service imports */
 import { listObjects, getObjects, uploadFrontEndClient } from '../AWS Layer/s3Connector.js'
-interface storageService {
+interface StorageService {
 	listObjects(source: string /*parameter type*/): any /*return type*/;
 
 	upload(source: string, body: any, filename:any): any;
@@ -13,7 +13,7 @@ interface storageService {
 	/* ADD more functions a storage serivce has that we may need here*/
 }
 
-const s3 : storageService = {
+const s3 : StorageService = {
 	// I only imported the functions we need for the angular client for now
 	listObjects: function (bucket: string): any {
 		listObjects(bucket);
@@ -39,7 +39,7 @@ Using interfaces we can implement add other cloud storage
 services like Google Cloud Storage or Azure easily.
 */
 
-const azure : storageService = {
+const azure : StorageService = {
 	listObjects: function (source: string) {
 		throw new Error('Function not implemented.');
 	},
@@ -72,11 +72,11 @@ function getStorageService() {
 }
 
 /*Get Storage Service variable from env*/
-let envVariable = getStorageService()
+let storageService = getStorageService()
 
 
 
-export {envVariable}
+export { storageService }
 
 
 

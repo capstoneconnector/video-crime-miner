@@ -1,6 +1,6 @@
 import { QueryResult } from "pg"
 
-interface databaseService {
+interface DatabaseService {
     /* Operations for the Case table */
     getAllCases(): Promise<any>
 
@@ -35,7 +35,7 @@ import * as pgfile from "../postgres/db.files.js"
 import * as pglabel from "../postgres/db.labels.js"
 
 
-const postgres : databaseService = {
+const postgres : DatabaseService = {
 	/* Case functions */
 	getAllCases: function() : Promise<any> {
         return pgcase.getAllCases()
@@ -101,8 +101,8 @@ function getStorageService() {
 }
 
 /*Get Storage Service variable from env*/
-let envVariable = getStorageService()
+let databaseService = getStorageService()
 
 
 
-export { envVariable }
+export { databaseService }
