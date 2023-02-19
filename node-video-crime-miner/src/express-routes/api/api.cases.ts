@@ -4,8 +4,8 @@ import { Request, Response, NextFunction } from 'express'
 /* Domain model imports */
 import { standardizeResponse } from "../../model/APIResponse.js"
 
-/* Backend layer imports */
-import { getAllCases, insertNewCase, getCaseById } from '../../postgres/db.cases.js'
+/* Service Interface Imports */
+import { databaseService } from 'src/interfaces/DatabaseService.js'
 
 const emptyOutput = {
   data: {},
@@ -18,7 +18,7 @@ const emptyOutput = {
 async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await getAllCases()
+    response.data = await databaseService.getAllCases()
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -35,7 +35,7 @@ async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
 async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await getCaseById(req.params['caseId'])
+    response.data = await databaseService.getCaseById(req.params['caseId'])
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -52,7 +52,7 @@ async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
 async function createNewCase (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await insertNewCase(req.body.name, req.body.description, req.body.tags)
+    response.data = await databaseService.insertNewCase(req.body.name, req.body.description, req.body.tags)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
