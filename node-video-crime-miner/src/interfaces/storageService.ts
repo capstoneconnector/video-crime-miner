@@ -61,11 +61,11 @@ function getStorageService(): StorageService {
 	let service = process.env['STORAGE_SERVICE'] || 'STORAGE SERVICE NOT DEFINED IN .env'
 
 	if (service == 's3' || service == 'S3' || service == 'aws_s3' || service == 'AWS_S3') {
-		console.log("s3 selected")
+		console.log("database service: S3")
 		return s3
 
 	} else if (service == 'azure' || service == 'Azure') {
-		console.log("azure selected")
+		console.log("database service: Azure")
 		return azure
 
 	}else{

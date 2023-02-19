@@ -94,7 +94,7 @@ function getDatabaseService(): DatabaseService {
 	let service = process.env['DATABASE_SERVICE'] || 'DATABASE SERVICE NOT DEFINED IN .env'
 
 	if (service == 'pg' || service == 'Pg' || service == 'PG' || service == 'postgres' || service == 'Postgres' || service =='POSTGRES') {
-		console.log("database service: postgres")
+		console.log("database service: Postgres")
         return postgres
 	}else{
         console.log("The Database Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
