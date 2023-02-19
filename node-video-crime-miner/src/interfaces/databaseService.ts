@@ -1,4 +1,3 @@
-import { QueryResult } from "pg"
 
 interface DatabaseService {
     /* Operations for the Case table */
@@ -88,21 +87,22 @@ const postgres : DatabaseService = {
     }
 }
 
-function getStorageService() {
+function getDatabaseService(): DatabaseService {
 
 	/*This function compares STORAGE_SERVICE variable from .env and returns the implementation(service) */
 
 	let service = process.env['DATABASE_SERVICE'] || 'DATABASE SERVICE NOT DEFINED IN .env'
 
-	if (service == 'pg' || 'Pg' || 'PG' || 'postgres' || 'Postgres' || 'POSTGRES') {
-		return postgres
-	}
-	console.log("The Cloud Service in use is : " + service)
+	if (service == 'pg' || service == 'Pg' || service == 'PG' || service == 'postgres' || service == 'Postgres' || service =='POSTGRES') {
+		console.log("database service: postgres")
+        return postgres
+	}else{
+        console.log("The Database Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+        return
+    }
 }
 
 /*Get Storage Service variable from env*/
-let databaseService = getStorageService()
-
-
+let databaseService = getDatabaseService()
 
 export { databaseService }

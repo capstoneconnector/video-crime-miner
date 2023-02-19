@@ -54,29 +54,27 @@ const azure : StorageService = {
 	}
 }
 
-function getStorageService() {
+function getStorageService(): StorageService {
 
 	/*This function compares STORAGE_SERVICE variable from .env and returns the implementation(service) */
 
 	let service = process.env['STORAGE_SERVICE'] || 'STORAGE SERVICE NOT DEFINED IN .env'
 
-	if (service == 's3' || 'S3' || 'aws_s3' || 'AWS_S3') {
+	if (service == 's3' || service == 'S3' || service == 'aws_s3' || service == 'AWS_S3') {
+		console.log("s3 selected")
 		return s3
 
-	} else if (service == 'azure' || 'Azure') {
+	} else if (service == 'azure' || service == 'Azure') {
+		console.log("azure selected")
 		return azure
 
+	}else{
+		console.log("The Storage Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		return
 	}
-
-	console.log("The Cloud Service in use is : " + service)
 }
 
 /*Get Storage Service variable from env*/
 let storageService = getStorageService()
 
-
-
 export { storageService }
-
-
-
