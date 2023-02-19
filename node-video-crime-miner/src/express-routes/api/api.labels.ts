@@ -2,8 +2,10 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob } from '../../postgres/db.labels.js'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
+
+/* Service Interface Imports */
+import { databaseService } from '../../interfaces/DatabaseService.js'
 
 /* Domain model imports */
 import { standardizeResponse } from "../../model/APIResponse.js"
@@ -19,7 +21,7 @@ const emptyOutput = {
 async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await getResultsForJob(req.params['jobId'])
+    response.data = await databaseService.getResultsForJob(req.params['jobId'])
     //let result = await getResultsForJob(req.params['jobId'])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
     let newResult = await getLabelDetectionResults(req.params['jobId']) // Get results for the id
@@ -28,7 +30,7 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
       Labels: newResult.Labels,
       VideoMetadata: newResult.VideoMetadata
     }
-    await updateJobResults(req.params['jobId'], newResult) // update the db entry
+    await databaseService.updateJobResults(req.params['jobId'], newResult) // update the db entry
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
     response.success = true
     response = standardizeResponse(response).convertToJson()
@@ -46,7 +48,7 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
 async function fetchLabelDetectionIdsForFile (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await getResultsForFile(req.params['fileName'])
+    response.data = await databaseService.getResultsForFile(req.params['fileName'])
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -64,7 +66,7 @@ async function fetchAllLabelDetectionForMultipleFiles (req: Request, res: Respon
   try {
     var response = emptyOutput
     const fileNames = req.body.files || [] // list of file names
-    response.data = await getResultsForMultipleFiles(fileNames)
+    response.data = await databaseService.getResultsForMultipleFiles(fileNames)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -84,7 +86,7 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
     const keywords = req.body.labels || [] // Filter keywords
     // const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await startLabelDetection(req.params['fileName'], keywords)
-    await createNewLabels(job_id, keywords, req.params['fileName'])
+    await databaseService.createNewLabels(job_id, keywords, req.params['fileName'])
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -101,7 +103,7 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
 async function fetchFileForJobID (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await fetchFileForJob(req.params['jobId'])
+    response.data = await databaseService.fetchFileForJob(req.params['jobId'])
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)

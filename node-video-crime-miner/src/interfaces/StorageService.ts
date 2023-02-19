@@ -1,7 +1,7 @@
 
 /* Backend S3 Storage Service imports */
 import { listObjects, getObjects, uploadFrontEndClient } from '../AWS Layer/s3Connector.js'
-interface storageService {
+interface StorageService {
 	listObjects(source: string /*parameter type*/): any /*return type*/;
 
 	upload(source: string, body: any, filename:any): any;
@@ -13,7 +13,7 @@ interface storageService {
 	/* ADD more functions a storage serivce has that we may need here*/
 }
 
-const s3 : storageService = {
+const s3 : StorageService = {
 	// I only imported the functions we need for the angular client for now
 	listObjects: function (bucket: string): any {
 		listObjects(bucket);
@@ -39,7 +39,7 @@ Using interfaces we can implement add other cloud storage
 services like Google Cloud Storage or Azure easily.
 */
 
-const azure : storageService = {
+const azure : StorageService = {
 	listObjects: function (source: string) {
 		throw new Error('Function not implemented.');
 	},
@@ -54,29 +54,27 @@ const azure : storageService = {
 	}
 }
 
-function getStorageService() {
+function getStorageService(): StorageService {
 
 	/*This function compares STORAGE_SERVICE variable from .env and returns the implementation(service) */
 
 	let service = process.env['STORAGE_SERVICE'] || 'STORAGE SERVICE NOT DEFINED IN .env'
 
-	if (service == 's3' || 'S3' || 'aws_s3' || 'AWS_S3') {
+	if (service == 's3' || service == 'S3' || service == 'aws_s3' || service == 'AWS_S3') {
+		console.log("database service: S3")
 		return s3
 
-	} else if (service == 'azure' || 'Azure') {
+	} else if (service == 'azure' || service == 'Azure') {
+		console.log("database service: Azure")
 		return azure
 
+	}else{
+		console.log("The Storage Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		return
 	}
-
-	console.log("The Cloud Service in use is : " + service)
 }
 
 /*Get Storage Service variable from env*/
-let envVariable = getStorageService()
+let storageService = getStorageService()
 
-
-
-export {envVariable}
-
-
-
+export { storageService }
