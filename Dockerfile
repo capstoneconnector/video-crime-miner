@@ -8,14 +8,13 @@ RUN cd angular-video-crime-miner && npm install @angular/cli && npm install && n
 FROM node:19 AS node-client-build
 WORKDIR /usr/src/
 COPY node-video-crime-miner/ ./node-video-crime-miner/
-RUN cd node-video-crime-miner && npm install && npm run build
+RUN cd node-video-crime-miner && npm install && npm run build && npm run refresh
 
+# Postgresql Server
 FROM postgres:15 AS postgres-build
 WORKDIR /usr/src/
-COPY node-video-crime-miner/ ./node-video-crime-miner/
-RUN service postgresql start
-RUN cd node-video-crime-miner/postgres && psql -h localhost -p 5432 -U postgres -f db.sql
+COPY node-video-crime-miner/src/postgres/ /usr/src/video-crime-miner/node-video-crime-miner/src/postgres
 
-EXPOSE 3080
+EXPOSE 5432:8000
 
 CMD ["node", "node-video-crime-miner/out/index.js"]

@@ -2,7 +2,7 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing'
 import { UploadComponent } from './upload.component'
 import { RouterTestingModule } from '@angular/router/testing'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 describe('UploadComponent', () => {
   let component: UploadComponent
@@ -16,7 +16,8 @@ describe('UploadComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
       ]
     })
     .compileComponents()
@@ -36,14 +37,22 @@ describe('UploadComponent', () => {
     return dt.files;
   };
 
+  
   it('should run upload() and not return error', () => {
     component.selectedFiles = getFileList()
     const res = component.upload()
     expect(res).toBeUndefined()
   })
-
-  it('should run submitCase() and not return error', () => {
-    const res = component.submitCase({})
+  
+  
+  it('should run addNewCase() and not return error', () => {
+    const res = component.addNewCase()
     expect(res).toBeUndefined()
   })
+
+  it('should run getName() and not return error', () => {
+    const res = component.getName("example")
+    expect(component.name).toBe("example")
+  })
+  
 })

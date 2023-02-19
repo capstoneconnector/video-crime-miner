@@ -1,9 +1,10 @@
 <div class="page-content">
+	<!--
 <div class="tabset">
-	<!-- Tab 1 -->
+
 	<input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
 	<label for="tab1">New Case</label>
-	<!-- Tab 2 -->
+
 	<input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
 	<label for="tab2">Upload Files</label>
   
@@ -30,7 +31,7 @@
 		</div>
 	  </section>
   
-  
+	  
 	  <section id="dunkles" class="tab-panel">
 		<div class="card">
 		<h1 class="card-head" >Upload File</h1>
@@ -71,6 +72,28 @@
 		</div>
 	</div>
 </section>
+
 </div>
 </div>
+-->
+  <div class="card">
+	<div class="card-head">New Case</div>
+	<div class="card-body">
+	  <div>Note: After clicking "SUBMIT NEW CASE", head to 'View/Edit Case' in the Nav Bar to check it out!</div>
+	  <div class="inputBox">
+		<h2>New Case Information</h2>
+		<div>
+		  <form [formGroup]="newCaseForm" (ngSubmit)="addNewCase()">
+			  <label>Case Name</label>
+			  <input formControlName="name" type="text" value="" placeholder="Case Name Here..."/> 
+			  <label>Case Description</label>
+			  <input formControlName="description" type="text" value="" placeholder="Case Desc Here..."/>
+			  <br>
+			  <input type="submit" value="SUBMIT NEW CASE" [disabled]="">
+		  </form>
+	  </div>
+	  </div>
+	  <br>
+	</div>
+  </div>
 </div>

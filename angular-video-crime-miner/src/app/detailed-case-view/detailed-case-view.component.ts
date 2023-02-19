@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
+import { FileService } from '../file.service'
 
 
 @Component({
@@ -18,25 +19,33 @@ export class DetailedCaseViewComponent implements OnInit {
   private caseFiles?: JSON
   private caseOutputs?: JSON
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  /* CARD 3 STUFF */
+  selectedFiles?: FileList
+  progress = 0
+  currentFile?: File
+  message = ''
+  fileInfos?: Observable<any>
+
+  constructor(private http: HttpClient, private route: ActivatedRoute, private uploadService: FileService) { }
 
 
 
   ngOnInit(): void {
     this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
     this.requestCaseInfo().subscribe(res => {
-      this.caseInfo = res
+      this.caseInfo = res.data[0]
       if(this.caseInfo == undefined){
         this.caseInfo = JSON.parse("{}")
       }
     })
 
     this.requestCaseFiles().subscribe(res => {
-      this.caseFiles = res
+      this.caseFiles = res.data
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
-        this.caseOutputs = res
+        this.caseOutputs = res.data
       })
     })
+    this.fileInfos = this.uploadService.getFiles()
   }
 
   public requestCaseInfo(): Observable<any> {
@@ -74,10 +83,52 @@ export class DetailedCaseViewComponent implements OnInit {
       return result
     }
   }
+
+  /* CARD 3 STUFF: */
+  selectFile(event: any): void {
+    this.selectedFiles = event.target.files
+  }
+
+
+  name: string = ''
+  file: any
+  upload(): void {
+    this.progress = 0
+
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0)
+
+    if (file) {
+      this.currentFile = file
+
+      this.uploadService.upload(this.currentFile, this.caseId).subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round(100 * event.loaded / event.total)
+          } else if (event instanceof HttpResponse) {
+            this.message = event.body.message
+            this.fileInfos = this.uploadService.getFiles()
+          }
+        },
+        error: (err: any) => {
+          this.progress = 0
+          if (err.error && err.error.message) {
+            this.message = err.error.message
+          } else {
+            this.message = 'Could not upload the file!'
+          }
+          this.currentFile = undefined
+        }
+      })
+    }
+
+      this.selectedFiles = undefined
+    }
+    // Update case files by reloading page (probably bad practice but oh well!)
+    this.requestCaseFiles().subscribe( async res => {
+      const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms))
+      await delay(5000)
+      document.location.reload()
+    })
+  }
 }
-
-
-
-
-
-

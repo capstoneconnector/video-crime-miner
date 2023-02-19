@@ -27,4 +27,19 @@ describe('SidenavComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should resize without errors', () => {
+    const res = component.onResize(Event)
+    expect(res).toBeUndefined()
+  })
+
+  it('should collapse without errors', () => {
+    const res = component.toggleCollapse()
+    expect(res).toBeUndefined()
+  })
+
+  it('should close without errors', () => {
+    const res = component.closeSidenav()
+    expect(res).toBeUndefined()
+  })
 });

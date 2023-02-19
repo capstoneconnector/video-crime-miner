@@ -42,7 +42,7 @@ export class FileRekognitionViewComponent implements OnInit {
   ngOnInit(): void {
     this.jobId = this.route.snapshot.paramMap.get('jobId') || '1'
     this.requestFileForID().subscribe(fileidname => {
-      this.videoFileName = fileidname.result.file_id
+      this.videoFileName = fileidname.data.file_id
       this.videoItems[0].src = this.CDN_WrapFileUrl(this.videoFileName)
       this.videoItems[0].name = this.videoFileName
 
@@ -50,8 +50,8 @@ export class FileRekognitionViewComponent implements OnInit {
 
     })
     this.requestLabels().subscribe(awsResult => {
-      this.videoData = awsResult.VideoMetadata
-      this.labels = this.tablePrepper(awsResult.Labels)
+      this.videoData = awsResult.data.VideoMetadata
+      this.labels = this.tablePrepper(awsResult.data.Labels)
       this.labelTotal = this.sumTotalLabelOccurrences(this.labels)
     })
     
@@ -75,7 +75,7 @@ export class FileRekognitionViewComponent implements OnInit {
   }
   initVdo() {
     this.data.play();
-    this.data.seekTime(9, false)
+    this.data.seekTime(99999999, false)
   }
   startPlaylistVdo(item: any, index: number) {
     this.activeIndex = index;
