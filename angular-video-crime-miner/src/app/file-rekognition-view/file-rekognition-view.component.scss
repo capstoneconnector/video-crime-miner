@@ -1,8 +1,87 @@
 
 .page-content {
-  height:100%;
-  overflow-y: auto;
+  height:60em;
+  width: 100em;
+  overflow: visible;
 }
+
+
+
+.results-box {
+  grid-area: labelArea;
+  background-color: #7cc0e2;
+  display: inline-grid;
+  grid:
+    'titleArea'
+    'divArea';
+  row-gap: 1em;
+  overflow-y: visible;
+  overflow-x: visible;
+  max-height: 50em;
+  min-width: 20em;
+  padding: 1em;
+
+  .resultsTitle {
+    grid-area: titleArea;
+    font-size: 2em;
+    background-color: #7cc0e2;
+    height: 30px;
+  }
+
+  .labelResultBox {
+
+    overflow-y: scroll;
+    overflow-x: visible;
+    display: inline-grid;
+    grid: 
+      'div'
+      'div'
+      '...';
+    gap: 0.75em;
+      div {
+        display: flex;
+        flex-direction: column;
+        border-radius: 2em;
+        background-color: #ffffff;
+        height: 1.8em;
+      }
+      
+  }
+
+}
+
+.video-box {
+  grid-area: vidArea;
+  max-width: 80em;
+  max-height: 50em;
+}
+
+.videoplayer {
+  
+  position: relative;
+  z-index: 1;
+  
+}
+
+.grid-container {
+  display: inline-grid;
+  grid:
+    'labelArea vidArea'
+    'labelArea vidArea';
+  gap: 5em;
+  height: 90em;
+  width: 100em;
+}
+
+
+
+.containerforbox {
+  max-width: 100em;
+  max-height: 100em;
+}
+
+
+
 // More practical CSS...
 // using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
 
@@ -27,7 +106,7 @@ button, input[type=submit]{
   padding: 17px 48px;
   color: #fff;
   background-color: #1ED760;
-  height: 48px;
+  max-height: 48px;
   :hover{
       transform: scale(1.04);
       background-color: #21e065;
@@ -38,11 +117,12 @@ button, input[type=submit]{
   margin: 1em 0;
   min-width: 300px; // adjust to your needs
   table-layout: fixed;
-  width: 100%;
+  width: 50%;
 
   tr {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
+    max-height: 20px;
   }
 
   th {
@@ -131,18 +211,11 @@ h1 {
   }
   th, td:before {
     color: rgb(0, 0, 0);
+    max-height: 1px;
   }
 }
 
-.videoplayer {
-  position: relative;
-  z-index: 1;
-  top: 0%;
-  bottom: 0%;
-  right: 0%;
-  left: 0%;
-  
-}
+
 
 .card1 {
   display: flex;
