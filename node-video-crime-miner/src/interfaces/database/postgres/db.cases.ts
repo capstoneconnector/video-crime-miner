@@ -26,7 +26,12 @@ async function getCaseById (id: string) {
       'SELECT * FROM public.case WHERE case_id=($1)',
       [id]
     )
-    return query.rows
+    const rows = query.rows
+    var result = new Array<ChuqlabCase>
+    rows.forEach(e => {
+      result.push(new ChuqlabCase(e.name, e.description, e.tags, e.notes))
+    })
+    return result
   } catch (e) {
     console.log({ error: e })
     return e
