@@ -1,6 +1,3 @@
-const userResponse = (payload = {}) => {
-
-
 	class user {
 		_id?: string | null
 		_userName: string
@@ -10,7 +7,7 @@ const userResponse = (payload = {}) => {
 		_email: string
 		_password: string
 
-		constructor({id = '', userName = '', firstName = '', lastName = '', phoneNumber = '', email = '', password = ''}) {
+		constructor({id = "", userName = "", firstName = "", lastName = "", phoneNumber = "", email = "", password = ""}) {
 			this._id = id
 			this._userName = userName
 			this._firstName = firstName
@@ -81,7 +78,3 @@ const userResponse = (payload = {}) => {
 		}
 
 	}
-
-	return new user(payload)
-
-}
