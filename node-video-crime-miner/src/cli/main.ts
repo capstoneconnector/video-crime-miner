@@ -1,4 +1,4 @@
-import { uploadCommandLine, listObjects } from '../AWS Layer/s3Connector.js'
+import { uploadCommandLine, listObjects } from '../interfaces/video-storage/s3Connector.js'
 import { startVideoFacesDetection, getVideoFacesDetectionOutput } from '../AWS Layer/Rekognition/videoFaceUtils.js'
 import { startLabelDetection, getLabelDetectionResults, collectLabelDetections } from '../AWS Layer/Rekognition/videoLabelUtils.js'
 import * as reader from 'readline'
