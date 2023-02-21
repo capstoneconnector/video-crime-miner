@@ -1,11 +1,17 @@
+import ChuqlabCase from '../../../model/ChuqlabCase.js'
 import { pool } from './db.config.js'
 
-async function getAllCases () {
+async function getAllCases(): Promise<ChuqlabCase[]> {
   try {
     const query = await pool.query(
       'SELECT * FROM public.case'
     )
-    return query.rows
+    var rows = query.rows
+    var result = new Array<ChuqlabCase>
+    rows.forEach(e => {
+      result.push(new ChuqlabCase(e.name, e.description))
+    })
+    return result
   } catch (e) {
     console.log({ error: e })
     return e
