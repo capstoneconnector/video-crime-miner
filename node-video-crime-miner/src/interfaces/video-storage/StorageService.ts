@@ -1,6 +1,6 @@
 
 /* Backend S3 Storage Service imports */
-import { listObjects, getObjects, uploadFrontEndClient } from '../AWS Layer/s3Connector.js'
+import { listObjects, getObjects, uploadFrontEndClient } from './s3Connector.js'
 interface StorageService {
 	listObjects(source: string /*parameter type*/): any /*return type*/;
 

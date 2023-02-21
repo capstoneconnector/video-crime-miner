@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express'
 import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
 
 /* Service Interface Imports */
-import { databaseService } from '../../interfaces/DatabaseService.js'
+import { databaseService } from '../../interfaces/database/DatabaseService.js'
 
 /* Domain model imports */
 import { standardizeResponse } from "../../model/APIResponse.js"

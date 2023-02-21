@@ -1,4 +1,4 @@
-import { getAllCases, insertNewCase, getCaseById } from '../../src/postgres/db.cases'
+import { getAllCases, insertNewCase, getCaseById } from '../../src/interfaces/database/postgres/db.cases'
 import * as pg from 'pg'
 
 // Mock the Pool of Connection

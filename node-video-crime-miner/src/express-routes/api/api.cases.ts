@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express'
 import { standardizeResponse } from "../../model/APIResponse.js"
 
 /* Service Interface Imports */
-import { databaseService } from '../../interfaces/DatabaseService.js'
+import { databaseService } from '../../interfaces/database/DatabaseService.js'
 
 const emptyOutput = {
   data: {},

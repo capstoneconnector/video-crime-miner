@@ -1,6 +1,6 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import { fetchAllCases, fetchCaseById, createNewCase } from '../../../src/express-routes/api/api.cases'
-import * as dbCases from '../../../src/postgres/db.cases'
+import * as dbCases from '../../../src/interfaces/database/postgres/db.cases'
 
 // fetchAllCases function test
 describe('fetchAllCases function', () => {
