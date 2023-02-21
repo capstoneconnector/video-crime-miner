@@ -1,58 +1,60 @@
-class ChuqlabFile { 
+import ChuqlabLabelOutput from "./ChuqlabLabelOutput"
+
+export default class ChuqlabFile { 
     
-    private _storageServiceFileName: string
-    private _title: string
-    private _notes: string[]
-    private _caseId: number
-    private _labelOutputs: Array<ChuqlabLabelOutput>
+    private storageServiceFileName: string
+    private title: string
+    private notes: string[]
+    private caseId: number
+    private labelOutputs: Array<ChuqlabLabelOutput>
 
     constructor(storageServiceFileName: string, title: string = storageServiceFileName, notes: string[] = [], caseId: number,
         labelOutputs: Array<ChuqlabLabelOutput> = []) {
-        this._storageServiceFileName = storageServiceFileName
-        this._title = title
-        this._notes = notes
-        this._caseId = caseId
-        this._labelOutputs = labelOutputs
+        this.storageServiceFileName = storageServiceFileName
+        this.title = title
+        this.notes = notes
+        this.caseId = caseId
+        this.labelOutputs = labelOutputs
     }
 
     /* Getter Methods */
     public getStorageServiceFileName(): string {
-        return this._storageServiceFileName
+        return this.storageServiceFileName
     }
 
     public getTitle(): string {
-        return this._title
+        return this.title
     }
 
     public getNotes(): string[] {
-        return this._notes
+        return this.notes
     }
 
     public getCaseId(): number {
-        return this._caseId
+        return this.caseId
     }
     
     public getLabelOutputs(): Array<ChuqlabLabelOutput>{
-        return this._labelOutputs
+        return this.labelOutputs
     }
 
     /* Setter Methods */
     public setStorageServiceFileName(storageServiceFileName:string): void {
-        this._storageServiceFileName = storageServiceFileName
+        this.storageServiceFileName = storageServiceFileName
     }
 
     public setTitle(title:string): void {
-        this._title = title
+        this.title = title
     }
 
     public setNotes(notes:string[]): void {
-        this._notes = notes
+        this.notes = notes
     }
 
     public setCaseId(caseId: number): void {
-        this._caseId = caseId
+        this.caseId = caseId
     }
     public setLabelOutputs(labelOutputs: Array<ChuqlabLabelOutput>): void {
-        this._labelOutputs = labelOutputs
+        this.labelOutputs = labelOutputs
     }
 }

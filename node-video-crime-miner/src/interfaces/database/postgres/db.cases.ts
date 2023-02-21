@@ -10,8 +10,8 @@ async function getAllCases(): Promise<ChuqlabCase[]> {
     )
     const rows = query.rows
     var result = new Array<ChuqlabCase>
-    rows.forEach(e => {
-      result.push(new ChuqlabCase(e.name, e.description))
+    rows.forEach(row => {
+      result.push(new ChuqlabCase(row.name, row.description))
     })
     return result
   } catch (e) {
@@ -28,8 +28,8 @@ async function getCaseById (id: string) {
     )
     const rows = query.rows
     var result = new Array<ChuqlabCase>
-    rows.forEach(e => {
-      result.push(new ChuqlabCase(e.name, e.description, e.tags, e.notes))
+    rows.forEach(row => {
+      result.push(new ChuqlabCase(row.name, row.description, row.tags, row.notes))
     })
     return result
   } catch (e) {

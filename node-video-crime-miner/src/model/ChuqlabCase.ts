@@ -1,3 +1,5 @@
+import ChuqlabFile from "./ChuqlabFile"
+
 export default class ChuqlabCase {
 
     private name: string
