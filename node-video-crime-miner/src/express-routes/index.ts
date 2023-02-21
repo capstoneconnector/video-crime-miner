@@ -2,13 +2,13 @@
 import { Router } from 'express'
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID } from './api/api.labels.js'
+import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID } from './controllers/api.labels.js'
 
 /* CASE ROUTES */
-import { fetchAllCases, fetchCaseById, createNewCase } from './api/api.cases.js'
+import { fetchAllCases, fetchCaseById, createNewCase } from './controllers/api.cases.js'
 
 /* FILE ROUTES */
-import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile, fetchFileInfo } from './api/api.files.js'
+import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile, fetchFileInfo } from './controllers/api.files.js'
 const router = Router()
 
 /* GET AWS Label Results by Job Id */

@@ -10,7 +10,7 @@ import express, { Express, Request, Response } from 'express'
 import fileUpload from 'express-fileupload'
 
 /* SERVER ROUTES */
-import routes from './express-routes/index.js'
+import routes from './index.js'
 envConfig.default
 const app: Express = express()
 

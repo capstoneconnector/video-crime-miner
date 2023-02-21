@@ -3,11 +3,11 @@ const standardizeResponse = (payload = {}) => {
 
     class APIResponse {
 
-        _data: {}
-        _success: boolean
-        _errors: any[]
-        _message: string
-        _timestamp: string
+        private _data: {}
+        private _success: boolean
+        private _errors: any[]
+        private _message: string
+        private _timestamp: string
 
         constructor({data = {}, success = false, errors = Array(), message = "",}) {
             this._data = data
@@ -30,41 +30,41 @@ const standardizeResponse = (payload = {}) => {
 
         /* Getter Methods */
 
-        public getData() {
+        public getData(): {} {
             return this._data
         }
 
-        public getSuccess() {
+        public getSuccess(): boolean {
             return this._success
         }
 
-        public getErrors() {
+        public getErrors(): any[] {
             return this._errors
         }
         
-        public getMessage() {
+        public getMessage(): string {
             return this._message
         }
         
-        public getTimeStamp(){
+        public getTimeStamp(): string {
             return this._timestamp
         }
 
         /* Setter Methods */
 
-        public setData(data:{}) {
+        public setData(data:{}): void {
             this._data = data
         }
 
-        public setSuccess(success: boolean) {
+        public setSuccess(success: boolean): void {
             this._success = success
         }
 
-        public setErrors(errors: any[]) {
+        public setErrors(errors: any[]): void {
             this._errors = errors
         }
         
-        public setMessage(message: string) {
+        public setMessage(message: string): void {
             this._message = message
         }
     }

@@ -1,4 +1,4 @@
-import { createNewFileRow, getFilesRelatedToCase } from '../../src/postgres/db.files'
+import { createNewFileRow, getFilesRelatedToCase } from '../../src/interfaces/database/postgres/db.files'
 import * as pg from 'pg'
 
 // Mock the Pool of Connection
