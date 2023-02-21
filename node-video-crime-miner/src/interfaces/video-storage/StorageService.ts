@@ -1,6 +1,6 @@
 
 /* Backend S3 Storage Service imports */
-import { listObjects, getObjects, uploadFrontEndClient } from '../AWS Layer/s3Connector.js'
+import { listObjects, getObjects, uploadFrontEndClient } from './s3Connector.js'
 interface StorageService {
 	listObjects(source: string /*parameter type*/): any /*return type*/;
 
@@ -61,15 +61,15 @@ function getStorageService(): StorageService {
 	let service = process.env['STORAGE_SERVICE'] || 'STORAGE SERVICE NOT DEFINED IN .env'
 
 	if (service == 's3' || service == 'S3' || service == 'aws_s3' || service == 'AWS_S3') {
-		console.log("database service: S3")
+		console.log("video-storage service: S3")
 		return s3
 
 	} else if (service == 'azure' || service == 'Azure') {
-		console.log("database service: Azure")
+		console.log("video-storage service: Azure")
 		return azure
 
 	}else{
-		console.log("The Storage Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		console.log("The video-vtorage service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
 		return
 	}
 }

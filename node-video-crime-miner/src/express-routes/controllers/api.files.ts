@@ -6,8 +6,8 @@ import { Readable } from 'stream'
 import { standardizeResponse } from '../../model/APIResponse.js'
 
 /*Service Interface imports */
-import {storageService} from '../../interfaces/StorageService.js'
-import { databaseService } from '../../interfaces/DatabaseService.js'
+import {storageService} from '../../interfaces/video-storage/StorageService.js'
+import { databaseService } from '../../interfaces/database/DatabaseService.js'
 
 const bucket = process.env['REKOG_BUCKET_NAME'] || 'REKOG BUCKET NAME NOT DEFINED'
 

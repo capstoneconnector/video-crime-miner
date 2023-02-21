@@ -29,9 +29,9 @@ interface DatabaseService {
 }
 
 //{ getAllCases, insertNewCase, getCaseById }
-import * as pgcase from "../postgres/db.cases.js"
-import * as pgfile from "../postgres/db.files.js"
-import * as pglabel from "../postgres/db.labels.js"
+import * as pgcase from "./postgres/db.cases.js"
+import * as pgfile from "./postgres/db.files.js"
+import * as pglabel from "./postgres/db.labels.js"
 
 
 const postgres : DatabaseService = {
