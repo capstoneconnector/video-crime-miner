@@ -61,15 +61,15 @@ function getStorageService(): StorageService {
 	let service = process.env['STORAGE_SERVICE'] || 'STORAGE SERVICE NOT DEFINED IN .env'
 
 	if (service == 's3' || service == 'S3' || service == 'aws_s3' || service == 'AWS_S3') {
-		console.log("database service: S3")
+		console.log("video-storage service: S3")
 		return s3
 
 	} else if (service == 'azure' || service == 'Azure') {
-		console.log("database service: Azure")
+		console.log("video-storage service: Azure")
 		return azure
 
 	}else{
-		console.log("The Storage Service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		console.log("The video-vtorage service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
 		return
 	}
 }

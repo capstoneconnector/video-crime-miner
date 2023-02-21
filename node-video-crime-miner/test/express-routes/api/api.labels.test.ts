@@ -1,5 +1,5 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from '../../../src/express-routes/api/api.labels'
+import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob } from '../../../src/express-routes/controllers/api.labels'
 import * as dbLabels from '../../../src/interfaces/database/postgres/db.labels'
 import * as labelUtils from '../../../src/AWS Layer/Rekognition/videoLabelUtils'
 

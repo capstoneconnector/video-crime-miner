@@ -1,5 +1,5 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile } from '../../../src/express-routes/api/api.files'
+import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile } from '../../../src/express-routes/controllers/api.files'
 import * as dbFiles from '../../../src/interfaces/database/postgres/db.files'
 import * as s3Utils from '../../../src/interfaces/video-storage/s3Connector'
 
