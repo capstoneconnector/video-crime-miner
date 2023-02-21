@@ -1,12 +1,14 @@
-import ChuqlabCase from '../../../model/ChuqlabCase.js'
 import { pool } from './db.config.js'
+
+/* Domain Model Imports */
+import ChuqlabCase from '../../../model/ChuqlabCase.js'
 
 async function getAllCases(): Promise<ChuqlabCase[]> {
   try {
     const query = await pool.query(
       'SELECT * FROM public.case'
     )
-    var rows = query.rows
+    const rows = query.rows
     var result = new Array<ChuqlabCase>
     rows.forEach(e => {
       result.push(new ChuqlabCase(e.name, e.description))
