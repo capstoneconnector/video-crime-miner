@@ -36,7 +36,7 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
   } catch (err: any) {
-    console.log("app.get('/labels/:jobId') errored out")
+    console.log("app.get('/labels/job/:jobId') errored out")
     response.errors.push(err.message)
     response.success = false
     response = standardizeResponse(response).convertToJson()

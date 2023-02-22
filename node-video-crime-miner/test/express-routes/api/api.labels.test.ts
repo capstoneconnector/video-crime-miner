@@ -23,7 +23,7 @@ describe('fetchLabelDetectionJob function', () => {
   })
 
   // Spies and mock implementations of functions called within fetchLabelDetectionJob function
-  const getResultsSpy = jest.spyOn(dbLabels, 'getResultsForJob').mockImplementation(async (jobId) => res)
+  //const getResultsSpy = jest.spyOn(dbLabels, 'getResultsForJob').mockImplementation(async (jobId) => res)
   const getLabelDetectionResultsSpy = jest.spyOn(labelUtils, 'getLabelDetectionResults').mockImplementation(async (jobId) => res)
   const updateJobResultsSpy = jest.spyOn(dbLabels, 'updateJobResults').mockImplementation()
 
