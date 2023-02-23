@@ -1,32 +1,40 @@
 import { pool } from './db.config.js'
 
-async function createNewLabels (job_id: string, keywords: string[], file_id: string) {
+/* Domain Model Imports */
+import ChuqlabLabelOutput from '../../../model/ChuqlabLabelOutput.js'
+
+async function createNewLabels(job_id: string, keywords: string[], file_id: string) {
   try {
     const query = await pool.query(
       'INSERT INTO public.awsoutput (job_id, tags, file_id) VALUES ($1, $2, $3)',
       [job_id, keywords, file_id]
     )
-    return { result: 'success!' }
+    return
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
   }
 }
 
-async function getResultsForFile (fileName: string) {
+async function getResultsForFile(fileName: string) {
   try {
     const query = await pool.query(
-      'SELECT job_id, tags FROM public.awsoutput WHERE file_id = $1',
+      'SELECT job_id, tags, file_id FROM public.awsoutput WHERE file_id = $1',
       [fileName]
     )
-    return query.rows
+    const rows = query.rows
+    var result = new Array<ChuqlabLabelOutput>
+    rows.forEach(row => {
+      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
+    })
+    return result
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
   }
 }
 
-async function getResultsForMultipleFiles (fileNames: any) {
+async function getResultsForMultipleFiles(fileNames: any) {
   try {
     const params = []
     for (let i = 1; i <= fileNames.length; i++) {
@@ -36,46 +44,66 @@ async function getResultsForMultipleFiles (fileNames: any) {
     const query = await pool.query(
       queryText, fileNames
     )
-    return query.rows
+    const rows = query.rows
+    var result = new Array<ChuqlabLabelOutput>
+    rows.forEach(row => {
+      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
+    })
+    return result
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
   }
 }
 
-async function getResultsForJob (jobId: string) {
+async function getResultsForJob(jobId: string) {
   try {
     const query = await pool.query(
       'SELECT * FROM public.awsoutput WHERE job_id = $1',
       [jobId]
     )
-    return query.rows[0]
+    const rows = query.rows
+    var result = new Array<ChuqlabLabelOutput>
+    rows.forEach(row => {
+      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
+    })
+    return result
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
   }
 }
 
-async function updateJobResults (jobId: string, result: any) { // If this is broken, I may have broken it by changing result:JSON to result:any for testing purposes
+async function updateJobResults(jobId: string, newResult: any) { // If this is broken, I may have broken it by changing result:JSON to result:any for testing purposes
   try {
     const query = await pool.query(
       'UPDATE public.awsoutput SET result = $1 WHERE job_id = $2',
-      [result, jobId]
+      [newResult, jobId]
     )
-    return query.rows[0]
+    const rows = query.rows
+    var result = new Array<ChuqlabLabelOutput>
+    rows.forEach(row => {
+      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
+    })
+    return result
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
   }
 }
 
-async function fetchFileForJob (jobId: string) {
+async function fetchFileForJob(jobId: string) {
   try {
     const query = await pool.query(
       'SELECT file_id FROM public.awsoutput WHERE job_id = $1',
       [jobId]
     )
-    return query.rows[0]
+    const rows = query.rows
+    var result = new Array<ChuqlabLabelOutput>
+    rows.forEach(row => {
+      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
+    })
+    return result
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }

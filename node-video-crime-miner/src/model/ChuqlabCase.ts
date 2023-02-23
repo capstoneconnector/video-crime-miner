@@ -1,58 +1,60 @@
-class ChuqlabCase {
+import ChuqlabFile from "./ChuqlabFile"
 
-    private _name: string
-    private _description: string
-    private _tags: string[]
-    private _notes: string[]
-    private _files: Array<ChuqlabFile>
+export default class ChuqlabCase {
+
+    private name: string
+    private description: string
+    private tags: string[]
+    private notes: string[]
+    private files: Array<ChuqlabFile>
 
     constructor(name: string, description: string, tags: string[] = [], notes: string[]= [], files: Array<ChuqlabFile> = []) {
-        this._name = name
-        this._description = description
-        this._tags = tags
-        this._notes = notes
-        this._files = files
+        this.name = name
+        this.description = description
+        this.tags = tags
+        this.notes = notes
+        this.files = files
     }
 
     /* Getter Methods */
     public getName(): string{
-        return this._name
+        return this.name
     }
 
     public getDescription(): string{
-        return this._description
+        return this.description
     }
 
     public getTags(): string[]{
-        return this._tags
+        return this.tags
     }
 
     public getNotes(): string[]{
-        return this._notes
+        return this.notes
     }
 
     public getFiles(): Array<ChuqlabFile>{
-        return this._files
+        return this.files
     }
 
     /* Setter Methods */
     public setName(name:string): void{
-        this._name = name
+        this.name = name
     }
 
     public setDescription(description:string): void{
-        this._description = description
+        this.description = description
     }
 
     public setTags(tags:string[]): void{
-        this._tags = tags
+        this.tags = tags
     }
 
     public setNotes(notes:string[]): void{
-        this._notes = notes
+        this.notes = notes
     }
 
     public setFiles(files:Array<ChuqlabFile>): void{
-        this._files = files
+        this.files = files
     }
 }

@@ -1,48 +1,48 @@
-class ChuqlabLabelOutput { 
+export default class ChuqlabLabelOutput { 
     
-    private _jobId: string
-    private _result: {}
-    private _fileId: string
-    private _tags: string[]
+    private jobId: string
+    private result: {}
+    private fileId: string
+    private tags: string[]
 
     constructor(jobId: string, result: {}, fileId: string, tags: string[]) {
-        this._jobId = jobId
-        this._result = result
-        this._fileId = fileId
-        this._tags = tags
+        this.jobId = jobId
+        this.result = result
+        this.fileId = fileId
+        this.tags = tags
     }
 
     /* Getter Methods */
     public getJobId(): string {
-        return this._jobId
+        return this.jobId
     }
 
     public getResult(): {} {
-        return this._result
+        return this.result
     }
 
     public getFileId(): string{
-        return this._fileId
+        return this.fileId
     }
 
     public getTags(): string[]{
-        return this._tags
+        return this.tags
     }
 
     /* Setter Methods */
     public setJobId(jobId:string): void {
-        this._jobId = jobId
+        this.jobId = jobId
     }
 
     public setResult(result:string): void {
-        this._result = result
+        this.result = result
     }
 
     public setFileId(fileId:string): void {
-        this._fileId = fileId
+        this.fileId = fileId
     }
 
     public setTags(tags:string[]): void {
-        this._tags = tags
+        this.tags = tags
     }
 }

@@ -1,11 +1,19 @@
 import { pool } from './db.config.js'
 
-async function getAllCases () {
+/* Domain Model Imports */
+import ChuqlabCase from '../../../model/ChuqlabCase.js'
+
+async function getAllCases(): Promise<ChuqlabCase[]> {
   try {
     const query = await pool.query(
       'SELECT * FROM public.case'
     )
-    return query.rows
+    const rows = query.rows
+    var result = new Array<ChuqlabCase>
+    rows.forEach(row => {
+      result.push(new ChuqlabCase(row.name, row.description))
+    })
+    return result
   } catch (e) {
     console.log({ error: e })
     return e
@@ -18,7 +26,12 @@ async function getCaseById (id: string) {
       'SELECT * FROM public.case WHERE case_id=($1)',
       [id]
     )
-    return query.rows
+    const rows = query.rows
+    var result = new Array<ChuqlabCase>
+    rows.forEach(row => {
+      result.push(new ChuqlabCase(row.name, row.description, row.tags, row.notes))
+    })
+    return result
   } catch (e) {
     console.log({ error: e })
     return e

@@ -87,13 +87,15 @@ h1 {
   font-weight: normal;
   letter-spacing: -1px;
   color: #34495E;
+
 }
 
 .rwd-table {
-  background: #bcc0c4;
+  background: #95b0cb;
   color: #fff;
-  border-radius: .4em;
+  border-radius: 5px;
   overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
   tr {
     border-color: lighten(#000000, 50%);
   }
@@ -107,3 +109,58 @@ h1 {
     color: rgb(0, 0, 0);
   }
 }
+///for popup window
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color:rgba(255, 255, 255, 0.495);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+///for popup window
+.content {
+  background-color: #fff;
+  width: 600px;
+  height: 600px;
+  padding: 20px;
+}
+///for popup window
+.wrapper {
+  width: 20%;
+  height: 2vh;
+}
+///for popup window
+.close{
+  position: relative;
+  top: -10px;;
+}
+body{
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+.very-cool-button {
+  text-decoration: none;
+  float: right;
+  background-color: #317ac7;
+  padding: 15px 10px;
+  border-radius: 9999px;
+  color: rgb(0, 0, 0);
+  display: block;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+
+}
+.very-cool-button:hover {
+  transform: scale(1.1);
+  background-color: #7cf6fd;
+}
+
+
+
+
