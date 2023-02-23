@@ -1,9 +1,13 @@
+import ChuqlabCase from "./ChuqlabCase"
+import ChuqlabFile from "./ChuqlabFile"
+import ChuqlabLabelOutput from "./ChuqlabLabelOutput"
+
 /* Provides a definition for an API response to standardize API responses */
 const standardizeResponse = (payload = {}) => {
 
     class APIResponse {
 
-        private _data: {}
+        private _data: Array<ChuqlabCase> | Array<ChuqlabFile> | Array<ChuqlabLabelOutput> | Record<string, never> = {} // Record<string, never> = {} is just saying it could also be an empty object, but only an empty object
         private _success: boolean
         private _errors: any[]
         private _message: string

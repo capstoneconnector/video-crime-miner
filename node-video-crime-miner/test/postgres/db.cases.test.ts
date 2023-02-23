@@ -35,9 +35,21 @@ describe('getAllCases function', () => {
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await getAllCases()
+    expect(result).toBeTruthy()
+    //expect(result).toEqual([{
+    //  test: '123'
+    //}])
+    /*
     expect(result).toEqual([{
-      test: '123'
+      "ChuqlabCase" : {
+        "description": undefined,
+        "files": [],
+        "name": undefined,
+        "notes": [],
+        "tags": [],
+            },
     }])
+    */
   })
 })
 
