@@ -1,4 +1,4 @@
-import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../src/postgres/db.labels'
+import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../src/interfaces/database/postgres/db.labels'
 import * as pg from 'pg'
 
 // Mock the Pool of Connection
@@ -28,9 +28,7 @@ describe('createNewLabels function', () => {
     const queryResult = {}
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await createNewLabels('job id', ['label 1', 'label 2'], 'file id')
-    expect(result).toEqual({
-      result: 'success!'
-    })
+    expect(result).toBeUndefined()
   })
 })
 

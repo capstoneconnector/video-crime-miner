@@ -1,14 +1,13 @@
 /* Required Express imports */
 import { Request, Response, NextFunction } from 'express'
-
-import { createNewFileRow, getFilesRelatedToCase, getFileInfoById } from '../../postgres/db.files.js'
 import { Readable } from 'stream'
 
 /* Domain model imports */
 import { standardizeResponse } from '../../model/APIResponse.js'
 
-/*S3 Interface imports */
-import {envVariable} from '../../interfaces/storageService.js'
+/*Service Interface imports */
+import {storageService} from '../../interfaces/video-storage/StorageService.js'
+import { databaseService } from '../../interfaces/database/DatabaseService.js'
 
 const bucket = process.env['REKOG_BUCKET_NAME'] || 'REKOG BUCKET NAME NOT DEFINED'
 
@@ -23,7 +22,7 @@ const emptyOutput = {
 async function fetchAllFiles (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await envVariable.listObjects(bucket)
+    response.data = await storageService.listObjects(bucket)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -41,7 +40,7 @@ async function fetchFilesByCaseId (req: Request, res: Response, next: NextFuncti
   try {
     var response = emptyOutput
     const caseId = +req.params['caseId'] // The + converts caseId to a number type
-    response.data = await getFilesRelatedToCase(caseId)
+    response.data = await databaseService.getFilesRelatedToCase(caseId)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -58,7 +57,7 @@ async function fetchFilesByCaseId (req: Request, res: Response, next: NextFuncti
 async function fetchFileByName (req: any, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    const fileData = await envVariable.getObject(bucket, req.params.file)
+    const fileData = await storageService.getObject(bucket, req.params.file)
     if (fileData instanceof Readable) {
       	fileData.pipe(res)
     }
@@ -78,8 +77,8 @@ async function fetchFileByName (req: any, res: Response, next: NextFunction) {
 async function createAndUploadFile (req: any, res: any, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await createNewFileRow(req.files.file.name, '', req.params.caseId)
-    response.data = await envVariable.upload(bucket, req.files.file.data, req.files.file.name)
+    response.data = await databaseService.createNewFileRow(req.files.file.name, '', req.params.caseId)
+    response.data = await storageService.upload(bucket, req.files.file.data, req.files.file.name)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -95,7 +94,7 @@ async function createAndUploadFile (req: any, res: any, next: NextFunction) {
 async function fetchFileInfo (req: any, res: any, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await getFileInfoById(req.params.fileId)
+    response.data = await databaseService.getFileInfoById(req.params.fileId)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
