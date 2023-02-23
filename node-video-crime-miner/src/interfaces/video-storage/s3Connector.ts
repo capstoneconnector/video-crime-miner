@@ -65,12 +65,12 @@ async function listObjects (bucket: string) {
   }
 }
 
-async function uploadCommandLine (bucket: string, file: string) {
+async function uploadCommandLine (bucket: string, file: string, user?: string) {
   try {
     const fileStream = fs.createReadStream(file)
     const attributes = {
       Bucket: bucket,
-      Key: path.basename(file),
+      Key: user + '/' + path.basename(file),
       Body: fileStream
     }
     const command = new PutObjectCommand(attributes)
@@ -82,13 +82,13 @@ async function uploadCommandLine (bucket: string, file: string) {
   }
 }
 
-async function uploadFrontEndClient (bucket: string, body: any, key: any) {
+async function uploadFrontEndClient (bucket: string, body: any, key: any, user?: string) {
   var buffer = Buffer.concat([body])
 
   try {
     const attributes = {
       Bucket: bucket,
-      Key: key,
+      Key: user + '/' + key,
       Body: buffer
     }
     const command = new PutObjectCommand(attributes)
