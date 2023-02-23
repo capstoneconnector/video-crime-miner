@@ -11,17 +11,16 @@
           <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
                 <div class="content" >
                   <div class="close" (click)="closepopup()">
-                    &times;
+                    &times; <!-- This is the X icon -->
                   </div>
                   <h4>Create New Case</h4>
                   <div class="form-group">
                     <label for="name"><span>*</span> Name</label>
-                    <input [(ngModel)] = "newCaseName" id="newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+                    <input [(ngModel)] = "newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
                   </div>
                   <div class="form-group">
                     <label for="description"><span>*</span> Description</label>
-                    <textarea [(ngModel)]="newCaseDescription" id="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="100" rows="20">
-                      </textarea>
+                    <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="100" rows="20"></textarea>
                   </div>
                   <button class="very-cool-button" (click)="addNewCase(newCaseName, newCaseDescription)">Create Case</button>
                 </div>
