@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
 import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
-import { createBucket, listBuckets, listObjects, upload, getObjectFromS3, uploadWithFile } from '../../src/AWS Layer/s3Connector'
+import { createBucket, listBuckets, listObjects, getObjects, uploadFrontEndClient } from '../../src/interfaces/video-storage/s3Connector'
 
 const s3Mock = mockClient(S3Client)
 
@@ -12,8 +12,6 @@ describe('createBucket function', () => {
     expect(res).toBeTruthy()
   })
 })
-
-// TODO: Write out these functions just like the first one above is written!
 
 // listBucket function test
 describe('listBuckets function', () => {
@@ -33,33 +31,11 @@ describe('listObjects function', () => {
   })
 })
 
-/*
-//upload function test
-describe("upload function", () => {
-	s3Mock.on(PutObjectCommand).resolves({})
-	it("Should return successful response after uploading image file", async () => {
-		const res = await upload("example bucket", "filename.img")
-		expect(res).toBeTruthy()
-	})
-
-	it("Should return successful response after uploading video file", async () => {
-		const res = await upload("example bucket", "filename.mp4")
-		expect(res).toBeTruthy()
-	})
-	// TODO: Test for failure with non-image and non-video files
-
-	//it("Should return failure after uploading any non-image and non-video files", async () => {
-	//	const res = await upload("example bucket", "filename.pdf")
-	//	expect(res).toBeFalsy()
-	//})
-})
-*/
-
 // getObjectFromS3 function test
 describe('getObjectFromS3 function', () => {
   s3Mock.on(GetObjectCommand).resolves({})
   it('Should return successful response', async () => {
-    const res = await getObjectFromS3('example bucket', 'filename.png')
+    const res = await getObjects('example bucket', 'filename.png')
     expect(res).toBeTruthy()
   })
 })
@@ -69,7 +45,7 @@ describe('uploadWithFile function', () => {
   const uint = new Uint8Array()
   s3Mock.on(PutObjectCommand).resolves({})
   it('Should return successful response', async () => {
-    const res = await uploadWithFile('example bucket', uint, {})
+    const res = await uploadFrontEndClient('example bucket', uint, {})
     expect(res).toBeTruthy()
   })
 })

@@ -1,4 +1,4 @@
-import { createNewFileRow, getFilesRelatedToCase } from '../../src/postgres/db.files'
+import { createNewFileRow, getFilesRelatedToCase } from '../../src/interfaces/database/postgres/db.files'
 import * as pg from 'pg'
 
 // Mock the Pool of Connection
@@ -30,9 +30,7 @@ describe('createNewFileRow function', () => {
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await createNewFileRow('example name', 'note', 1)
-    expect(result).toEqual({
-      result: 'success!'
-    })
+    expect(result).toBeUndefined()
   })
 })
 

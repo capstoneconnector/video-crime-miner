@@ -1,4 +1,4 @@
-import { upload, listObjects } from '../AWS Layer/s3Connector.js'
+import { uploadCommandLine, listObjects } from '../interfaces/video-storage/s3Connector.js'
 import { startVideoFacesDetection, getVideoFacesDetectionOutput } from '../AWS Layer/Rekognition/videoFaceUtils.js'
 import { startLabelDetection, getLabelDetectionResults, collectLabelDetections } from '../AWS Layer/Rekognition/videoLabelUtils.js'
 import * as reader from 'readline'
@@ -27,7 +27,7 @@ function resolveInput (userInput: any) {
   } else if (userInput == '1') {
     // upload a file
     readline.question('Input file path: ', (x: any) => {
-      upload(bucketName, x).then((response: any) => {
+      uploadCommandLine(bucketName, x).then((response: any) => {
         console.log(response)
       })
     })
