@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 
 const region = process.env['REGION'] || 'REGION NOT DEFINED IN .ENV'
 const accessKeyId = process.env['AWS_ACCESS_KEY_ID'] || 'AWS ACCESS KEY NOT DEFINED IN .ENV'
@@ -115,9 +115,26 @@ async function getObjects (bucketName: any, file: any) {
   }
 }
 
+async function removeObject(bucketName: any, file:any) {
+	try {
+		const attributes = {
+			Bucket: bucketName,
+			Key: file
+		}
+		const command = new DeleteObjectCommand(attributes)
+		const response = await client.send(command)
+		console.log(response)
+		return response || {e: 'Could not delete file from: ' + bucketName}
+		
+	} catch (e) {
+		console.log('error', e)
+		return {error: e}
+	}
+}
+
 // Testing code
 // listObjects("video-crime-miner-video-test-bucket") // an example
 // listBuckets() //another example
 // If you're getting 403 errors on these two lines ^^^ then contact Jacob Bishop on Slack to get AWS ACL access
 
-export { createBucket, listBuckets, listObjects, uploadCommandLine, getObjects, uploadFrontEndClient }
+export { createBucket, listBuckets, listObjects, uploadCommandLine, getObjects, uploadFrontEndClient, removeObject }
