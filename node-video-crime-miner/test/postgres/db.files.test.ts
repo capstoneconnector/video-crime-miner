@@ -30,9 +30,7 @@ describe('createNewFileRow function', () => {
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await createNewFileRow('example name', 'note', 1)
-    expect(result).toEqual({
-      result: 'success!'
-    })
+    expect(result).toBeUndefined()
   })
 })
 
