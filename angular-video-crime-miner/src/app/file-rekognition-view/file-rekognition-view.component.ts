@@ -4,13 +4,13 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http'
 import { ActivatedRoute } from '@angular/router'
 import { TranscribeService } from 'aws-sdk'
 import { json } from 'stream/consumers'
-
 import { VgApiService, VgMediaDirective } from '@videogular/ngx-videogular/core'
+import { stringify } from 'querystring'
 
 @Component({
   selector: 'app-file-rekognition-view',
   templateUrl: './file-rekognition-view.component.html',
-  styleUrls: ['./file-rekognition-view.component.scss'],
+  styleUrls: ['../app.component.scss', './file-rekognition-view.component.scss'],
 })
 export class FileRekognitionViewComponent implements OnInit {
   
@@ -28,41 +28,33 @@ export class FileRekognitionViewComponent implements OnInit {
 
   private baseUrl = 'http://localhost:8000'
   private jobId!: string
-  private videoData?: JSON
-  private labels?: JSON
-  private labelTotal?: JSON
-  private videoFileName?: string
   strLabels?: string // Dev purposes
   strVideoData?: string // Dev purposes
   private currentBorderBox: HTMLElement | null = null
-
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
     this.jobId = this.route.snapshot.paramMap.get('jobId') || '1'
     this.requestFileForID().subscribe(fileidname => {
-      this.videoFileName = fileidname.data.file_id
+      this.videoFileName = fileidname.data[0].fileId
       this.videoItems[0].src = this.CDN_WrapFileUrl(this.videoFileName)
       this.videoItems[0].name = this.videoFileName
-
-
-
     })
-    this.requestLabels().subscribe(awsResult => {
-      this.videoData = awsResult.data.VideoMetadata
-      this.labels = this.tablePrepper(awsResult.data.Labels)
+    this.requestLabels().subscribe(labels => {
+      this.videoData = labels.data.VideoMetadata
+      this.labels = this.tablePrepper(labels.data.Labels)
       this.labelTotal = this.sumTotalLabelOccurrences(this.labels)
     })
-    
-    
-    // Dev purposes
-    this.strLabels = JSON.stringify(this.labels)
-    this.strVideoData = JSON.stringify(this.videoData)
   }
+
+  /* Video Player */
+  private videoFileName?: string
+  private videoData?: JSON
+
   onPlayerReady(api: VgApiService) {
     this.data = api;
-    this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVdo.bind(this));
+    this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this));
     this.data.getDefaultMedia().subscriptions.ended.subscribe(this.nextVideo.bind(this));
     
   }
@@ -73,7 +65,7 @@ export class FileRekognitionViewComponent implements OnInit {
     }
     this.currentVideo = this.videoItems[this.activeIndex];
   }
-  initVdo() {
+  initVideo() {
     this.data.play();
     this.data.seekTime(99999999, false)
   }
@@ -81,15 +73,11 @@ export class FileRekognitionViewComponent implements OnInit {
     this.activeIndex = index;
     this.currentVideo = item;
   }
-  
-
   public getAssociatedFile(): string {
     return this.videoFileName!
   }
 
-  public requestLabels(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/labels/job/${this.jobId}`)
-  }
+  /* Requests */
 
   public requestFileForID(): Observable<any> {
     return this.http.get(`${this.baseUrl}/labels/file_for_job/${this.jobId}`)
@@ -104,8 +92,36 @@ export class FileRekognitionViewComponent implements OnInit {
     return this.jobId || 'Route Not Valid'
   }
 
+  /* Request and handle labels */
+  private labels?: JSON
+  private labelTotal?: JSON
+
+  public requestLabels(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/labels/job/${this.jobId}`)
+  }
   public getLabels(): any {
     return this.labels
+  }
+  public getLabelTotal(){
+    return this.labelTotal
+  }
+
+  /* List of labels helper methods */
+  public tablePrepper(obj:any){
+    var result = obj.map(
+      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances }}:any) => 
+      ({Name, Aliases, Parents, Categories, Confidence, Timestamp, Instances}))
+    return result
+  }
+  public prettifyTimestamp(timestamp:number): string{
+    let seconds = Math.floor(timestamp/1000)
+    let hours = Math.floor(seconds/3600)
+    let minutes = Math.floor(seconds/60)
+    seconds = seconds - (hours * 3600) - (minutes * 60)
+    return hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0')
+  }
+  public prettifyConfidence(confidence:number): string{
+    return Math.round(confidence).toString() + "%"
   }
 
   //public getLabelBy
@@ -122,50 +138,7 @@ export class FileRekognitionViewComponent implements OnInit {
     this.currentBorderBox = newBox
   }
 
-  public getLabelTotal(){
-    return this.labelTotal
-  }
-
   public sumTotalLabelOccurrences(obj:any){
     return obj.reduce((accumulator:any, object:any) => accumulator + object.length, 0)
-  }
-
-  public tablePrepper(obj:any){
-    var result = obj.map(
-      ({Timestamp, Label:{Aliases, Categories, Confidence, Name, Parents, Instances }}:any) => 
-      ({Name, Aliases, Parents, Categories, Confidence, Timestamp, Instances})
-    )
-
-    result = this.resolveArraysForTable(result)
-    return result
-  }
-
-  private resolveArraysForTable(obj:any){
-    // For each label we need to convert possible arrays into comma-separated strings
-    for(var i = 0; i < obj.length; i++) {
-      var label = obj[i]
-      var tmp = ""
-      
-      // Resolve Aliases
-      for(var j = 0; j<label.Aliases.length; j++){
-        tmp += label.Aliases[j].Name + ", "
-      }
-      label.Aliases = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
-
-      // Resolve Parents
-      for(var j = 0; j<label.Parents.length; j++){
-        tmp += label.Parents[j].Name + ", "
-      }
-      label.Parents = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
-
-      // Resolve Categories
-      tmp = ""
-      for(var j = 0; j<label.Categories.length; j++){
-        tmp += label.Categories[j].Name + ", "
-      }
-      label.Categories = tmp.replace(/,\s*$/, "") //Regex for trailing comma and whitespace
-    }
-
-    return obj
   }
 }

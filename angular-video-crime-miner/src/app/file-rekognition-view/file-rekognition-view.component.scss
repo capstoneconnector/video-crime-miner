@@ -46,11 +46,7 @@ h1 {
   }
 h1 {
   background-image: repeating-radial-gradient(farthest-side at 5px 5px,#553c9a, #ee4b2b, #553c9a);
-  }
-h1{
-  background-image: repeating-radial-gradient
 }
-
 .fixedBox1{
   height: 50%;
   border: 1px;
@@ -60,7 +56,7 @@ h1{
   height: 100%;
 }
 .videoplayer{
-  height: 70%;
+  height: 100%;
   border: 5px;
   width: 70%;
   float: left;
@@ -71,12 +67,19 @@ h1{
 .scrollbox{
   float: left;
   width: 30%;
-  height: 80%;
+  height: 100%;
   padding: 20px;
   overflow:scroll;
+}
+.clickableLabel{
+  background-color:#e0d4d1;
+  color: rgb(0, 49, 98);
+  padding: 10px;
+  border: 1px;
+  border-color:#000000;
+  border-style: solid;
 }
 .floatstyle{
   padding: 20px;
   width: 50%;
 }
-
