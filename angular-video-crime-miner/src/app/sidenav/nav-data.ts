@@ -4,11 +4,13 @@ export const navbarData = [
       icon: 'fal fa-home',
       label: 'Dashboard'
   },
+  /*
   {
       routeLink: 'upload',
       icon: 'fal fa-box-open',
       label: 'New Case'
   },
+  */
   {
       routeLink: 'view',
       icon: 'fal fa-tags',
