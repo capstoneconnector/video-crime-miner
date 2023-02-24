@@ -13,24 +13,9 @@ import { stringify } from 'querystring'
   styleUrls: ['../app.component.scss', './file-rekognition-view.component.scss'],
 })
 export class FileRekognitionViewComponent implements OnInit {
-  
-  public videoItems: Array<any> = [
-    {
-      name: 'video',
-      src: ' ',
-      type: 'video/mp4'
-    }
-  ]
-
-  activeIndex = 0
-  currentVideo = this.videoItems[this.activeIndex]
-  data: any
 
   private baseUrl = 'http://localhost:8000'
   private jobId!: string
-  strLabels?: string // Dev purposes
-  strVideoData?: string // Dev purposes
-  private currentBorderBox: HTMLElement | null = null
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
   
@@ -49,9 +34,20 @@ export class FileRekognitionViewComponent implements OnInit {
   }
 
   /* Video Player */
+  public videoItems: Array<any> = [
+    {
+      name: 'video',
+      src: ' ',
+      type: 'video/mp4'
+    }
+  ]
+  private activeIndex = 0
+  public currentVideo = this.videoItems[this.activeIndex]
+
   private videoFileName?: string
   private videoData?: JSON
-
+  private currentBorderBox: HTMLElement | null = null
+  private data: any
   onPlayerReady(api: VgApiService) {
     this.data = api;
     this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this));
@@ -59,14 +55,14 @@ export class FileRekognitionViewComponent implements OnInit {
     
   }
   nextVideo() {
-    this.activeIndex++;
+    this.activeIndex++
     if (this.activeIndex === this.videoItems.length) {
-      this.activeIndex = 0;
+      this.activeIndex = 0
     }
-    this.currentVideo = this.videoItems[this.activeIndex];
+    this.currentVideo = this.videoItems[this.activeIndex]
   }
   initVideo() {
-    this.data.play();
+    this.data.play()
     this.data.seekTime(99999999, false)
   }
   startPlaylistVdo(item: any, index: number) {
@@ -76,16 +72,14 @@ export class FileRekognitionViewComponent implements OnInit {
   public getAssociatedFile(): string {
     return this.videoFileName!
   }
-
-  /* Requests */
-
-  public requestFileForID(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/labels/file_for_job/${this.jobId}`)
-  }
-
   public CDN_WrapFileUrl(filename:any): string {
     
     return `https://dthqh9b9a8scb.cloudfront.net/${filename}`
+  }
+
+  /* Requests */
+  public requestFileForID(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/labels/file_for_job/${this.jobId}`)
   }
 
   public getJobId(): string {

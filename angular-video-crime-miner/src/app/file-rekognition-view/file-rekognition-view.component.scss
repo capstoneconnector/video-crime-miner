@@ -56,19 +56,18 @@ h1 {
   height: 100%;
 }
 .videoplayer{
-  height: 100%;
-  border: 5px;
+  height: 85%;
   width: 70%;
+  padding-left: 10px;
+  padding-right: 10px;
   float: left;
-  padding: 20px;
-  border-image-source: linear-gradient(45deg, #387c37, rgb(255, 255, 255), rgb(169, 0, 34));
-  border-image-slice: 1;
 }
 .scrollbox{
   float: left;
   width: 30%;
-  height: 100%;
-  padding: 20px;
+  height: 85%;
+  padding-left: 10px;
+  padding-right: 10px;
   overflow:scroll;
 }
 .clickableLabel{
