@@ -102,6 +102,7 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
 /* GET file for job id */
 async function fetchFileForJobID (req: Request, res: Response, next: NextFunction) {
   try {
+    console.log("passed job id: " + req.params['jobId'])
     var response = emptyOutput
     response.data = await databaseService.fetchFileForJob(req.params['jobId'])
     response.success = true

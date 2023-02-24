@@ -94,6 +94,7 @@ async function createAndUploadFile (req: any, res: any, next: NextFunction) {
 async function fetchFileInfo (req: any, res: any, next: NextFunction) {
   try {
     var response = emptyOutput
+    console.log("fileId received: " + req.params.fileId)
     response.data = await databaseService.getFileInfoById(req.params.fileId)
     response.success = true
     response = standardizeResponse(response).convertToJson()
