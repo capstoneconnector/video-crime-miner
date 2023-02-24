@@ -2,10 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Observable, Subject } from 'rxjs'
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http'
 import { ActivatedRoute } from '@angular/router'
-import { TranscribeService } from 'aws-sdk'
-import { json } from 'stream/consumers'
 import { VgApiService, VgMediaDirective } from '@videogular/ngx-videogular/core'
-import { stringify } from 'querystring'
 
 @Component({
   selector: 'app-file-rekognition-view',
@@ -48,6 +45,17 @@ export class FileRekognitionViewComponent implements OnInit {
   private videoData?: JSON
   private currentBorderBox: HTMLElement | null = null
   private data: any
+  public seekTimestampInVideo(timestamp:number, boxinfo:any): void{
+    this.data.seekTime(timestamp)
+    var containerForBox: HTMLElement | null = document.getElementById('containerforbox')
+    this.currentBorderBox?.remove()
+    const newBox : HTMLElement = document.createElement("span")
+
+    newBox.setAttribute("style", `border-style:double;border-color:red;position:absolute;top:${boxinfo.Top * 100}%;left:${boxinfo.Left * 100}%;width:${containerForBox!.getBoundingClientRect().width * boxinfo.Width}px;height:${containerForBox!.getBoundingClientRect().height * boxinfo.Height}px;z-index:2;`)
+
+    containerForBox!.appendChild(newBox)
+    this.currentBorderBox = newBox
+  }
   onPlayerReady(api: VgApiService) {
     this.data = api;
     this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this));
@@ -117,22 +125,9 @@ export class FileRekognitionViewComponent implements OnInit {
   public prettifyConfidence(confidence:number): string{
     return Math.round(confidence).toString() + "%"
   }
+  public sumTotalLabelOccurrences(obj:any){
+    return obj.length
+  }
 
   //public getLabelBy
-
-  public seekTimestampInVideo(timestamp:number, boxinfo:any): void{
-    this.data.seekTime(timestamp)
-    var containerForBox: HTMLElement | null = document.getElementById('containerforbox')
-    this.currentBorderBox?.remove()
-    const newBox : HTMLElement = document.createElement("span")
-
-    newBox.setAttribute("style", `border-style:double;border-color:red;position:absolute;top:${boxinfo.Top * 100}%;left:${boxinfo.Left * 100}%;width:${containerForBox!.getBoundingClientRect().width * boxinfo.Width}px;height:${containerForBox!.getBoundingClientRect().height * boxinfo.Height}px;z-index:2;`)
-
-    containerForBox!.appendChild(newBox)
-    this.currentBorderBox = newBox
-  }
-
-  public sumTotalLabelOccurrences(obj:any){
-    return obj.reduce((accumulator:any, object:any) => accumulator + object.length, 0)
-  }
 }
