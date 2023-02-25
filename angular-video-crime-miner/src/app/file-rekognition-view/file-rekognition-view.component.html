@@ -18,8 +18,11 @@
         </div>
         <div class="scrollbox">
             <div *ngFor="let label of this.getLabels()">
-                <div class = "clickableLabel">
-                    {{label.Name}} | {{prettifyTimestamp(label.Timestamp)}} | {{prettifyConfidence(label.Confidence)}}
+                <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
+                (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
+                    <div>{{label.Name}}</div>
+                    <div>{{prettifyTimestamp(label.Timestamp)}}</div>
+                    <div>{{prettifyConfidence(label.Confidence)}}</div>
                 </div>
             </div>
         </div>

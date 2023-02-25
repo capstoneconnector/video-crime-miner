@@ -163,6 +163,9 @@ body{
   border-color:#000000;
   border-width: 2px;
   border-bottom: solid;
+  background-color:#e0d4d1;
+  padding: 10px;
+  color:#000000;
 }
 .nameCol{
   width: 33%;
@@ -185,6 +188,5 @@ body{
   overflow: hidden;
 }
 .selected div{
-  background-color: black;
-  color: white;
+  background-color: #dc8671;
 }
