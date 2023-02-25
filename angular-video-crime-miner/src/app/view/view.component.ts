@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -29,7 +30,7 @@ export class ViewComponent implements OnInit {
   caseInfos?: Observable<any>
 
   /* Constructor */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.requestCases().subscribe(res => {
@@ -71,6 +72,7 @@ export class ViewComponent implements OnInit {
       }
     })
   }
+
   /* Input clearing */
   private resetInputs(): void{
     this.newCaseDescription = ""
@@ -88,6 +90,16 @@ export class ViewComponent implements OnInit {
       this.successMessage = ""
       this.errorMessage = message
     }
+  }
+
+  /* Clickable cases */
+  selectedCase?: any
+  public onSelectCase(theCase: any): void{
+    this.selectedCase = theCase
+  }
+
+  public onDoubleClickCase(theCase: any): void{
+    this.router.navigateByUrl('/detailed-case-view/' + theCase.case_id)
   }
 
   /* Animations and Style Functions */
