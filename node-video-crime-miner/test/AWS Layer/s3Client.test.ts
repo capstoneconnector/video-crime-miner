@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
-import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
-import { createBucket, listBuckets, listObjects, getObjects, uploadFrontEndClient } from '../../src/interfaces/video-storage/s3Connector'
+import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand, DeleteBucketCommand } from '@aws-sdk/client-s3'
+import { createBucket, listBuckets, listObjects, getObjects, uploadFrontEndClient, removeObject } from '../../src/interfaces/video-storage/s3Connector'
 
 const s3Mock = mockClient(S3Client)
 
@@ -48,4 +48,13 @@ describe('uploadWithFile function', () => {
     const res = await uploadFrontEndClient('example bucket', uint, {})
     expect(res).toBeTruthy()
   })
+})
+
+// removeObject function test
+describe('removeObject function', () => {
+	s3Mock.on(DeleteBucketCommand).resolves({})
+	it('should return a successful response', async () => {
+		const res = await removeObject('example bucket' , 'filename.png')
+		expect(res).toBeTruthy()
+	})
 })

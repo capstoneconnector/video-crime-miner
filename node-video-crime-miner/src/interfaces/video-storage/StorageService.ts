@@ -1,7 +1,9 @@
 
 /* Backend S3 Storage Service imports */
-import { listObjects, getObjects, uploadFrontEndClient } from './s3Connector.js'
+import { listObjects, getObjects, uploadFrontEndClient, removeObject } from './s3Connector.js'
 interface StorageService {
+
+
 	listObjects(source: string /*parameter type*/): any /*return type*/;
 
 	upload(source: string, body: any, filename:any): any;
@@ -27,8 +29,8 @@ const s3 : StorageService = {
 		getObjects(bucket, fileName);
 	}
 	,
-	removeObject: function (source: string, file: any) {
-		throw new Error('Function not implemented.');
+	removeObject: function (bucket: string, fileName: any) {
+		removeObject(bucket, fileName)
 	}
 
 	/*Import implemented functions here separated by commas*/
