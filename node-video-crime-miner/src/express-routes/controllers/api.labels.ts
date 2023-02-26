@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 /* Backend layer imports */
-import { startLabelDetection, getLabelDetectionResults } from '../../AWS Layer/Rekognition/videoLabelUtils.js'
+import { vidService } from '../../interfaces/videoRecognition/VideoAnalysisService.js'
 
 /* Service Interface Imports */
 import { databaseService } from '../../interfaces/database/DatabaseService.js'
@@ -24,13 +24,17 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
     response.data = await databaseService.getResultsForJob(req.params['jobId'])
     //let result = await getResultsForJob(req.params['jobId'])
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-    let newResult = await getLabelDetectionResults(req.params['jobId']) // Get results for the id
+    let newResult = await vidService.collectJobResults(req.params['jobId']) // Get results for the id
     // Now let's trim down the result to only include labels and video metadata
-    response.data = {
-      Labels: newResult.Labels,
-      VideoMetadata: newResult.VideoMetadata
+    let newData = {
+      Labels: newResult[0],
+      VideoMetadata: newResult[1]
     }
-    await databaseService.updateJobResults(req.params['jobId'], newResult) // update the db entry
+    response.data = {
+      Labels: newResult[0],
+      VideoMetadata: newResult[1]
+    }
+    await databaseService.updateJobResults(req.params['jobId'], newData) // update the db entry
     // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
     response.success = true
     response = standardizeResponse(response).convertToJson()
@@ -85,8 +89,8 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
     var response = emptyOutput
     const keywords = req.body.labels || [] // Filter keywords
     // const snsTopic = await createTopic(req.params["fileName"])
-    const job_id = await startLabelDetection(req.params['fileName'], keywords)
-    await databaseService.createNewLabels(job_id, keywords, req.params['fileName'])
+    const job_id = await vidService.startJob(req.params['fileName'], keywords)
+    await databaseService.createNewLabels(job_id.JobID, keywords, req.params['fileName'])
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
