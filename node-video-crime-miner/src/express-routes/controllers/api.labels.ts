@@ -40,7 +40,7 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
   } catch (err: any) {
-    console.log("app.get('/labels/:jobId') errored out")
+    console.log("app.get('/labels/job/:jobId') errored out")
     response.errors.push(err.message)
     response.success = false
     response = standardizeResponse(response).convertToJson()
@@ -106,6 +106,7 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
 /* GET file for job id */
 async function fetchFileForJobID (req: Request, res: Response, next: NextFunction) {
   try {
+    console.log("passed job id: " + req.params['jobId'])
     var response = emptyOutput
     response.data = await databaseService.fetchFileForJob(req.params['jobId'])
     response.success = true
