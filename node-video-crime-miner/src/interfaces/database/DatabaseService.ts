@@ -23,7 +23,7 @@ interface DatabaseService {
 
     getResultsForJob (jobId: string): Promise<any>
 
-    updateJobResults (jobId: string, result: JSON): Promise<any>
+    updateJobResults (jobId: string, result: any): Promise<any>
 
     fetchFileForJob (jobId: string): Promise<any>
 }
@@ -78,7 +78,7 @@ const postgres : DatabaseService = {
         return pglabel.getResultsForJob(jobId)
     },
 
-    updateJobResults: function (jobId: string, result: JSON): Promise<any> {
+    updateJobResults: function (jobId: string, result: any): Promise<any> {
         return pglabel.updateJobResults(jobId, result)
     },
 
