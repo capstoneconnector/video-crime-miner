@@ -1,0 +1,16 @@
+.page-content{
+    height:100%;
+    width:100%;
+    overflow:scroll;
+    overflow-x: hidden;
+}
+.left-cascade.card{
+    width: 48%;
+    padding:10px;
+    float: left;
+}
+.right-cascade.card{
+    width: 48%;
+    padding:10px;
+    float: right;
+}

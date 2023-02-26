@@ -1,10 +1,46 @@
-<h1>Dashboard</h1>
-<div class="card">
-    <div class="card-head">Dashboard</div>
-    <div class="card-body">
-        Welcome to the Video Crime Miner Application Demo! 
-        <br>
-        <b>Click on the CM button in the top left to open the Nav Bar and get started!</b>
+<div class="page-content">
+    <div class="left-cascade card">
+        <div class="card-head">Welcome!</div>
+        <div class="card-body">
+            Thanks for using the Video Crime Miner Application Demo! 
+            <br>
+            <b>Click on the CM button in the top left to open the Nav Bar and get started!</b>
+        </div>
+    </div>
+    <div class="right-cascade card">
+        <div class="card-head">Your Cases</div>
+        <div class="card-body">
+            You currently have (TODO: ADD AMOUNT OF CASES) open cases.
+            <br>
+            <a [routerLink]="['/view/']">View them here.</a>
+        </div>
+    </div>
+    <div class="right-cascade card">
+        <div class="card-head">Recently Viewed</div>
+        <div class="card-body">
+            (TODO: ADD LIST OF RECENTLY VISITED LINKS HERE MAYBE WE CAN STORE IT IN THE USER TABLE?)
+        </div>
+    </div>
+    <div class="left-cascade card">
+        <div class="card-head">Tips</div>
+        <div class="card-body">
+            <ul>
+                <li>You can double click on a case to view more details.</li>
+                <li>You can see where labels are in a video by clicking on the label.</li>
+                <li>Add new video files to a case to let us analyze them for you by looking for evidence.</li>
+                <li>We strive to make your job easier. Give us suggestions for how we can improve your experience in the help tab in the navigation bar.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="right-cascade card">
+        <div class="card-head">Tutorials</div>
+        <div class="card-body">
+            <ul>
+                <li>What's a case? How do I create a new case?</li>
+                <li>How can I upload video files to my case?</li>
+                <li>How do I let Crime Miner search videos for evidence?</li>
+                <li>How do I see the results from videos I sent through Crime Miner?</li>
+            </ul>
+        </div>
     </div>
 </div>
-
