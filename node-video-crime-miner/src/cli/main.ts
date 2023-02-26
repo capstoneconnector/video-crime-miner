@@ -1,6 +1,6 @@
 import { uploadCommandLine, listObjects } from '../interfaces/video-storage/s3Connector.js'
-import { startVideoFacesDetection, getVideoFacesDetectionOutput } from '../AWS Layer/Rekognition/videoFaceUtils.js'
-import { startLabelDetection, getLabelDetectionResults, collectLabelDetections } from '../AWS Layer/Rekognition/videoLabelUtils.js'
+import { startVideoFacesDetection, getVideoFacesDetectionOutput } from '../interfaces/videoRecognition/videoFaceUtil.js'
+import { startLabelDetection, getLabelDetectionResults, collectLabelDetections } from '../interfaces/videoRecognition/videoLabelUtils.js'
 import * as reader from 'readline'
 
 const bucketName = process.env['REKOG_BUCKET_NAME'] || 'AWS ROLE ARN NOT DEFINED IN .ENV'
