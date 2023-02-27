@@ -1,47 +1,61 @@
-<h1>Your Cases</h1>
-
 <div class="page-content">
-    <div class="card">
-        <div class="card-head">All Cases</div>
-        <div class="card-body">
-          <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
-          <button class="very-cool-button" (click)="openpopup()" >Create New Case</button>
-
-          <!-- Popup for creating new case -->
-          <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
-                <div class="content" >
-                  <div class="close" (click)="closepopup()">
-                    &times; <!-- This is the X icon -->
-                  </div>
-                  <h4>Create New Case</h4>
-                  <div class="form-group">
-                    <label for="name"><span>*</span> Name</label>
-                    <input [(ngModel)] = "newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="description"><span>*</span> Description</label>
-                    <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="100" rows="20"></textarea>
-                  </div>
-                  <button class="very-cool-button" (click)="addNewCase(newCaseName, newCaseDescription)">Create Case</button>
-                </div>
-          </div>
-
-            <table class="rwd-table">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Tags</th>
-                    <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let case of this.getCaseInfos()" class="clickable-row">
-                    <td data-th="Name"><a [routerLink]="['/detailed-case-view/', case.case_id]">{{ case.name }}</a></td>
-                    <td data-th="Tags">{{ case.tags }}</td>
-                    <td data-th="Description">{{ case.description }}</td>
-                </tr>
-                </tbody>
-            </table>
+  <div class="card">
+    <div class="card-head">All Cases</div>
+    <div class="card-body">
+      <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
+      <button class="very-cool-button" (click)="openpopup()" >Create New Case</button>
+      <!-- Popup for creating new case -->
+      <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
+            <div class="content" >
+              <div class="close" (click)="closepopup()">
+                &times; <!-- &times; is the X icon -->
+              </div>
+              <h4>Create New Case</h4>
+              <div class="form-group">
+                <label for="name"><span>*</span> Name</label>
+                <input [(ngModel)]="newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+              </div>
+              <div class="form-group">
+                <label for="description"><span>*</span> Description</label>
+                <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
+              </div>
+              <button class="very-cool-button" (click)="addNewCase(newCaseName, newCaseDescription)">Create Case</button>
+              <div [(ngModel)]="successMessage">{{successMessage}}</div>
+              <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+            </div>
+      </div>
+      <!-- Clickable case rows -->
+      <div class="caseTable">
+        <div *ngFor="let case of this.getCaseInfos()">
+            <div class = "clickableCase" [class.selected]="case === selectedCase" 
+            (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
+              <div class="nameCol">{{ case.name }}</div>
+              <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>
+              <div class="tagsCol" *ngIf="(case.tags).length==0">None</div>
+              <div class="descriptionCol">{{ case.description }}</div>
+            </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<!-- Table of cases -->
+<!--
+<table class="rwd-table">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let case of this.getCaseInfos()">
+        <td data-th="Name"><a [routerLink]="['/detailed-case-view/', case.case_id]">{{ case.name }}</a></td>
+        <td data-th="Tags">{{ case.tags }}</td>
+        <td data-th="Description">{{ case.description }}</td>
+    </tr>
+    </tbody>
+</table>
+-->

@@ -46,7 +46,7 @@ export class FileRekognitionViewComponent implements OnInit {
   private currentBorderBox: HTMLElement | null = null
   private data: any
   public seekTimestampInVideo(timestamp:number, boxinfo:any): void{
-    this.data.seekTime(timestamp)
+    this.data.seekTime(timestamp/1000)
     var containerForBox: HTMLElement | null = document.getElementById('containerforbox')
     this.currentBorderBox?.remove()
     const newBox : HTMLElement = document.createElement("span")
@@ -129,5 +129,15 @@ export class FileRekognitionViewComponent implements OnInit {
     return obj.length
   }
 
-  //public getLabelBy
+  /* List of Labels Functionality */
+  selectedLabel?: any
+  public onSelectLabel(label: any): void{
+    this.selectedLabel = label
+    this.seekTimestampInVideo(label.Timestamp, label.Instances[0].BoundingBox)
+  }
+
+  public onDoubleClickLabel(label: any): void{
+    // TODO: popup with more info about that specific label, and possibly looking into "adding it into evidence?" or something?
+  }
+
 }

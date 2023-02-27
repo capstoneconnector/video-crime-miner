@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -15,6 +16,7 @@ export class ViewComponent implements OnInit {
     this.showPopup = true
   }
   closepopup(){
+    this.resetInputs()
     this.showPopup = false
   }
   closeoverlay(e:any){
@@ -28,7 +30,7 @@ export class ViewComponent implements OnInit {
   caseInfos?: Observable<any>
 
   /* Constructor */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.requestCases().subscribe(res => {
@@ -45,16 +47,14 @@ export class ViewComponent implements OnInit {
   }
 
   /* Create new case request and response handler */
-
   newCaseName: string = ""
   newCaseDescription: string = ""
   public addNewCase(newCaseName: string, newCaseDescription: string): void {
     //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
-    //var newCaseName = document.getElementById("new-case-name")?.value
-    //var newCaseDescription = document.getElementById("new-case-description")?.innerText
-    document.getElementById("newCaseDescription")!.innerHTML = "Inside of addnewcase"
-    if(newCaseName!.length<3 || newCaseDescription!.length<1){
+    if(newCaseName.length<3 || newCaseDescription.length<1){
       // TODO: add a new message that says the fields aren't filled out
+      let message = "ERROR: Case name must be length 3 or more, and there must be a description"
+      this.setFeedbackMessage(false, message)
       return
     }
     var body = {
@@ -64,11 +64,43 @@ export class ViewComponent implements OnInit {
     }
     this.http.post(`${this.baseUrl}/cases`, body).subscribe((res:any) => {
       if(res.success){
-        // TODO: add a new message that says it was a success
+        this.resetInputs()
+        this.setFeedbackMessage(true)
+
       }else{
-        // TODO: add a new message that says it failed
+        this.setFeedbackMessage(false, "ERROR: The case could not be created")
       }
     })
   }
 
+  /* Input clearing */
+  private resetInputs(): void{
+    this.newCaseDescription = ""
+    this.newCaseName = ""
+  }
+
+  /* User Message Feedback */
+  public successMessage:string = ""
+  public errorMessage:string = ""
+  private setFeedbackMessage(success:boolean, message:string = ""): void{
+    if(success){
+      this.errorMessage = ""
+      this.successMessage = "Case Created"
+    }else{
+      this.successMessage = ""
+      this.errorMessage = message
+    }
+  }
+
+  /* Clickable cases */
+  selectedCase?: any
+  public onSelectCase(theCase: any): void{
+    this.selectedCase = theCase
+  }
+
+  public onDoubleClickCase(theCase: any): void{
+    this.router.navigateByUrl('/detailed-case-view/' + theCase.case_id)
+  }
+
+  /* Animations and Style Functions */
 }
