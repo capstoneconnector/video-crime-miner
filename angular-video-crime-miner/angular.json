@@ -32,8 +32,10 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss",
               {
+
                 "input": "node_modules/@ionic/angular/css/core.css"
               },
               {
@@ -139,6 +141,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
             "scripts": []
