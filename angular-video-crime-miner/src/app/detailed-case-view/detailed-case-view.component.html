@@ -4,37 +4,39 @@
 
 <div class="page-content">
     <a [routerLink]="['/view/']"><- Back to Cases</a>
-    <h1>DETAILED CASE INFORMATION</h1>
+    <h1>{{getCaseInfo().name}}</h1>
 
-    <!-- Card 1: Case Information -->
     <div class="card">
-        <div class="card-head">Case Info</div>
+        <div class="card-head">Files</div>
         <div class="card-body">
-            <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+            <!-- Clickable file rows -->
+            <div class="fileTable">
+                <div *ngFor="let file of this.getCaseFiles()">
+                    <div class = "clickableFile" [class.selected]="file === selectedFile" 
+                    (click)="onSelectFile(file)" (dblclick)="onDoubleClickFile(file)">
+                        <div class="titleCol">{{ file.title }}</div>
+                        <div class="notesCol" *ngIf="(file.notes).length!=0">{{ file.notes }}</div>
+                        <div class="notesCol" *ngIf="(file.notes).length==0">None</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
     <!-- Card 2: Different Files in the Case -->
     <div class="card">
-        <div class="card-head">Related Files</div>
+        <h1 class="card-head">Files</h1>
         <div class="card-body">
             <table class="rwd-table">
                 <thead>
-                    <th>File ID</th>
                     <th>File Name</th>
                     <th>Notes</th>
                     <th>New Label Detection</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let file of this.getCaseFiles()">
-                        <td>{{file.s3_name}}</td>
                         <td>{{file.title}}</td>
                         <td>{{file.notes}}</td>
-                        <td><a [routerLink]="['/new-label-detection/', file.s3_name]">Start New Label Detection</a></td>
+                        <td><a [routerLink]="['/new-label-detection/', file.storageServiceFileName]">Start New Label Detection</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -91,3 +93,17 @@
     </div>
 
 </div>
+
+<!-- Card 1: Case Information -->
+<!--
+<div class="card">
+    <div class="card-head">Case Info</div>
+    <div class="card-body">
+        <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+    </div>
+</div>
+-->

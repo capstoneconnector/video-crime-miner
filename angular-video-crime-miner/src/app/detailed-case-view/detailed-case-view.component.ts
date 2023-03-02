@@ -131,4 +131,16 @@ export class DetailedCaseViewComponent implements OnInit {
       document.location.reload()
     })
   }
+
+
+
+
+  /* Clickable file methods */
+  public selectedFile = ""
+  public onSelectFile(file: any){
+    this.selectedFile = file
+  }
+  public onDoubleClickFile(file:any){
+    // TODO: add popup for detailed file view
+  }
 }
