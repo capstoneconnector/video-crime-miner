@@ -1,11 +1,9 @@
-<script>
-  $('[name=tags]').tagify();
-</script>
-
 <div class="page-content">
+    <!-- Page navigation and header -->
     <a [routerLink]="['/view/']"><- Back to Cases</a>
     <h1>{{getCaseInfo().name}}</h1>
 
+    <!-- Clickable files table -->
     <div class="card">
         <div class="card-head">Files</div>
         <div class="card-body">
@@ -22,7 +20,55 @@
             </div>
         </div>
     </div>
-    <!-- Card 2: Different Files in the Case -->
+
+    <!-- Actions buttons -->
+    <div class="card">
+        <div class="card-head">Actions</div>
+        <div class="card-body">
+            <div class="actions">
+                <div class="popupButton" (click)="openUploadFilePopup()">Upload new file</div>
+                <div class="popupButton">Edit case details</div>
+                <div class="popupButton">View all label detection outputs</div>
+                <div class="popupButton">Start new label detection</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- POPUPS -->
+<!-- Popup for uploading a new file -->
+<div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
+    <div class="content" >
+        <div class="close" (click)="closeUploadFilePopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Create New Case</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<!-- Unused HTML -->
+
+<!-- Card 1: Case Information -->
+<!--
+<div class="card">
+    <div class="card-head">Case Info</div>
+    <div class="card-body">
+        <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
+        <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+    </div>
+</div>
+-->
+
+<!-- Card 2: Different Files in the Case -->
+<!--
     <div class="card">
         <h1 class="card-head">Files</h1>
         <div class="card-body">
@@ -42,68 +88,60 @@
             </table>
         </div>
     </div>
+-->
 
-    <!-- Card 3: Upload New Files to the Case -->
-    <div class="card">
-		<h1 class="card-head" >Upload File</h1>
-        <div>Note: After it's finished uploading, the page will refresh. Please be patient!</div>
-        <div class="card-body">
-            <label class="btn btn-default p-0">
-                <input type="file" (change)="selectFile($event)" />
-            </label>
-            <button class="button" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
-        </div>
-  
-		<div *ngIf="currentFile" class="progress-bar">
-		  <div
-			class="progress-bar"
-			role="progressbar"
-			attr.aria-valuenow="{{ progress }}"
-			aria-valuemin="0"
-			aria-valuemax="100"
-			[ngStyle]="{ width: progress + '%' }"
-		  >
-			{{ progress }}%
-		  </div>
-		</div>
-		<div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
-    </div>
-
-    <!-- Card 4: Different Outputs of the Case -->
-    <div class="card">
-        <div class="card-head">Outputs Run</div>
-        <div class="card-body">
-        <table class="rwd-table">
-            <thead>
-                <th>File ID</th>
-                <th>Labels Run</th>
-                <th>Job ID</th>
-                <th>View Results</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let output of this.getCaseOutputs()">
-                    <td>{{output.file_id}}</td>
-                    <td>{{output.tags}}</td>
-                    <td>{{output.job_id}}</td>
-                    <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-    </div>
-
-</div>
-
-<!-- Card 1: Case Information -->
+<!-- Card 3: Upload New Files to the Case -->
 <!--
 <div class="card">
-    <div class="card-head">Case Info</div>
+    <h1 class="card-head" >Upload File</h1>
+    <div>Note: After it's finished uploading, the page will refresh. Please be patient!</div>
     <div class="card-body">
-        <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+        <label class="btn btn-default p-0">
+            <input type="file" (change)="selectFile($event)" />
+        </label>
+        <button class="button" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
+    </div>
+
+    <div *ngIf="currentFile" class="progress-bar">
+        <div
+        class="progress-bar"
+        role="progressbar"
+        attr.aria-valuenow="{{ progress }}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [ngStyle]="{ width: progress + '%' }"
+        >
+        {{ progress }}%
+        </div>
+    </div>
+    <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+</div>
+-->
+
+
+
+
+<!-- Card 4: Different Outputs of the Case -->
+<!--
+<div class="card">
+    <div class="card-head">Outputs Run</div>
+    <div class="card-body">
+    <table class="rwd-table">
+        <thead>
+            <th>File ID</th>
+            <th>Labels Run</th>
+            <th>Job ID</th>
+            <th>View Results</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let output of this.getCaseOutputs()">
+                <td>{{output.file_id}}</td>
+                <td>{{output.tags}}</td>
+                <td>{{output.job_id}}</td>
+                <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
+            </tr>
+        </tbody>
+    </table>
     </div>
 </div>
 -->

@@ -132,6 +132,10 @@ export class DetailedCaseViewComponent implements OnInit {
     })
   }
 
+  private resetInputs(): void{
+    this.name = ""
+    this.file = null
+  }
 
 
 
@@ -142,5 +146,20 @@ export class DetailedCaseViewComponent implements OnInit {
   }
   public onDoubleClickFile(file:any){
     // TODO: add popup for detailed file view
+  }
+
+  /* Popup for upload file */
+  showPopup = false
+  openUploadFilePopup(){
+    this.showPopup = true
+  }
+  closeUploadFilePopup(){
+    this.resetInputs()
+    this.showPopup = false
+  }
+  closeoverlay(e:any){
+    if(e.target.classList.contains('overlay')){
+      this.showPopup = false
+    }
   }
 }
