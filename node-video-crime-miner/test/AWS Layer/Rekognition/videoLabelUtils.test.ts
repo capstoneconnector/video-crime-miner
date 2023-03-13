@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from '@aws-sdk/client-rekognition'
-import { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections } from '../../../src/AWS Layer/Rekognition/videoLabelUtils'
+import { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections } from '../../../src/interfaces/videoRecognition/videoLabelUtils.js'
 
 import { SNSClient } from '@aws-sdk/client-sns'
 
@@ -22,7 +22,7 @@ describe('startLabelDetection function', () => {
     })
 
     const response = await startLabelDetection(inputFile, inputKeywords, rekognitionMock)
-    expect(response).toBe(output)
+    expect(response.JobID).toBe(output)
   })
 })
 
@@ -40,8 +40,9 @@ describe('runLabelDetectionAndGetResults function', () => {
       JobStatus: 'SUCCEEDED'
     })
 
+
     // this will be the result
-    const response = getLabelDetectionResults(labelDetectJobID.JobId, rekognitionMock)
+    const response = getLabelDetectionResults(labelDetectJobID.JobID, rekognitionMock)
 
     expect(response).toBeTruthy()
   })
