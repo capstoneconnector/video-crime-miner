@@ -1,5 +1,5 @@
 .sidenav {
-    background: #7cc0e2;
+    background: #98c1d9;
     transition: all .5s ease;
     position: fixed;
     z-index: 1;
@@ -52,7 +52,7 @@
 }
 
 .sidenav-collapsed {
-    width: 16.5625rem;
+    width: 17rem;
 }
 
 .sidenav-nav {
@@ -73,7 +73,7 @@
             display: flex;
             align-items: center;
             height: 3rem;
-            color: #f3f3f3;
+            color: #000000;
             text-decoration: none;
             border-radius: 0.625rem;
             transition: all .3s ease;
