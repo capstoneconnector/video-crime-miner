@@ -149,17 +149,42 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   /* Popup for upload file */
-  showPopup = false
+  showUploadFilePopup = false
   openUploadFilePopup(){
-    this.showPopup = true
+    this.showUploadFilePopup = true
   }
   closeUploadFilePopup(){
     this.resetInputs()
-    this.showPopup = false
+    this.showUploadFilePopup = false
   }
-  closeoverlay(e:any){
-    if(e.target.classList.contains('overlay')){
-      this.showPopup = false
+
+  /* Popup for edit case details */
+  showEditCasePopup = false
+  openEditCasePopup(){
+    this.showEditCasePopup = true
+  }
+  closeEditCasePopup(){
+    this.resetInputs()
+    this.showEditCasePopup = false
+  }
+
+  /* Popup for view label detection jobs */
+  showViewLabelJobsPopup = false
+  openViewLabelJobsPopup(){
+    this.showViewLabelJobsPopup = true
+  }
+  closeViewLabelJobsPopup(){
+    this.resetInputs()
+    this.showViewLabelJobsPopup = false
+  }
+
+    /* Popup for start new label detection job */
+    showStartLabelJobPopup = false
+    openStartLabelJobPopup(){
+      this.showStartLabelJobPopup = true
     }
-  }
+    closeStartLabelJobPopup(){
+      this.resetInputs()
+      this.showStartLabelJobPopup = false
+    }
 }

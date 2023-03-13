@@ -26,24 +26,81 @@
         <div class="card-head">Actions</div>
         <div class="card-body">
             <div class="actions">
-                <div class="popupButton" (click)="openUploadFilePopup()">Upload new file</div>
-                <div class="popupButton">Edit case details</div>
-                <div class="popupButton">View all label detection outputs</div>
-                <div class="popupButton">Start new label detection</div>
+                <button class="popupButton" (click)="openUploadFilePopup()">Upload new file</button>
+                <button class="popupButton" (click)="openEditCasePopup()">Edit case details</button>
+                <button class="popupButton" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
+                <button class="popupButton" (click)="openStartLabelJobPopup()">Start new label detection</button>
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- POPUPS -->
 <!-- Popup for uploading a new file -->
-<div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
-    <div class="content" >
-        <div class="close" (click)="closeUploadFilePopup()">
+<div class="popup" *ngIf="showUploadFilePopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeUploadFilePopup()">
         &times; <!-- &times; is the X icon -->
         </div>
-        <h4>Create New Case</h4>
+        <h4>Upload New File</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+        <label class="btn btn-default p-0">
+            <input type="file" (change)="selectFile($event)" />
+        </label>
+        <button class="popupButton" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
+        <div *ngIf="currentFile" class="progress-bar">
+            <div
+            class="progress-bar"
+            role="progressbar"
+            attr.aria-valuenow="{{ progress }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }"
+            >
+            {{ progress }}%
+            </div>
+        </div>
+        <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+    </div>
+</div>
+
+<!-- Popup for editing case details -->
+<div class="popup" *ngIf="showEditCasePopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeEditCasePopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Edit Case Details</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<!-- Popup for viewing label detection jobs -->
+<div class="popup" *ngIf="showViewLabelJobsPopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeViewLabelJobsPopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Label Detection Jobs</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<div class="popup" *ngIf="showStartLabelJobPopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeStartLabelJobPopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Start New Label Detection Job</h4>
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
@@ -52,20 +109,6 @@
 </div>
 
 <!-- Unused HTML -->
-
-<!-- Card 1: Case Information -->
-<!--
-<div class="card">
-    <div class="card-head">Case Info</div>
-    <div class="card-body">
-        <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-        <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
-    </div>
-</div>
--->
 
 <!-- Card 2: Different Files in the Case -->
 <!--
@@ -91,32 +134,7 @@
 -->
 
 <!-- Card 3: Upload New Files to the Case -->
-<!--
-<div class="card">
-    <h1 class="card-head" >Upload File</h1>
-    <div>Note: After it's finished uploading, the page will refresh. Please be patient!</div>
-    <div class="card-body">
-        <label class="btn btn-default p-0">
-            <input type="file" (change)="selectFile($event)" />
-        </label>
-        <button class="button" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
-    </div>
 
-    <div *ngIf="currentFile" class="progress-bar">
-        <div
-        class="progress-bar"
-        role="progressbar"
-        attr.aria-valuenow="{{ progress }}"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        [ngStyle]="{ width: progress + '%' }"
-        >
-        {{ progress }}%
-        </div>
-    </div>
-    <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
-</div>
--->
 
 
 
