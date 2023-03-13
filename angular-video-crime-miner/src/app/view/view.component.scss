@@ -14,7 +14,7 @@ $breakpoint-alpha: 480px; // adjust to your needs
   width:auto;
   border: solid;
   border-color:rgb(0, 0, 0);
-  border-width: 10px;
+  border-width: 2px;
 }
 .form-group{
   overflow: hidden;
@@ -149,6 +149,10 @@ body{
 .very-cool-button:hover {
   transform: scale(1.1);
   background-color: #7cf6fd;
+}
+.very-cool-button:disabled{
+  opacity: .7;
+  pointer-events: none;
 }
 
 /* Div table of clickable cases */

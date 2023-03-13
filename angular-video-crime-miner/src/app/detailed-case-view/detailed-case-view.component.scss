@@ -91,3 +91,8 @@
   transform: scale(1.1);
   background-color: #7cf6fd;
 }
+
+.popupButton:disabled{
+  opacity: .7;
+  pointer-events: none;
+}
