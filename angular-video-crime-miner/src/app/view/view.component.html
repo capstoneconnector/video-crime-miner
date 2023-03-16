@@ -19,7 +19,8 @@
                 <label for="description"><span>*</span> Description</label>
                 <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
               </div>
-              <button class="very-cool-button" (click)="addNewCase(newCaseName, newCaseDescription)">Create Case</button>
+              <button class="very-cool-button" (click)="addNewCase(newCaseName, newCaseDescription)"
+              disabled="newCaseName.length<1 or newCaseDescription.length<1">Create Case</button>
               <div [(ngModel)]="successMessage">{{successMessage}}</div>
               <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
             </div>
