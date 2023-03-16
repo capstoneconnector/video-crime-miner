@@ -131,4 +131,60 @@ export class DetailedCaseViewComponent implements OnInit {
       document.location.reload()
     })
   }
+
+  private resetInputs(): void{
+    this.name = ""
+    this.file = null
+  }
+
+
+
+  /* Clickable file methods */
+  public selectedFile = ""
+  public onSelectFile(file: any){
+    this.selectedFile = file
+  }
+  public onDoubleClickFile(file:any){
+    // TODO: add popup for detailed file view
+  }
+
+  /* Popup for upload file */
+  showUploadFilePopup = false
+  openUploadFilePopup(){
+    this.showUploadFilePopup = true
+  }
+  closeUploadFilePopup(){
+    this.resetInputs()
+    this.showUploadFilePopup = false
+  }
+
+  /* Popup for edit case details */
+  showEditCasePopup = false
+  openEditCasePopup(){
+    this.showEditCasePopup = true
+  }
+  closeEditCasePopup(){
+    this.resetInputs()
+    this.showEditCasePopup = false
+  }
+
+  /* Popup for view label detection jobs */
+  showViewLabelJobsPopup = false
+  openViewLabelJobsPopup(){
+    this.showViewLabelJobsPopup = true
+  }
+  closeViewLabelJobsPopup(){
+    this.resetInputs()
+    this.showViewLabelJobsPopup = false
+  }
+
+    /* Popup for start new label detection job */
+    showStartLabelJobPopup = false
+    openStartLabelJobPopup(){
+      this.showStartLabelJobPopup = true
+    }
+    closeStartLabelJobPopup(){
+      this.resetInputs()
+      this.showStartLabelJobPopup = false
+    }
 }

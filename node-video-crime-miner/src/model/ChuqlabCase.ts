@@ -2,13 +2,15 @@ import ChuqlabFile from "./ChuqlabFile"
 
 export default class ChuqlabCase {
 
+    private id: number
     private name: string
     private description: string
     private tags: string[]
     private notes: string[]
     private files: Array<ChuqlabFile>
 
-    constructor(name: string, description: string, tags: string[] = [], notes: string[]= [], files: Array<ChuqlabFile> = []) {
+    constructor(id:number, name: string, description: string, tags: string[] = [], notes: string[]= [], files: Array<ChuqlabFile> = []) {
+        this.id = id
         this.name = name
         this.description = description
         this.tags = tags
