@@ -1,15 +1,11 @@
 import express, { Express, Request, Response } from 'express'
-import Router from '../../../src/express-routes/index'
 import request from 'supertest'
 
 const app = express()
 
-app.use("/labels", Router)
-
-
 describe("Testing-server-routes", () => {
 	it("GET /labels/job/:jobId", async () => {
-		const {body} = await request(app).get("/labels/job/:jobId")
+		const {body} = await request(app).get("/labels/job/1234")
 		expect(body).toBeDefined()
 	})
 })

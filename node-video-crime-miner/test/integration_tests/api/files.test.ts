@@ -1,6 +1,5 @@
 
 import express, { Express, Request, Response } from 'express'
-import Router from '../../../src/express-routes/index'
 import request from 'supertest'
 
 const app = express()
