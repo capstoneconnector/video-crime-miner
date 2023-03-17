@@ -1,11 +1,24 @@
 import express, { Express, Request, Response } from 'express'
+//import app from '../../../src/express-routes/app' use this import test on actual server
 import request from 'supertest'
 
+const data = {
+	success: false,
+	errors: [
+	  "Cannot read properties of undefined (reading 'getResultsForJob')"
+	],
+	message: '',
+	data: {},
+	timestamp: 'Fri, 17 Mar 2023 12:47:30 GMT'
+}
+
+/*MOCKED SERVER*/
 const app = express()
 
 describe("Testing-server-routes", () => {
 	it("GET /labels/job/:jobId", async () => {
 		const {body} = await request(app).get("/labels/job/1234")
+		console.log(body)
 		expect(body).toBeDefined()
 	})
 })

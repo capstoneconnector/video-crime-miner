@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from 'express'
+//import app from '../../../src/express-routes/app' use this import test on actual server
 import request from 'supertest'
 
+/*MOCKED SERVER*/
 const app = express()
 
 describe("Testing-server-routes", () => {
