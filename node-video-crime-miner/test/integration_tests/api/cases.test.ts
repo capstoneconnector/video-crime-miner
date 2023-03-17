@@ -23,7 +23,7 @@ describe("Testing-server-routes", () => {
 
 describe("Testing-server-routes", () => {
 	it("POST /cases", async () => {
-		const {body} = await request(app).post("/cases")
+		const {body} = await request(app).post("/cases/FakeFileName, Body, Description")
 		expect(body).toBeDefined()
 	})
 })
