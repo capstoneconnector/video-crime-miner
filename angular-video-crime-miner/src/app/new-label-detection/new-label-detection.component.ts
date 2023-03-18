@@ -27,28 +27,56 @@ export class NewLabelDetectionComponent implements OnInit {
   ngOnInit(): void {
     this.fileId = this.route.snapshot.paramMap.get('fileId') || '1'
     this.requestFileInfo().subscribe(res => {
-      this.fileInfo = res.data
-      this.caseId = res.data[0].case_id
+
+      this.setFileInfo( res.data )
+      this.setCaseId(res.data[0].case_id)
+
       this.requestCaseInfo().subscribe(res =>{ // Must be nested because requestCaseInfo() relies on this.caseId, set by another subscription
-        this.caseInfo = res.data
+        
+        this.setCaseInfo(res.data)
+
       })
     })
+  }
+
+  public getFileId(): string {
+    return this.fileId
+  }
+
+  public setFileId(newFileId:string): void {
+    this.fileId = newFileId
   }
 
   public getCaseId(): number {
     return this.caseId
   }
 
+  public setCaseId(newCaseId:number): void {
+    this.caseId = newCaseId
+  }
+
   public getFileInfo(): any {
     return this.fileInfo
+  }
+
+  public setFileInfo(newFileInfo:JSON): void {
+    this.fileInfo = newFileInfo
   }
 
   public getCaseInfo(): any {
     return this.caseInfo
   }
 
+  public setCaseInfo(newCaseInfo:JSON): void {
+    this.caseInfo = newCaseInfo
+  }
+
   public getLabels(): string[] {
     return this.labels
+  }
+
+  public setLabels(newLabels:string[]): void {
+    this.labels = newLabels
   }
 
   public requestFileInfo(): Observable<any> {
