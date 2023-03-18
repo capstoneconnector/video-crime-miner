@@ -93,6 +93,7 @@ export class SidenavComponent implements OnInit {
     this.cognitoService.signOut()
     .then(() => {
     this.router.navigate(['/signIn'])
+    this.ngOnInit()
     })
   }
 }
