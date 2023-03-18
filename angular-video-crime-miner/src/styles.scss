@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
+/* Cards */
 .card {
     display: flex;
     flex-direction: column;
@@ -18,6 +19,27 @@
     .card-body {
         padding: 1rem 1.5rem;
     }
+}
+
+/* Standard Clickable Buttons */
+.cm-standard-button{
+  text-decoration: none;
+  background-color: #317ac7;
+  padding: 15px 10px;
+  border-radius: 9999px;
+  color: rgb(0, 0, 0);
+  display: block;
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+}
+.cm-standard-button:hover {
+  transform: scale(1.1);
+  background-color: #7cf6fd;
+}
+.cm-standard-button:disabled{
+  opacity: .7;
+  pointer-events: none;
 }
 
 * {
