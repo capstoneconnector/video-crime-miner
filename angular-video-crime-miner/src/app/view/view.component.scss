@@ -134,25 +134,9 @@ body{
   padding: 0;
   height: 100vh;
 }
-.very-cool-button {
-  text-decoration: none;
-  float: right;
-  background-color: #317ac7;
-  padding: 15px 10px;
-  border-radius: 9999px;
-  color: rgb(0, 0, 0);
-  display: block;
-  transition: 0.1s ease-in-out;
-  cursor: pointer;
-  user-select: none;
-}
-.very-cool-button:hover {
-  transform: scale(1.1);
-  background-color: #7cf6fd;
-}
-.very-cool-button:disabled{
-  opacity: .7;
-  pointer-events: none;
+
+.cm-standard-button{
+  float:right;
 }
 
 /* Div table of clickable cases */
