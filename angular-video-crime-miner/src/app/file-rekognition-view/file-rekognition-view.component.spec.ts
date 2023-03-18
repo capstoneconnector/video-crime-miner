@@ -96,15 +96,16 @@ describe('FileRekognitionViewComponent', () => {
         } // 
       );
 
-    // addEmploye should have made one request to POST employee
+    // requestFileForID should have made one request to GET /labels/file_for_job/<caseId>
     const req = httpTestingController.expectOne( `http://localhost:8000/labels/file_for_job/${reqCaseId}` );
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
-    // expect FileFor
+    // expect getVideoFileName === expReq.data[0].fileId
+    // expect getVideoPlayerSrcAndName === [ `https://dthqh9b9a8scb.cloudfront.net/${expReq.data[0].fileId}`, expReq.data[0].fileId ]
         expect( fileRekViewComp.getVideoFileName() ).toEqual( expReq.data[0].fileId )
         expect( fileRekViewComp.getVideoPlayerSrcAndName() ).toEqual( [ `https://dthqh9b9a8scb.cloudfront.net/${expReq.data[0].fileId}`, expReq.data[0].fileId ] )
 
@@ -175,11 +176,11 @@ describe('FileRekognitionViewComponent', () => {
     }
       );
 
-    // addEmploye should have made one request to POST employee
+    // requestLabels should have made one request to GET /labels/job/<caseId>
     const req = httpTestingController.expectOne( `http://localhost:8000/labels/job/${reqCaseId}` );
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after POST
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 

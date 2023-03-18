@@ -55,11 +55,11 @@ describe('DetailedCaseViewComponent', () => {
       } // 
     );
 
-    // addEmploye should have made one request to POST employee
+    // requestCaseInfo should have made one request to GET /cases/<caseId>
     const req = httpTestingController.expectOne('http://localhost:8000/cases/'+ String(reqCaseId));
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
@@ -90,11 +90,11 @@ describe('DetailedCaseViewComponent', () => {
 
     );
 
-    // addEmploye should have made one request to POST employee
+    // requestCaseFiles should have made one request to POST /files/case/<caseId>
     const req = httpTestingController.expectOne('http://localhost:8000/files/case/'+ String(reqCaseId));
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
@@ -140,11 +140,11 @@ describe('DetailedCaseViewComponent', () => {
       } // 
     );
 
-    // addEmploye should have made one request to POST employee
+    // requestCaseOutputs should have made one request to POST /labels/multifile
     const req = httpTestingController.expectOne('http://localhost:8000/labels/multifile');
     expect(req.request.method).toEqual('POST');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after POST
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 

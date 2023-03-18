@@ -58,11 +58,11 @@ describe('NewLabelDetectionComponent', () => {
         } // 
       );
 
-    // addEmploye should have made one request to POST employee
+    // requestFileInfo should have made one request to POST /files/info/<fileId>
     const req = httpTestingController.expectOne(`http://localhost:8000/files/info/${reqFileId}`);
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
@@ -102,11 +102,11 @@ describe('NewLabelDetectionComponent', () => {
         } // 
       );
 
-    // addEmploye should have made one request to POST employee
+    // requestCaseInfo should have made one request to GET /cases/<caseId>
     const req = httpTestingController.expectOne(`http://localhost:8000/cases/${reqCaseId}`);
     expect(req.request.method).toEqual('GET');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
@@ -137,11 +137,11 @@ describe('NewLabelDetectionComponent', () => {
 
     //var body:Object = { "labels": newLabelDetectComp.getLabels() }
 
-    // addEmploye should have made one request to POST employee
+    // sendJobCreationRequest should have made one request to POST /labels/file/<fileId>
     const req = httpTestingController.expectOne(`http://localhost:8000/labels/file/${newLabelDetectComp.getFileId()}`);
     expect(req.request.method).toEqual('POST');
 
-    // Expect server to return the employee after POST
+    // Expect server to return the response after POST
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
