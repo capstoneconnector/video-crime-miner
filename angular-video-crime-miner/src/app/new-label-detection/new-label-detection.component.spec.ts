@@ -115,7 +115,7 @@ describe('NewLabelDetectionComponent', () => {
   });
 
   //Test case requestCaseInfo
-  it('sendJobCreationRequest(): should return basic info for a case ', () => {
+  it('sendJobCreationRequest(): should return valid job id ', () => {
     
     
     

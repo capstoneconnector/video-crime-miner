@@ -78,7 +78,7 @@ describe('FileRekognitionViewComponent', () => {
     expect(res).toBeTruthy()
   })
 
-  it('requestFileForID() ', () => {
+  it('requestFileForID(): should receive file id and set video player src accordingly ', () => {
     
     var reqCaseId:string = "345ab033645bdc304e2b3453c84936ffac82969d0265e078c01f491921b34521"
 

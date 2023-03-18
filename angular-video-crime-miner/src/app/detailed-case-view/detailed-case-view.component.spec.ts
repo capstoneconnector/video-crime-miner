@@ -119,7 +119,7 @@ describe('DetailedCaseViewComponent', () => {
 
 
   //Test case requestCaseOutputs
-  it('requestCaseOutputs(obj:any): should return info for file related to given case ', () => {
+  it('requestCaseOutputs(obj:any): should return video analysis info for file related to given case ', () => {
     
     var reqCaseId:string = "1"
 
