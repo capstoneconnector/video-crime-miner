@@ -99,7 +99,7 @@ export class ViewComponent implements OnInit {
   }
 
   public onDoubleClickCase(theCase: any): void{
-    this.router.navigateByUrl('/detailed-case-view/' + theCase.case_id)
+    this.router.navigateByUrl('/detailed-case-view/' + theCase.id)
   }
 
   /* Animations and Style Functions */

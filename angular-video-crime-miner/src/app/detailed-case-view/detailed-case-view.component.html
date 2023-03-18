@@ -1,93 +1,165 @@
-<script>
-  $('[name=tags]').tagify();
-</script>
-
 <div class="page-content">
+    <!-- Page navigation and header -->
     <a [routerLink]="['/view/']"><- Back to Cases</a>
-    <h1>DETAILED CASE INFORMATION</h1>
+    <h1>{{getCaseInfo().name}}</h1>
 
-    <!-- Card 1: Case Information -->
+    <!-- Clickable files table -->
     <div class="card">
-        <div class="card-head">Case Info</div>
+        <div class="card-head">Files</div>
         <div class="card-body">
-            <div *ngIf="getCaseInfo()"><b>Case ID:</b> {{getCaseInfo().case_id}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Name:</b> {{getCaseInfo().name}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Description:</b> {{getCaseInfo().description}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Tags:</b> {{getCaseInfo().tags}}</div>
-            <div *ngIf="getCaseInfo()"><b>Case Notes:</b> {{getCaseInfo().notes}}</div>
+            <!-- Clickable file rows -->
+            <div class="fileTable">
+                <div *ngFor="let file of this.getCaseFiles()">
+                    <div class = "clickableFile" [class.selected]="file === selectedFile" 
+                    (click)="onSelectFile(file)" (dblclick)="onDoubleClickFile(file)">
+                        <div class="titleCol">{{ file.title }}</div>
+                        <div class="notesCol" *ngIf="(file.notes).length!=0">{{ file.notes }}</div>
+                        <div class="notesCol" *ngIf="(file.notes).length==0">None</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Card 2: Different Files in the Case -->
+    <!-- Actions buttons -->
     <div class="card">
-        <div class="card-head">Related Files</div>
+        <div class="card-head">Actions</div>
+        <div class="card-body">
+            <div class="actions">
+                <button class="popupButton" (click)="openUploadFilePopup()">Upload new file</button>
+                <button class="popupButton" (click)="openEditCasePopup()">Edit case details</button>
+                <button class="popupButton" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
+                <button class="popupButton" (click)="openStartLabelJobPopup()">Start new label detection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POPUPS -->
+<!-- Popup for uploading a new file -->
+<div class="popup" *ngIf="showUploadFilePopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeUploadFilePopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Upload New File</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+        <label class="btn btn-default p-0">
+            <input type="file" (change)="selectFile($event)" />
+        </label>
+        <button class="popupButton" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
+        <div *ngIf="currentFile" class="progress-bar">
+            <div
+            class="progress-bar"
+            role="progressbar"
+            attr.aria-valuenow="{{ progress }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }"
+            >
+            {{ progress }}%
+            </div>
+        </div>
+        <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+    </div>
+</div>
+
+<!-- Popup for editing case details -->
+<div class="popup" *ngIf="showEditCasePopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeEditCasePopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Edit Case Details</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<!-- Popup for viewing label detection jobs -->
+<div class="popup" *ngIf="showViewLabelJobsPopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeViewLabelJobsPopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Label Detection Jobs</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<div class="popup" *ngIf="showStartLabelJobPopup">
+    <div class="popupContent" >
+        <div class="popupClose" (click)="closeStartLabelJobPopup()">
+        &times; <!-- &times; is the X icon -->
+        </div>
+        <h4>Start New Label Detection Job</h4>
+        <!--
+        <div [(ngModel)]="successMessage">{{successMessage}}</div>
+        <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        -->
+    </div>
+</div>
+
+<!-- Unused HTML -->
+
+<!-- Card 2: Different Files in the Case -->
+<!--
+    <div class="card">
+        <h1 class="card-head">Files</h1>
         <div class="card-body">
             <table class="rwd-table">
                 <thead>
-                    <th>File ID</th>
                     <th>File Name</th>
                     <th>Notes</th>
                     <th>New Label Detection</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let file of this.getCaseFiles()">
-                        <td>{{file.s3_name}}</td>
                         <td>{{file.title}}</td>
                         <td>{{file.notes}}</td>
-                        <td><a [routerLink]="['/new-label-detection/', file.s3_name]">Start New Label Detection</a></td>
+                        <td><a [routerLink]="['/new-label-detection/', file.storageServiceFileName]">Start New Label Detection</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+-->
 
-    <!-- Card 3: Upload New Files to the Case -->
-    <div class="card">
-		<h1 class="card-head" >Upload File</h1>
-        <div>Note: After it's finished uploading, the page will refresh. Please be patient!</div>
-        <div class="card-body">
-            <label class="btn btn-default p-0">
-                <input type="file" (change)="selectFile($event)" />
-            </label>
-            <button class="button" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
-        </div>
-  
-		<div *ngIf="currentFile" class="progress-bar">
-		  <div
-			class="progress-bar"
-			role="progressbar"
-			attr.aria-valuenow="{{ progress }}"
-			aria-valuemin="0"
-			aria-valuemax="100"
-			[ngStyle]="{ width: progress + '%' }"
-		  >
-			{{ progress }}%
-		  </div>
-		</div>
-		<div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+<!-- Card 3: Upload New Files to the Case -->
+
+
+
+
+
+<!-- Card 4: Different Outputs of the Case -->
+<!--
+<div class="card">
+    <div class="card-head">Outputs Run</div>
+    <div class="card-body">
+    <table class="rwd-table">
+        <thead>
+            <th>File ID</th>
+            <th>Labels Run</th>
+            <th>Job ID</th>
+            <th>View Results</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let output of this.getCaseOutputs()">
+                <td>{{output.file_id}}</td>
+                <td>{{output.tags}}</td>
+                <td>{{output.job_id}}</td>
+                <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
+            </tr>
+        </tbody>
+    </table>
     </div>
-
-    <!-- Card 4: Different Outputs of the Case -->
-    <div class="card">
-        <div class="card-head">Outputs Run</div>
-        <div class="card-body">
-        <table class="rwd-table">
-            <thead>
-                <th>File ID</th>
-                <th>Labels Run</th>
-                <th>Job ID</th>
-                <th>View Results</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let output of this.getCaseOutputs()">
-                    <td>{{output.file_id}}</td>
-                    <td>{{output.tags}}</td>
-                    <td>{{output.job_id}}</td>
-                    <td><a [routerLink]="['/file-rekognition-view/', output.job_id]">View Results</a></td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-    </div>
-
 </div>
+-->
