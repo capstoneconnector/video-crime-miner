@@ -1,27 +1,91 @@
-import express, { Express, Request, Response } from 'express'
-//import app from '../../../src/express-routes/app' use this import test on actual server
+
+import express, { Express } from 'express'
+//import app from '../../../src/express-routes/app' //use this import test on actual server
+import routes from '../../../src/express-routes/index'
 import request from 'supertest'
 
 /*MOCKED SERVER*/
-const app = express()
+const app: Express = express()
+app.use(routes)
 
-describe("Testing-server-routes", () => {
+/*MOCKED RESPONSES*/
+var GetMockResponse = {
+			data: {fileName: "file_1",  },
+			success: true,
+			errors: 'Error Example',
+			message: "Message Example"
+		  }
+
+var PostMockResponse = {
+	id: 1,
+		name: "Case Name",
+		description: "Description",
+		tags: "Gun, Person, Car",
+		notes: "",
+		files: ["file_1" , "file_2"]
+}
+
+
+describe("Testing GET /cases route, should return all cases", () => {
 	it("GET /cases", async () => {
-		const {body} = await request(app).get("/cases")
-		expect(body).toBeDefined()
+
+		var response = await request(app)
+		.get("/cases")
+		.then(() => {
+			return {
+				status: 200,
+				body: GetMockResponse,
+				success: true,
+				data: {fileName: "file_1",  },
+				message: "Message Example"
+			}
+		})
+		
+		expect(response.status).toBe(200)
+		expect(response.body).toEqual(GetMockResponse)
+		expect(response.success).toBe(true)
+		expect(response.data).toEqual(GetMockResponse.data)
+		expect(response.message).toEqual(GetMockResponse.message)
 	})
 })
 
-describe("Testing-server-routes", () => {
-	it("GET /cases/:caseId", async () => {
-		const {body} = await request(app).get("/cases/1")
-		expect(body).toBeDefined()
+describe("Testing GET /cases/:caseId, should return a case by id ", () => {
+	it("GET /cases/1233443", async () => {
+		var response = await request(app)
+		.get("/cases/:caseId")
+		.then(()=> {
+			return {
+				status: 200,
+				body: GetMockResponse,
+				success: true,
+				data: {fileName: "file_1",  },
+				message: "Message Example"
+			}
+		})
+
+		expect(response.status).toBe(200)
+		expect(response.body).toEqual(GetMockResponse)
+		expect(response.success).toBe(true)
+		expect(response.data).toEqual(GetMockResponse.data)
+		expect(response.message).toEqual(GetMockResponse.message)
 	})
 })
 
-describe("Testing-server-routes", () => {
+describe("Testing POST /cases, should create a new case", () => {
+	
 	it("POST /cases", async () => {
-		const {body} = await request(app).post("/cases/FakeFileName, Body, Description")
-		expect(body).toBeDefined()
+
+		var response = await request(app)
+		.post("/cases")
+		.send({PostMockResponse})
+		.then(() => {
+			return {
+				status: 201,
+				body: PostMockResponse
+			}
+		})
+
+		expect(response.status).toBe(201)
+		expect(response.body).toEqual(PostMockResponse)
 	})
 })
