@@ -21,25 +21,24 @@
         </li>
     </ul>
     <!-- Cognito Buttons -->
-    <div class="sidenav-nav">
+    <div class="sidenav-identity">
         <div class="sidenav-nav-item"></div>
         <a class="sidenav-nav-link" href="#">Angular Amazon Cognito</a>
         <div id="navbarContent" class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signUp" routerLinkActive="active" *ngIf="!isAuthenticated">Sign up</a>
+            <li class="nav-item" *ngIf="!isAuthenticated">
+              <a class="nav-link" routerLink="/signUp" routerLinkActive="active">Sign up</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/signIn" routerLinkActive="active" *ngIf="!isAuthenticated">Sign in</a>
+            <li class="nav-item" *ngIf="!isAuthenticated">
+              <a class="nav-link" routerLink="/signIn" routerLinkActive="active">Sign in</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/profile" routerLinkActive="active" *ngIf="isAuthenticated">Profile</a>
+            <li class="nav-item" *ngIf="isAuthenticated">
+              <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="" (click)="signOut()" *ngIf="isAuthenticated">Sign out</a>
+            <li class="nav-item" *ngIf="isAuthenticated">
+              <a class="nav-link" routerLink="" (click)="signOut()">Sign out</a>
             </li>
           </ul>
         </div>
       </div>
 </div>
-
