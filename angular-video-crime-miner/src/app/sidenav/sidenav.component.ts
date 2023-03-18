@@ -79,7 +79,15 @@ export class SidenavComponent implements OnInit {
   }
 
   /* Cognito Buttons */
-  isAuthenticated: boolean;
+  private isAuthenticated: boolean;
+
+  public getIsAuthenticated(): boolean {
+    return this.isAuthenticated
+  }
+
+  public setIsAuthenticated(isAuthenticated: boolean): void {
+    this.isAuthenticated = isAuthenticated
+  }
 
   public signOut(): void {
     this.cognitoService.signOut()
