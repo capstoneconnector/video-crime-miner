@@ -29,4 +29,8 @@ export class SignInComponent {
     });
   }
 
+  public update(): void {
+    
+  }
+
 }
