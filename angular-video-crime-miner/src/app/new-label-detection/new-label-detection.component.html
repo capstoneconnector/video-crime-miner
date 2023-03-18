@@ -1,9 +1,332 @@
-<div class="page-content">
-    <a *ngIf="getCaseInfo()" [routerLink]="['/detailed-case-view/', getCaseInfo()[0].case_id]"><- Back to Case</a>
-    <h1>NEW LABEL DETECTION</h1>
+<body>
+	<section>
+		<div class="container">
+			<div class="card">
+				<div class="content">
 
-    <!-- Card 1: Case/File Information -->
-    <div class="card">
+						<h3>File Information</h3>
+            <p *ngIf="getFileInfo()"><b>File ID</b>{{ getFileInfo()[0].s3_name }}</p>
+            <p *ngIf="getFileInfo()"><b><h4>File Name: </h4> </b>{{ getFileInfo()[0].title }}</p>
+            <br>
+            <h3>Case Info</h3>
+            <span *ngIf="getCaseInfo()" {{ getCaseInfo()[0].name }}>Case Name:</span>
+            <br>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Description:</h4> </b>{{ getCaseInfo()[0].description }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Tags:</h4> </b>{{ getCaseInfo()[0].tags }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Notes:</h4> </b>{{ getCaseInfo()[0].notes }}</p>
+
+				</div>
+			</div>
+			<div class="card">
+				<div class="content">
+					<div class="contentBx">
+						<h3>Add Tags</h3>
+            <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
+          <br>
+            <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
+          <br>
+            <div>
+                <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
+                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/>
+                  <br>
+                    <button style="--clr:#8A2BE2" type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3"><span>Add</span><i></i></button>
+                </form>
+            </div>
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="content">
+					<div class="contentBx">
+						<h3>Verify and Submit</h3>
+            <div>Note: After clicking submit, return go back in the top left corner to see the label detection job</div>
+            <br>
+                <div><b><u>Selected Labels:</u></b></div>
+                <div id="labelsList"></div>
+            </div>
+            <br>
+            <button style="--clr:#8A2BE2" type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0"><span>Submit</span><i></i></button>
+        </div>
+        <div>
+            {{ getCaseInfo() }}
+        </div>
+					</div>
+				</div>
+
+	</section>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<input type="radio" id="trigger1" name="slider">
+<label for="trigger1"><span class="sr-only"></span></label>
+<div class="slide bg1">
+  <div id="container">
+    <div id="label">File Information</div>
+            <p *ngIf="getFileInfo()"><b><h4>File ID:</h4></b>{{ getFileInfo()[0].s3_name }}</p>
+            <p *ngIf="getFileInfo()"><b><h4>File Name: </h4> </b>{{ getFileInfo()[0].title }}</p>
+            <br>
+            <h3><b><u>Case Info</u></b></h3>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Name:</h4> </b>{{ getCaseInfo()[0].name }}</p>
+            <br>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Description:</h4> </b>{{ getCaseInfo()[0].description }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Tags:</h4> </b>{{ getCaseInfo()[0].tags }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Notes:</h4> </b>{{ getCaseInfo()[0].notes }}</p>
+</div>
+</div>
+<input type="radio" id="trigger2" name="slider" checked autofocus>
+<label for="trigger2"><span class="sr-only"></span></label>
+<div class="slide bg2">
+  <div id="container">
+    <br>
+    <div id="label">Add Labels</div>
+    <br>
+    <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
+    <br>
+            <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
+            <div>
+                <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
+                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/>
+                    <input type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3">
+                </form>
+                <button>submit</button>
+            </div>
+</div>
+</div>
+<input type="radio" id="trigger3" name="slider">
+<label for="trigger3"><span class="sr-only"></span></label>
+<div class="slide bg3">
+  <div id="container">
+  <div id="label">I'm a Box</div>
+
+</div>
+</div>
+<input type="radio" id="trigger4" name="slider">
+<label for="trigger4"><span class="sr-only"></span></label>
+<div class="slide bg4">
+  <div id="container">
+  <div id="label">I'm a Box</div>
+
+</div>
+</div>
+<input type="radio" id="trigger5" name="slider">
+<label for="trigger5"><span class="sr-only"></span></label>
+<div class="slide bg5">
+  <div id="container">
+    <div id="label">I'm a Box</div>
+
+</div>
+</div>
+
+<div class="container">
+  <ul class="cards">
+    <li class="card">
+      <div>
+        <h3 class="card-title">File Information</h3>
+        <div class="card-content">
+            <p *ngIf="getFileInfo()"><b><h4>File ID:</h4></b>{{ getFileInfo()[0].s3_name }}</p>
+            <p *ngIf="getFileInfo()"><b><h4>File Name: </h4> </b>{{ getFileInfo()[0].title }}</p>
+            <br>
+            <h3><b><u>Case Info</u></b></h3>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Name:</h4> </b>{{ getCaseInfo()[0].name }}</p>
+            <br>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Description:</h4> </b>{{ getCaseInfo()[0].description }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Tags:</h4> </b>{{ getCaseInfo()[0].tags }}</p>
+            <p *ngIf="getCaseInfo()"><b><h4>Case Notes:</h4> </b>{{ getCaseInfo()[0].notes }}</p>
+        </div>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Add Tags</h3>
+        <div class="card-content">
+            <p><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</p>
+            <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
+            <div class="input-group">
+                <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
+                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/>
+                    <input type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3">
+                </form>
+            </div>
+        </div>
+    </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Verify and Submit</h3>
+        <div class="card-content">
+                <div>Note: After clicking submit, return go back in the top left corner to see the label detection job</div>
+                <div><b><u>Selected Labels:</u></b></div>
+                <div id="labelsList"></div>
+            </div>
+            <button type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0">SUBMIT</button>
+        </div>
+        <div>
+            {{ getCaseInfo() }}
+        </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 4</h3>
+        <div class="card-content">
+          <p>Aenean posuere mauris quam, pellentesque auctor mi bibendum nec. Sed scelerisque lacus nisi, quis auctor lorem ornare vel.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 5</h3>
+        <div class="card-content">
+          <p>Vestibulum pharetra fringilla felis sit amet tempor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras et arcu sit amet est consequat feugiat. Nam ut sapien pulvinar.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 6</h3>
+        <div class="card-content">
+          <p>Donec ut tincidunt nisl. Vivamus eget eros id elit feugiat mollis. Nam sed sem quis libero finibus tempor.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 7</h3>
+        <div class="card-content">
+          <p>Aliquam eget nisl auctor, sollicitudin ipsum at, dignissim ligula. Donec tincidunt in elit et pellentesque. Integer posuere metus ac massa mollis euismod.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 8</h3>
+        <div class="card-content">
+          <p> Vivamus eget eros id elit feugiat mollis. Nam sed sem quis libero finibus tempor.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 9</h3>
+        <div class="card-content">
+          <p>Duis id congue turpis. Donec sodales porta felis, nec ultricies ante. Nam placerat vitae metus sit amet tempor. Aliquam ac dictum est.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 10</h3>
+        <div class="card-content">
+          <p>Pellentesque eget eros eget justo efficitur fermentum.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 11</h3>
+        <div class="card-content">
+          <p>Phasellus posuere nec nibh ut tincidunt. Aenean mollis turpis non eros posuere, at luctus leo hendrerit. Integer non libero sapien.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+    <li class="card">
+      <div>
+        <h3 class="card-title">Service 12</h3>
+        <div class="card-content">
+          <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ornare metus ac lectus scelerisque volutpat.</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">Learn More</a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+<!--
+ntainer">
+  <h2>...</h2>
+  <ul class="cards">
+    <li class="card">
+      <div>
+        <h3 class="card-title">Info</h3>
+        <div class="card-content">
+          <h6><b><u>File Info</u></b></h6>
+            <p *ngIf="getFileInfo()"><b>File ID: </b>{{ getFileInfo()[0].s3_name }}</p>
+            <p *ngIf="getFileInfo()"><b>File Name: </b>{{ getFileInfo()[0].title }}</p>
+            <br>
+            <p><b><u>Case Info</u></b></p>
+            <p *ngIf="getCaseInfo()"><b>Case Name: </b>{{ getCaseInfo()[0].name }}</p>
+            <p *ngIf="getCaseInfo()"><b>Case Description: </b>{{ getCaseInfo()[0].description }}</p>
+            <p *ngIf="getCaseInfo()"><b>Case Tags: </b>{{ getCaseInfo()[0].tags }}</p>
+            <p *ngIf="getCaseInfo()"><b>Case Notes: </b>{{ getCaseInfo()[0].notes }}</p>
+        </div>
+      </div>
+      <div class="card-link-wrapper">
+        <a href="" class="card-link">...</a>
+      </div>
+    </li>
+    more cards here
+  </ul>
+</div>
+-->
+
+<!--
+<div class="container">
+    <a *ngIf="getCaseInfo()" [routerLink]="['/detailed-case-view/', getCaseInfo()[0].case_id]"><- Back to Case</a>
+    <h2>NEW LABEL DETECTION</h2>
+
+     Card 1: Case/File Information
+    <ul class="cards">
         <div class="card-head">Info</div>
         <div class="card-body">
             <div><b><u>File Info</u></b></div>
@@ -17,8 +340,9 @@
             <div *ngIf="getCaseInfo()"><b>Case Notes: </b>{{ getCaseInfo()[0].notes }}</div>
         </div>
     </div>
+    -->
 
-    <!-- Card 2: Add Tags -->
+    <!-- Card 2: Add Tags
     <div class="card">
         <div class="card-head">Step 1: Add Tags</div>
         <div class="card-body">
@@ -26,14 +350,15 @@
             <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
             <div>
                 <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
-                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/> 
+                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/>
                     <input type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3">
                 </form>
             </div>
         </div>
     </div>
+    -->
 
-    <!-- Card 3: Verify and Submit -->
+    <!-- Card 3: Verify and Submit
     <div class="card">
         <div class="card-head">Step 2: Verify and Submit</div>
         <div class="card-body">
@@ -47,3 +372,5 @@
         {{ getCaseInfo() }}
     </div>
 </div>
+    -->
+

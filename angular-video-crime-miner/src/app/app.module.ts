@@ -26,6 +26,9 @@ import {VgCoreModule} from '@videogular/ngx-videogular/core';
 import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
     FileListComponent,
     FileRekognitionViewComponent,
     DetailedCaseViewComponent,
-    NewLabelDetectionComponent
+    NewLabelDetectionComponent,
+    SignUpComponent,
+    SignInComponent,
+    ProfileComponent
   ],
   imports: [
     HttpClientModule,

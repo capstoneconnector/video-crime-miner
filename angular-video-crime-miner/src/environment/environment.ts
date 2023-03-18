@@ -1,4 +1,8 @@
 
 export const environment = {
-  production: false
-};
+  production: false,
+  cognito: {
+    userPoolId: '',
+    userPoolWebClientId: '',
+  }
+}

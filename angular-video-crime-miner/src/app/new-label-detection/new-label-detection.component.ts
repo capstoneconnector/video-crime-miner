@@ -11,6 +11,9 @@ import { Observable } from 'rxjs'
 })
 export class NewLabelDetectionComponent implements OnInit {
 
+
+  
+
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
   private baseUrl = 'http://localhost:8000'
@@ -104,7 +107,7 @@ export class NewLabelDetectionComponent implements OnInit {
     //this is how the json body should look
     /*
     {
-      "labels": 
+      "labels":
       [
           "Label1",
           "Label2",
