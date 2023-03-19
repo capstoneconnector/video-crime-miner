@@ -9,6 +9,9 @@ import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails } from '
 
 /* FILE ROUTES */
 import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile, fetchFileInfo } from './controllers/api.files.js'
+
+import { checkForUserEntry } from './controllers/api.ChuqlabUser.js'
+
 const router = Router()
 
 /* GET AWS Label Results by Job Id */
@@ -53,5 +56,8 @@ router.post('/upload/:caseId', createAndUploadFile)
 
 /* GET file info from database by S3 File Name (Primary Key) */
 router.get('/files/info/:fileId', fetchFileInfo)
+
+/* GET whether user exists in db */
+router.get('/user/verify', checkForUserEntry)
 
 export default router
