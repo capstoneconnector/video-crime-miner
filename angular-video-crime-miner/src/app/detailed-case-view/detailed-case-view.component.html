@@ -78,6 +78,27 @@
         &times; <!-- &times; is the X icon -->
         </div>
         <h4>Edit Case Details</h4>
+			<div class="form-group">
+				<label for="name"><span>*</span> Name</label>
+				<input [(ngModel)]="name" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+			</div>
+
+			<div class="form-group">
+				<label for="tags"><span>*</span> tags</label>
+				<input [(ngModel)]="tags" placeholder="Enter tags name" type="text" cols="5" rows="5" name="tags" id="tags" aria-required="true" aria-invalid="true" required>
+			</div>
+
+			<div class="form-group">
+				<label for="notes"><span>*</span> Notes</label>
+				<input [(ngModel)]="notes" placeholder="Enter notes name" type="text" cols="5" rows="5" name="notes" id="notes" aria-required="true" aria-invalid="true" required>
+			</div>
+
+			<div class="form-group">
+				<label for="description"><span>*</span> Description</label>
+				<textarea [(ngModel)]="description" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
+			</div>
+
+			<button class="cm-standard-button" (click) = "Edit(name, description, tags, notes)"> Edit Case Details </button>
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>

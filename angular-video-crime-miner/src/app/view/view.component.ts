@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { CognitoService } from '../cognito.service';
+import { Component, OnInit } from '@angular/core'
+import { Observable, Subject } from 'rxjs'
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http'
+import { Router } from '@angular/router'
+import { CognitoService, IUser } from '../cognito.service'
 
 @Component({
   selector: 'app-view',
@@ -29,19 +29,38 @@ export class ViewComponent implements OnInit {
   /* Class member variables */
   private baseUrl = 'http://localhost:8000'
   caseInfos?: Observable<any>
+  public user: any
+  public username: string
+
+  public getUser(): string {
+    return JSON.stringify(this.user.sub)
+  }
 
   /* Constructor */
-  constructor(private http: HttpClient, private router: Router, private cognitoService: CognitoService) { }
+  constructor(private http: HttpClient, private router: Router, private cognitoService: CognitoService) {
+    this.user = {}
+    this.username = ""
+  }
 
   ngOnInit(): void {
-    this.requestCases().subscribe(res => {
-      this.caseInfos = res.data
+    this.cognitoService.getUser().then((user: any) => {
+      this.user = user.attributes
+      this.username = this.user.sub
+    }).then(() => {
+      this.requestCases().subscribe(res => {
+        this.caseInfos = res.data
+      })
     })
   }
 
   /* Get cases request and response handler */
   public requestCases(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cases`)
+    const body = {
+      params: {
+        username: this.username
+      }
+    }
+    return this.http.get(`${this.baseUrl}/cases`, body)
   }
   public getCaseInfos(): any{
     return this.caseInfos
@@ -51,7 +70,7 @@ export class ViewComponent implements OnInit {
   newCaseName: string = ""
   newCaseDescription: string = ""
   public addNewCase(newCaseName: string, newCaseDescription: string): void {
-    //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
+    //TODO: Data sanitization: we need to make sure only alphanumeric characters are there
     if(newCaseName.length<3 || newCaseDescription.length<1){
       // TODO: add a new message that says the fields aren't filled out
       let message = "ERROR: Case name must be length 3 or more, and there must be a description"
@@ -61,7 +80,8 @@ export class ViewComponent implements OnInit {
     var body = {
       name: newCaseName,
       description: newCaseDescription,
-      labels: []
+      labels: [],
+      username: this.username
     }
     this.http.post(`${this.baseUrl}/cases`, body).subscribe((res:any) => {
       if(res.success){

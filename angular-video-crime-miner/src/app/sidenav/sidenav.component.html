@@ -1,7 +1,8 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''" (mouseenter)="toggleCollapse()" 
+(mouseleave)="toggleCollapse()">
     <!-- Crime Miner Logo -->
     <div class="logo-container">
-        <button class="logo" (click)="toggleCollapse()">CM</button>
+        <button class="logo">CM</button>
         <div class="logo-text" @fadeInOut *ngIf="collapsed">Crime Miner</div>
         <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
           <i class="fal fa-times close-icon"></i>
@@ -47,7 +48,7 @@
         <li class="sidenav-nav-item" *ngIf="isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}" (click)="signOut()">
-                <i class="sidenav-link-icon fal fa-user-plus"></i>
+                <i class="sidenav-link-icon fal fa-user-minus"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign Out</span>
             </a>
         </li>
