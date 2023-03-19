@@ -1,5 +1,7 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+import { CognitoService } from '../cognito.service';
 import { navbarData } from './nav-data';
 
 interface SideNavToggle {
@@ -40,6 +42,18 @@ interface SideNavToggle {
 })
 export class SidenavComponent implements OnInit {
 
+  constructor(private router: Router, private cognitoService: CognitoService) {
+    this.isAuthenticated = false;
+  }
+
+  ngOnInit(): void {
+    this.screenWidth = window.innerWidth;
+    this.cognitoService.isAuthenticated().then((success: boolean) => {
+      this.isAuthenticated = success;
+    })
+  }
+
+  /* Regular Nav Bar Stuff */
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
@@ -54,10 +68,6 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-      this.screenWidth = window.innerWidth;
-  }
-
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
@@ -66,5 +76,24 @@ export class SidenavComponent implements OnInit {
   closeSidenav(): void {
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+  }
+
+  /* Cognito Buttons */
+  private isAuthenticated: boolean;
+
+  public getIsAuthenticated(): boolean {
+    return this.isAuthenticated
+  }
+
+  public setIsAuthenticated(isAuthenticated: boolean): void {
+    this.isAuthenticated = isAuthenticated
+  }
+
+  public signOut(): void {
+    this.cognitoService.signOut()
+    .then(() => {
+    this.router.navigate(['/signIn'])
+    this.ngOnInit()
+    })
   }
 }

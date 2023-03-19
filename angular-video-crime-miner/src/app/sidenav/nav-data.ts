@@ -4,25 +4,11 @@ export const navbarData = [
       icon: 'fal fa-home',
       label: 'Dashboard'
   },
-  /*
-  {
-      routeLink: 'upload',
-      icon: 'fal fa-box-open',
-      label: 'New Case'
-  },
-  */
   {
       routeLink: 'view',
       icon: 'fal fa-tags',
       label: 'View/Edit Case'
   },
-  /*
-  {
-      routeLink: 'file-rekognition-view/:jobId',
-      icon: 'fal fa-file',
-      label: 'View Reports'
-  },
-  */
  /*
   {
       routeLink: 'media',

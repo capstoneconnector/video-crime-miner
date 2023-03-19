@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { CognitoService } from './cognito.service';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -11,8 +14,16 @@ interface SideNavToggle {
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-video-crime-miner';
+  
+  constructor(private router: Router) {
+
+  }
+
+public ngOnInit(): void {
+
+}
 
   isSideNavCollapsed = false;
   screenWidth = 0;
