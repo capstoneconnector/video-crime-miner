@@ -65,4 +65,22 @@ async function createNewCase (req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { fetchAllCases, fetchCaseById, createNewCase }
+async function updateCaseDetails(req: Request, res: Response) {
+	try {
+		var response = emptyOutput
+		response.data = await databaseService.updateCaseDetails(req.params['caseId'], 
+		req.body.name, req.body.description, req.body.tags, req.body.notes)
+		
+		response.success = true
+		response = standardizeResponse(response).convertToJson()
+		res.status(200).json(response)
+	} catch (err: any) {
+		console.log("app.post('/update/cases') errored out")
+		response.errors.push(err.message)
+		response.success = false
+		response = standardizeResponse(response).convertToJson()
+		res.status(500).json(response)
+	}
+}
+
+export { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails }
