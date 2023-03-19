@@ -112,19 +112,19 @@ ALTER TABLE IF EXISTS public.awsoutput
 -- insert user rows
 INSERT INTO public."chuqlabuser"(
     user_id)
-    VALUES ('testuser');
+    VALUES ('d6fefc77-df88-4529-9699-8b03a7eb0da0');
 
 
 -- insert case rows
 INSERT INTO public."case"(
     name, description, tags, notes, user_id)
-    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['Gun', 'Person', 'Truck'], ARRAY ['Suspect is Jacob'], 'testuser');
+    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['Gun', 'Person', 'Truck'], ARRAY ['Suspect is Jacob'], 'd6fefc77-df88-4529-9699-8b03a7eb0da0');
 INSERT INTO public."case"(
     name, description, tags, notes, user_id) 
-    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['Fish'], ARRAY ['Suspect is Isaac'], 'testuser');
+    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['Fish'], ARRAY ['Suspect is Isaac'], 'd6fefc77-df88-4529-9699-8b03a7eb0da0');
 INSERT INTO public."case"(
     name, description, tags, notes, user_id) 
-    VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric'], 'testuser');
+    VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric'], 'd6fefc77-df88-4529-9699-8b03a7eb0da0');
 
 -- insert file rows
 INSERT INTO public.file(
