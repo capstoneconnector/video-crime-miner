@@ -52,12 +52,13 @@ async function insertNewCase (name: string, description: string, tags: string[])
 }
 
 async function updateCaseDetails (case_id:string, name:string, description: string, tags:string[], notes:string) {
-	//TODO connect to ChuqlabCase model to standarize response and send to front end
 	try {
 		const query = await pool.query('UPDATE public.case SET description = $1, tags = $2, notes = $3, name = $4 WHERE case_id = $5',
 		[description, tags, notes, name ,case_id])
 		console.log(`Case ${case_id} updated successfully.`)
-		return
+
+		return `Case ${case_id} updated successfully. Name: Renamed to ${name}. Description: Renamed to ${description}, Tags: Renamed to ${tags}, Notes: Renamed to ${notes}`
+
 	} catch (e) {
 		console.log({error:e})
 		return e
