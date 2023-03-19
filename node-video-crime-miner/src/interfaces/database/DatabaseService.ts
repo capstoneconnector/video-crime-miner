@@ -1,11 +1,11 @@
 
 interface DatabaseService {
     /* Operations for the Case table */
-    getAllCases(): Promise<any>
+    getAllCases(username:string): Promise<any>
 
-    getCaseById(id: string): Promise<any>
+    getCaseById(id: string, username:string): Promise<any>
 
-    insertNewCase(name: string, description: string, tags: string[]): Promise<any>
+    insertNewCase(name: string, description: string, tags: string[], username:string): Promise<any>
 
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
@@ -43,16 +43,16 @@ import * as pgChuqlabUser from './postgres/db.ChuqlabUser.js'
 
 const postgres : DatabaseService = {
 	/* Case functions */
-	getAllCases: function() : Promise<any> {
-        return pgcase.getAllCases()
+	getAllCases: function(username:string) : Promise<any> {
+        return pgcase.getAllCases(username)
     },
 
-    getCaseById: function (id: string): Promise<any> {
-		return pgcase.getCaseById(id)
+    getCaseById: function (id: string, username:string): Promise<any> {
+		return pgcase.getCaseById(id, username)
 	},
 
-    insertNewCase: function (name: string, description: string, tags: string[]): Promise<any> {
-        return pgcase.insertNewCase(name, description, tags)
+    insertNewCase: function (name: string, description: string, tags: string[], username:string): Promise<any> {
+        return pgcase.insertNewCase(name, description, tags, username)
     },
 
     /* File functions */
