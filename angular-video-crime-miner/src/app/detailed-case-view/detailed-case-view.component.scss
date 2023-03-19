@@ -39,33 +39,6 @@
   background-color: #dc8671;
 }
 
-
-/* Popups */
-.popup {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color:rgba(255, 255, 255, 0.495);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popupContent {
-  background-color: #fff;
-  width: 600px;
-  height: 600px;
-  padding: 20px;
-}
-
-.popupClose{
-  position: relative;
-  top: -10px;
-  cursor: pointer;
-}
-
 /* Buttons for opening popups */
 .actions{
   width: 100%;
@@ -75,24 +48,11 @@
   grid-column-gap: 1em;
 }
 
-.popupButton {
-  text-decoration: none;
-  background-color: #317ac7;
-  padding: 15px 10px;
-  border-radius: 9999px;
-  color: rgb(0, 0, 0);
-  display: block;
-  transition: 0.1s ease-in-out;
-  cursor: pointer;
-  user-select: none;
+/* Start Label Detection Popup */
+.new-label-detection-popup{
+  height: 85%;
+  width: 70%;
 }
-
-.popupButton:hover {
-  transform: scale(1.1);
-  background-color: #7cf6fd;
-}
-
-.popupButton:disabled{
-  opacity: .7;
-  pointer-events: none;
+.new-label-detection-content{
+  align-items: center;
 }

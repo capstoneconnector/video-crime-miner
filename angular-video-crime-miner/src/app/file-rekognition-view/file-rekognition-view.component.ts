@@ -23,9 +23,9 @@ export class FileRekognitionViewComponent implements OnInit {
       this.setVideoPlayerSrcAndName( this.CDN_WrapFileUrl(this.videoFileName), this.videoItems[0].name )
     })
     this.requestLabels().subscribe(labels => {
-      this.setVideoData(  labels.data.VideoMetadata )
-      this.setLabels( this.tablePrepper(labels.data.Labels) )
-      this.setLabelTotal( this.sumTotalLabelOccurrences(this.labels) )
+      this.setVideoData(labels.data.VideoMetadata)
+      this.labels = this.tablePrepper(labels.data.Labels[0])
+      this.setLabelTotal(this.sumTotalLabelOccurrences(this.labels))
     })
   }
 
