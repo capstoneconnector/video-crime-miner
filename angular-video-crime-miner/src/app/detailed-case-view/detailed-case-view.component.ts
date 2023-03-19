@@ -1,5 +1,6 @@
 import { HttpClient, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
@@ -18,6 +19,9 @@ export class DetailedCaseViewComponent implements OnInit {
   private caseInfo?: JSON
   private caseFiles?: JSON
   private caseOutputs?: JSON
+
+  /* Popup */
+  showPopup = false
 
   /* CARD 3 STUFF */
   selectedFiles?: FileList
@@ -56,6 +60,10 @@ export class DetailedCaseViewComponent implements OnInit {
 
   public setCaseId(newCaseId:string): void {
     this.caseId = newCaseId
+  }
+
+  public getCaseId(caseId:string): any {
+	return this.caseId
   }
 
   public requestCaseInfo(): Observable<any> {
@@ -111,7 +119,6 @@ export class DetailedCaseViewComponent implements OnInit {
     this.selectedFiles = event.target.files
   }
 
-
   name: string = ''
   file: any
   upload(): void {
@@ -155,6 +162,9 @@ export class DetailedCaseViewComponent implements OnInit {
 
   private resetInputs(): void{
     this.name = ""
+	this.description = ""
+	this.tags = ""
+	this.notes = ""
     this.file = null
   }
 
@@ -208,4 +218,57 @@ export class DetailedCaseViewComponent implements OnInit {
       this.resetInputs()
       this.showStartLabelJobPopup = false
     }
+
+	description: string = ""
+	tags: string = ""
+	notes: string = ""
+
+	Edit(name:string, description:string, tags:string , notes: string): void {
+		if(name.length<3 || description.length<1 || tags.length < 1) {
+			// TODO: add a new message that says the fields aren't filled out
+			let message = "ERROR: Case name must be length 3 or more, and there must be a description"
+			this.setFeedbackMessage(false, message)
+			return
+		  } else {
+			var body = {
+				name: name,
+				description: description,
+				tags: [tags],
+				notes: [notes]
+			  }
+		  }
+
+
+		  this.http.put(`${this.baseUrl}/update/cases/${this.caseId}`, body).subscribe((res:any) => {
+			if(res.success){
+			  this.resetInputs()
+			  this.setFeedbackMessage(true)
+			  this.closeEditCasePopup()
+			  this.ngOnInit()
+	  
+			}else{
+			  this.setFeedbackMessage(false, "ERROR: The case could not be created")
+			}
+		  })
+	}
+
+	closepopup(){
+		this.resetInputs()
+		this.showPopup = false
+	  }
+	  
+
+	/* User Message Feedback */
+	public successMessage:string = ""
+	public errorMessage:string = ""
+	private setFeedbackMessage(success:boolean, message:string = ""): void{
+	  if(success){
+		this.errorMessage = ""
+		this.successMessage = "Case Created"
+	  }else{
+		this.successMessage = ""
+		this.errorMessage = message
+	  }
+	}
+
 }
