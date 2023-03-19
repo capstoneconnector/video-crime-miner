@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
 import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand } from '@aws-sdk/client-sqs'
-import { createQueue, getQueueUrl, getQueueAttributes, setQueueAttributes } from '../../src/AWS Layer/sqsClient'
+import { createQueue, getQueueUrl, getQueueAttributes, setQueueAttributes } from '../../../src/AWS Layer/sqsClient'
 
 const sqsMock = mockClient(SQSClient)
 

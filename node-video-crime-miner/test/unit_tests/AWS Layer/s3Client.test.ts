@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
 import { S3Client, CreateBucketCommand, ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, GetObjectCommand, DeleteBucketCommand } from '@aws-sdk/client-s3'
-import { createBucket, listBuckets, listObjects, getObjects, uploadFrontEndClient, removeObject } from '../../src/interfaces/video-storage/s3Connector'
+import { createBucket, listBuckets, listObjects, getObjects, uploadFrontEndClient, removeObject } from '../../../src/interfaces/video-storage/s3Connector'
 
 const s3Mock = mockClient(S3Client)
 
