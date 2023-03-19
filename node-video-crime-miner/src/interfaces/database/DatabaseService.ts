@@ -26,12 +26,19 @@ interface DatabaseService {
     updateJobResults (jobId: string, result: any): Promise<any>
 
     fetchFileForJob (jobId: string): Promise<any>
+
+    // check if user exists in db
+    checkIfUserExists (username:string) : Promise<any>;
+
+    // create new db entry for user
+    createUser(username:string): Promise<any>;
 }
 
 //{ getAllCases, insertNewCase, getCaseById }
 import * as pgcase from "./postgres/db.cases.js"
 import * as pgfile from "./postgres/db.files.js"
 import * as pglabel from "./postgres/db.labels.js"
+import * as pgChuqlabUser from './postgres/db.ChuqlabUser.js'
 
 
 const postgres : DatabaseService = {
@@ -84,6 +91,14 @@ const postgres : DatabaseService = {
 
     fetchFileForJob: function (jobId: string): Promise<any> {
         return pglabel.fetchFileForJob(jobId)
+    },
+
+    checkIfUserExists: function (username:string): Promise<any> {
+        return pgChuqlabUser.checkIfUserExists(username)
+    },
+
+    createUser: function (username:string): Promise<any> {
+        return pgChuqlabUser.createUserEntry(username)
     }
 }
 
