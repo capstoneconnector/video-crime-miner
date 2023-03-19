@@ -19,7 +19,7 @@ async function checkForUserEntry (req: Request, res: Response, next: NextFunctio
     try {
       var response = emptyOutput
 
-      var user_id = req.body.username
+      var user_id =  req.query["username"].toString()
 
       var userStatus = await databaseService.checkIfUserExists(user_id)
 
