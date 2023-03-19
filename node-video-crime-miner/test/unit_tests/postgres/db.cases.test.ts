@@ -34,7 +34,7 @@ describe('getAllCases function', () => {
       ]
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
-    const result = await getAllCases()
+    const result = await getAllCases('exampleUser')
     expect(result).toBeTruthy()
     //expect(result).toEqual([{
     //  test: '123'
@@ -67,7 +67,7 @@ describe('insertNewCase function', () => {
     const queryResult = {
     }
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
-    const result = await insertNewCase('example case name', 'example case description', ['tag1', 'tag2'])
+    const result = await insertNewCase('example case name', 'example case description', ['tag1', 'tag2'], 'exampleUser')
     expect(result).toBeUndefined()
   })
 })
@@ -93,7 +93,7 @@ describe('getCaseById function', () => {
     }
 
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
-    const result = await getCaseById('example caseid')
+    const result = await getCaseById('example caseid', 'exampleUser')
     // I have no idea why the result variable returns undefined here, so I'm commenting this out for now
     /*
         expect(result).toEqual({
