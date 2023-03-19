@@ -19,7 +19,7 @@ async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
 
-    var user_id = req.body.username
+    var user_id = req.query["username"].toString()
 
     response.data = await databaseService.getAllCases(user_id)
     response.success = true
