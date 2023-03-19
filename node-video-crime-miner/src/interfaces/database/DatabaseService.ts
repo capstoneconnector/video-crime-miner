@@ -7,6 +7,8 @@ interface DatabaseService {
 
     insertNewCase(name: string, description: string, tags: string[]): Promise<any>
 
+	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string): Promise<any>
+
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
 
@@ -36,55 +38,60 @@ import * as pglabel from "./postgres/db.labels.js"
 
 const postgres : DatabaseService = {
 	/* Case functions */
-	getAllCases: function() : Promise<any> {
-        return pgcase.getAllCases()
-    },
+	getAllCases: function (): Promise<any> {
+		return pgcase.getAllCases()
+	},
 
-    getCaseById: function (id: string): Promise<any> {
+	getCaseById: function (id: string): Promise<any> {
 		return pgcase.getCaseById(id)
 	},
 
-    insertNewCase: function (name: string, description: string, tags: string[]): Promise<any> {
-        return pgcase.insertNewCase(name, description, tags)
-    },
+	insertNewCase: function (name: string, description: string, tags: string[]): Promise<any> {
+		return pgcase.insertNewCase(name, description, tags)
+	},
 
-    /* File functions */
-    getFileInfoById: function (s3_name: string): Promise<any> {
-        return pgfile.getFileInfoById(s3_name)
-    },
+	updateCaseDetails: function (id: string, name:string, description: string, tags: string[], notes:string): Promise<any> {
+		return pgcase.updateCaseDetails(id, name, description, tags, notes)
+	},
 
-    getFilesRelatedToCase: function (case_id: number): Promise<any> {
-        return pgfile.getFilesRelatedToCase(case_id)
-    },
+	/* File functions */
+	getFileInfoById: function (s3_name: string): Promise<any> {
+		return pgfile.getFileInfoById(s3_name)
+	},
 
-    createNewFileRow: function (name: string, notes: string, case_id: number): Promise<any> {
-        return pgfile.createNewFileRow(name, notes, case_id)
-    },
+	getFilesRelatedToCase: function (case_id: number): Promise<any> {
+		return pgfile.getFilesRelatedToCase(case_id)
+	},
 
-    /* AWSOutput functions */
-    createNewLabels: function (job_id: string, keywords: string[], file_id: string): Promise<any> {
-        return pglabel.createNewLabels(job_id, keywords, file_id)
-    },
+	createNewFileRow: function (name: string, notes: string, case_id: number): Promise<any> {
+		return pgfile.createNewFileRow(name, notes, case_id)
+	},
 
-    getResultsForFile: function (fileName: string): Promise<any> {
-        return pglabel.getResultsForFile(fileName)
-    },
+	/* AWSOutput functions */
+	createNewLabels: function (job_id: string, keywords: string[], file_id: string): Promise<any> {
+		return pglabel.createNewLabels(job_id, keywords, file_id)
+	},
 
-    getResultsForMultipleFiles: function (fileNames: string[]): Promise<any> {
-        return pglabel.getResultsForMultipleFiles(fileNames)
-    },
+	getResultsForFile: function (fileName: string): Promise<any> {
+		return pglabel.getResultsForFile(fileName)
+	},
 
-    getResultsForJob: function (jobId: string): Promise<any> {
-        return pglabel.getResultsForJob(jobId)
-    },
+	getResultsForMultipleFiles: function (fileNames: string[]): Promise<any> {
+		return pglabel.getResultsForMultipleFiles(fileNames)
+	},
 
-    updateJobResults: function (jobId: string, result: any): Promise<any> {
-        return pglabel.updateJobResults(jobId, result)
-    },
+	getResultsForJob: function (jobId: string): Promise<any> {
+		return pglabel.getResultsForJob(jobId)
+	},
 
-    fetchFileForJob: function (jobId: string): Promise<any> {
-        return pglabel.fetchFileForJob(jobId)
-    }
+	updateJobResults: function (jobId: string, result: any): Promise<any> {
+		return pglabel.updateJobResults(jobId, result)
+	},
+
+	fetchFileForJob: function (jobId: string): Promise<any> {
+		return pglabel.fetchFileForJob(jobId)
+	},
+
 }
 
 function getDatabaseService(): DatabaseService {
