@@ -49,7 +49,18 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth
+    /*
+    this.mouseHover!.addEventListener("mouseenter", (e: any) => {
+      this.toggleCollapse()
+    })
+  
+    this.mouseHover!.addEventListener("mouseleave", (e: any) => {
+      this.toggleCollapse()
+    })
+    */
   }
+
+  //mouseHover = document.querySelector("#navbar")
 
   /* Regular Nav Bar Stuff */
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter()
