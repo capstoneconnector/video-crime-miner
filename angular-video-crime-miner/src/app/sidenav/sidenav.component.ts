@@ -41,9 +41,6 @@ interface SideNavToggle {
   ]
 })
 export class SidenavComponent implements OnInit {
-
-  public isAuthenticated: boolean = false
-
   constructor(private router: Router, private cognitoService: CognitoService) {
     cognitoService.getAuthenticationSubject().subscribe((value) => {
       this.isAuthenticated = value
@@ -79,7 +76,10 @@ export class SidenavComponent implements OnInit {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
   }
 
-  /* Cognito Buttons */
+  /* Cognito Authentication */
+  public isAuthenticated: boolean = false
+
+  /* Sign Out Button */
   public signOut(): void {
     this.cognitoService.signOut()
     .then(() => {
