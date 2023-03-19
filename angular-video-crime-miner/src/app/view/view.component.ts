@@ -67,6 +67,8 @@ export class ViewComponent implements OnInit {
       if(res.success){
         this.resetInputs()
         this.setFeedbackMessage(true)
+		this.closepopup()
+		this.ngOnInit()
 
       }else{
         this.setFeedbackMessage(false, "ERROR: The case could not be created")
