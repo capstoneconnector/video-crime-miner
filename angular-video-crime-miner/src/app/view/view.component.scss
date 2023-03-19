@@ -9,96 +9,7 @@ $breakpoint-alpha: 480px; // adjust to your needs
   height:100%;
   overflow-y: auto;
 }
-.content{
-  height:auto;
-  width:auto;
-  border: solid;
-  border-color:rgb(0, 0, 0);
-  border-width: 2px;
-}
-.form-group{
-  overflow: hidden;
-}
-.rwd-table {
-  margin: 1em 0;
-  min-width: 300px; // adjust to your needs
-  tr {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-  th {
-    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!
-  }
-  td {
-    display: block;
-    &:first-child {
-      padding-top: .5em;
-    }
-    &:last-child {
-      padding-bottom: .5em;
-    }
-    &:before {
-      content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
-      font-weight: bold;
-      // optional stuff to make it look nicer
-      width: 6.5em; // magic number :( adjust according to your own content
-      display: inline-block;
-      // end options
-      @media (min-width: $breakpoint-alpha) {
-        display: none;
-      }
-    }
-  }
-  th, td {
-    text-align: left;
-    @media (min-width: $breakpoint-alpha) {
-      display: table-cell;
-      padding: .25em .5em;
-      &:first-child {
-        padding-left: 0;
-      }
-      &:last-child {
-        padding-right: 0;
-      }
-    }
-  }
-}
-// presentational styling
-@import 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700';
 
-body {
-  padding: 0 2em;
-  font-family: Montserrat, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  color: rgb(173, 168, 168);
-  background: #eee;
-}
-h1 {
-  font-weight: normal;
-  letter-spacing: -1px;
-  color: #34495E;
-
-}
-.rwd-table {
-  background: #95b0cb;
-  color: #fff;
-  border-radius: 5px;
-  overflow: hidden;
-  font-family: 'Courier New', Courier, monospace;
-  tr {
-    border-color: lighten(#000000, 50%);
-  }
-  th, td {
-    margin: .5em 1em;
-    @media (min-width: $breakpoint-alpha) {
-      padding: 1em !important;
-    }
-  }
-  th, td:before {
-    color: rgb(0, 0, 0);
-  }
-}
 ///for popup window
 .overlay {
   position: absolute;
@@ -135,18 +46,23 @@ body{
   height: 100vh;
 }
 
-.cm-standard-button{
-  float:right;
+.createCasePopupButton{
+  float: right;
+}
+
+.createCasePopupButton{
+  float: center;
 }
 
 /* Div table of clickable cases */
 .caseTable{
   width: 100%;
   height: 100%;
+  margin: 20px;
 }
 .clickableCase{
-  padding-top:5px;
-  padding-bottom:5px;
+  margin-top:5px;
+  margin-bottom:5px;
 }
 .clickableCase div{
   border-color:#000000;

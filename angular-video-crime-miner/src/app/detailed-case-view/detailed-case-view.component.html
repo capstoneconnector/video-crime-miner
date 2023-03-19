@@ -1,6 +1,10 @@
 <div class="page-content">
     <!-- Page navigation and header -->
-    <a [routerLink]="['/view/']"><- Back to Cases</a>
+    <div class="cm-pagenav">
+        <div class="prev">
+            <a [routerLink]="['/view/']">&laquo; Back to Cases</a>
+        </div>
+    </div>
     <h1>{{getCaseInfo().name}}</h1>
 
     <!-- Clickable files table -->

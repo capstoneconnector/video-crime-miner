@@ -3,7 +3,7 @@
     <div class="card-head">All Cases</div>
     <div class="card-body">
       <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
-      <button class="cm-standard-button" (click)="openpopup()" >Create New Case</button>
+      <button class="cm-standard-button createCasePopupButton" (click)="openpopup()" >Create New Case</button>
       <!-- Popup for creating new case -->
       <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
             <div class="content" >
