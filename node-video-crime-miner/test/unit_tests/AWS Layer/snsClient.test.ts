@@ -1,6 +1,6 @@
 import { mockClient } from 'aws-sdk-client-mock'
 import { SNSClient, CreateTopicCommand, SubscribeCommand } from '@aws-sdk/client-sns'
-import { createTopic, subscribeSQStoSNS } from '../../src/AWS Layer/snsClient'
+import { createTopic, subscribeSQStoSNS } from '../../../src/AWS Layer/snsClient'
 
 const snsMock = mockClient(SNSClient)
 
