@@ -17,24 +17,12 @@ interface SideNavToggle {
 export class AppComponent implements OnInit {
   title = 'angular-video-crime-miner';
   
-  isAuthenticated: boolean;
-  constructor(private router: Router,
-    private cognitoService: CognitoService) {
-this.isAuthenticated = false;
-}
+  constructor(private router: Router) {
+
+  }
 
 public ngOnInit(): void {
-this.cognitoService.isAuthenticated()
-.then((success: boolean) => {
-this.isAuthenticated = success;
-});
-}
 
-public signOut(): void {
-this.cognitoService.signOut()
-.then(() => {
-this.router.navigate(['/signIn']);
-});
 }
 
   isSideNavCollapsed = false;

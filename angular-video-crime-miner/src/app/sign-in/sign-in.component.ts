@@ -28,9 +28,4 @@ export class SignInComponent {
       this.loading = false;
     });
   }
-
-  public update(): void {
-    
-  }
-
 }
