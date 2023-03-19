@@ -18,7 +18,10 @@ const emptyOutput = {
 async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await databaseService.getAllCases()
+
+    var user_id = req.body.username
+
+    response.data = await databaseService.getAllCases(user_id)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -35,7 +38,10 @@ async function fetchAllCases (req: Request, res: Response, next: NextFunction) {
 async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await databaseService.getCaseById(req.params['caseId'])
+
+    var user_id = req.body.username
+
+    response.data = await databaseService.getCaseById(req.params['caseId'], user_id)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -52,7 +58,10 @@ async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
 async function createNewCase (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
-    response.data = await databaseService.insertNewCase(req.body.name, req.body.description, req.body.tags)
+
+    var user_id = req.body.username
+
+    response.data = await databaseService.insertNewCase(req.body.name, req.body.description, req.body.tags, user_id)
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -69,7 +78,7 @@ async function updateCaseDetails(req: Request, res: Response) {
 	try {
 		var response = emptyOutput
 		response.data = await databaseService.updateCaseDetails(req.params['caseId'], 
-		req.body.name, req.body.description, req.body.tags, req.body.notes)
+		req.body.name, req.body.description, req.body.tags, req.body.notes, req.body.username)
 		
 		response.success = true
 		response = standardizeResponse(response).convertToJson()

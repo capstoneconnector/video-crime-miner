@@ -21,6 +21,23 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 GRANT ALL ON SCHEMA public TO postgres;
 
+-- Table: public.chuqlabuser
+
+DROP TABLE IF EXISTS public."chuqlabuser" CASCADE;
+
+CREATE TABLE IF NOT EXISTS public."chuqlabuser"
+(
+    
+    user_id text NOT NULL COLLATE pg_catalog."default",
+    CONSTRAINT chuqlabuser_pkey PRIMARY KEY (user_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."chuqlabuser"
+    OWNER to postgres;
+
+
 -- Table: public.case
 
 DROP TABLE IF EXISTS public."case" CASCADE;
@@ -32,7 +49,13 @@ CREATE TABLE IF NOT EXISTS public."case"
     description text COLLATE pg_catalog."default",
     tags text[] COLLATE pg_catalog."default",
     notes text[] COLLATE pg_catalog."default",
-    CONSTRAINT case_pkey PRIMARY KEY (case_id)
+    user_id text NOT NULL,
+    CONSTRAINT case_pkey PRIMARY KEY (case_id),
+    CONSTRAINT case_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public."chuqlabuser" (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+
 )
 
 TABLESPACE pg_default;
@@ -86,16 +109,22 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.awsoutput
     OWNER to postgres;
 
+-- insert user rows
+INSERT INTO public."chuqlabuser"(
+    user_id)
+    VALUES ('testuser');
+
+
 -- insert case rows
 INSERT INTO public."case"(
-    name, description, tags, notes) 
-    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['Gun', 'Person', 'Truck'], ARRAY ['Suspect is Jacob']);
+    name, description, tags, notes, user_id)
+    VALUES ('Gas Station Robbery', 'The gas station on University Ave was robbed', ARRAY ['Gun', 'Person', 'Truck'], ARRAY ['Suspect is Jacob'], 'testuser');
 INSERT INTO public."case"(
-    name, description, tags, notes) 
-    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['Fish'], ARRAY ['Suspect is Isaac']);
+    name, description, tags, notes, user_id) 
+    VALUES ('Fish Poacher', 'Somebody is killing endangered fish', ARRAY ['Fish'], ARRAY ['Suspect is Isaac'], 'testuser');
 INSERT INTO public."case"(
-    name, description, tags, notes) 
-    VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric']);
+    name, description, tags, notes, user_id) 
+    VALUES ('Hit and Run on the street', 'Someone hit and run in 2 seconds', ARRAY ['Person', 'Sunglasses'], ARRAY ['Witness is Eric'], 'testuser');
 
 -- insert file rows
 INSERT INTO public.file(

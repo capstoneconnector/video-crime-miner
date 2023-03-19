@@ -1,13 +1,13 @@
 
 interface DatabaseService {
     /* Operations for the Case table */
-    getAllCases(): Promise<any>
+    getAllCases(username:string): Promise<any>
 
-    getCaseById(id: string): Promise<any>
+    getCaseById(id: string, username:string): Promise<any>
 
-    insertNewCase(name: string, description: string, tags: string[]): Promise<any>
+    insertNewCase(name: string, description: string, tags: string[], username:string): Promise<any>
 
-	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string): Promise<any>
+	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string, username:string): Promise<any>
 
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
@@ -28,30 +28,36 @@ interface DatabaseService {
     updateJobResults (jobId: string, result: any): Promise<any>
 
     fetchFileForJob (jobId: string): Promise<any>
+
+    /* Operations for the ChuqlabUser table*/
+    checkIfUserExists (username:string) : Promise<any>;
+
+    createUser(username:string): Promise<any>;
 }
 
 //{ getAllCases, insertNewCase, getCaseById }
 import * as pgcase from "./postgres/db.cases.js"
 import * as pgfile from "./postgres/db.files.js"
 import * as pglabel from "./postgres/db.labels.js"
+import * as pgChuqlabUser from './postgres/db.ChuqlabUser.js'
 
 
 const postgres : DatabaseService = {
 	/* Case functions */
-	getAllCases: function (): Promise<any> {
-		return pgcase.getAllCases()
+	getAllCases: function (username:string): Promise<any> {
+		return pgcase.getAllCases(username)
 	},
 
-	getCaseById: function (id: string): Promise<any> {
-		return pgcase.getCaseById(id)
+	getCaseById: function (id: string, username:string): Promise<any> {
+		return pgcase.getCaseById(id, username)
 	},
 
-	insertNewCase: function (name: string, description: string, tags: string[]): Promise<any> {
-		return pgcase.insertNewCase(name, description, tags)
+	insertNewCase: function (name: string, description: string, tags: string[], username:string): Promise<any> {
+		return pgcase.insertNewCase(name, description, tags, username)
 	},
 
-	updateCaseDetails: function (id: string, name:string, description: string, tags: string[], notes:string): Promise<any> {
-		return pgcase.updateCaseDetails(id, name, description, tags, notes)
+	updateCaseDetails: function (id: string, name:string, description: string, tags: string[], notes:string, username:string): Promise<any> {
+		return pgcase.updateCaseDetails(id, name, description, tags, notes, username)
 	},
 
 	/* File functions */
@@ -91,6 +97,14 @@ const postgres : DatabaseService = {
 	fetchFileForJob: function (jobId: string): Promise<any> {
 		return pglabel.fetchFileForJob(jobId)
 	},
+
+    checkIfUserExists: function (username:string): Promise<any> {
+        return pgChuqlabUser.checkIfUserExists(username)
+    },
+
+    createUser: function (username:string): Promise<any> {
+        return pgChuqlabUser.createUserEntry(username)
+    }
 
 }
 
