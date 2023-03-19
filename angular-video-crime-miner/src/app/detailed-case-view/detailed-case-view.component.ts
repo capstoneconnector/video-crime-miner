@@ -148,9 +148,8 @@ export class DetailedCaseViewComponent implements OnInit {
     }
     // Update case files by reloading page (probably bad practice but oh well!)
     this.requestCaseFiles().subscribe( async res => {
-      const delay = (ms: number | undefined) => new Promise(resolve => setTimeout(resolve, ms))
-      await delay(5000)
-      document.location.reload()
+      this.closeUploadFilePopup()
+	  this.ngOnInit()
     })
   }
 
