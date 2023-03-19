@@ -49,18 +49,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth
-    /*
-    this.mouseHover!.addEventListener("mouseenter", (e: any) => {
-      this.toggleCollapse()
-    })
-  
-    this.mouseHover!.addEventListener("mouseleave", (e: any) => {
-      this.toggleCollapse()
-    })
-    */
   }
-
-  //mouseHover = document.querySelector("#navbar")
 
   /* Regular Nav Bar Stuff */
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter()
@@ -77,9 +66,33 @@ export class SidenavComponent implements OnInit {
     }
   }
 
+  timerId: any = null
+  /*
   toggleCollapse(): void {
-    this.collapsed = !this.collapsed
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
+    if (this.timerId) {
+      clearTimeout(this.timerId) // cancel the previous timer
+    }
+    this.timerId = setTimeout(() => {
+      this.collapsed = !this.collapsed
+      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
+    }, 3000) // set a new timer
+  }
+  */
+
+  toggleCollapse(): void {
+    if (this.timerId) {
+      clearTimeout(this.timerId) // cancel the previous timer
+    }
+  
+    if (this.collapsed) { // delay of
+      this.timerId = setTimeout(() => {
+        this.collapsed = false
+        this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
+      }, 1000)
+    } else {
+      this.collapsed = true
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
+    }
   }
 
   closeSidenav(): void {
