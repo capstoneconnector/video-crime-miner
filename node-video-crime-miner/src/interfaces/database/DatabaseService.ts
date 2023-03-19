@@ -1,11 +1,13 @@
 
 interface DatabaseService {
     /* Operations for the Case table */
-    getAllCases(username:string): Promise<any>
+    getAllCases(): Promise<any>
 
-    getCaseById(id: string, username:string): Promise<any>
+    getCaseById(id: string): Promise<any>
 
-    insertNewCase(name: string, description: string, tags: string[], username:string): Promise<any>
+    insertNewCase(name: string, description: string, tags: string[]): Promise<any>
+
+	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string): Promise<any>
 
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
@@ -26,80 +28,70 @@ interface DatabaseService {
     updateJobResults (jobId: string, result: any): Promise<any>
 
     fetchFileForJob (jobId: string): Promise<any>
-
-    // check if user exists in db
-    checkIfUserExists (username:string) : Promise<any>;
-
-    // create new db entry for user
-    createUser(username:string): Promise<any>;
 }
 
 //{ getAllCases, insertNewCase, getCaseById }
 import * as pgcase from "./postgres/db.cases.js"
 import * as pgfile from "./postgres/db.files.js"
 import * as pglabel from "./postgres/db.labels.js"
-import * as pgChuqlabUser from './postgres/db.ChuqlabUser.js'
 
 
 const postgres : DatabaseService = {
 	/* Case functions */
-	getAllCases: function(username:string) : Promise<any> {
-        return pgcase.getAllCases(username)
-    },
-
-    getCaseById: function (id: string, username:string): Promise<any> {
-		return pgcase.getCaseById(id, username)
+	getAllCases: function (): Promise<any> {
+		return pgcase.getAllCases()
 	},
 
-    insertNewCase: function (name: string, description: string, tags: string[], username:string): Promise<any> {
-        return pgcase.insertNewCase(name, description, tags, username)
-    },
+	getCaseById: function (id: string): Promise<any> {
+		return pgcase.getCaseById(id)
+	},
 
-    /* File functions */
-    getFileInfoById: function (s3_name: string): Promise<any> {
-        return pgfile.getFileInfoById(s3_name)
-    },
+	insertNewCase: function (name: string, description: string, tags: string[]): Promise<any> {
+		return pgcase.insertNewCase(name, description, tags)
+	},
 
-    getFilesRelatedToCase: function (case_id: number): Promise<any> {
-        return pgfile.getFilesRelatedToCase(case_id)
-    },
+	updateCaseDetails: function (id: string, name:string, description: string, tags: string[], notes:string): Promise<any> {
+		return pgcase.updateCaseDetails(id, name, description, tags, notes)
+	},
 
-    createNewFileRow: function (name: string, notes: string, case_id: number): Promise<any> {
-        return pgfile.createNewFileRow(name, notes, case_id)
-    },
+	/* File functions */
+	getFileInfoById: function (s3_name: string): Promise<any> {
+		return pgfile.getFileInfoById(s3_name)
+	},
 
-    /* AWSOutput functions */
-    createNewLabels: function (job_id: string, keywords: string[], file_id: string): Promise<any> {
-        return pglabel.createNewLabels(job_id, keywords, file_id)
-    },
+	getFilesRelatedToCase: function (case_id: number): Promise<any> {
+		return pgfile.getFilesRelatedToCase(case_id)
+	},
 
-    getResultsForFile: function (fileName: string): Promise<any> {
-        return pglabel.getResultsForFile(fileName)
-    },
+	createNewFileRow: function (name: string, notes: string, case_id: number): Promise<any> {
+		return pgfile.createNewFileRow(name, notes, case_id)
+	},
 
-    getResultsForMultipleFiles: function (fileNames: string[]): Promise<any> {
-        return pglabel.getResultsForMultipleFiles(fileNames)
-    },
+	/* AWSOutput functions */
+	createNewLabels: function (job_id: string, keywords: string[], file_id: string): Promise<any> {
+		return pglabel.createNewLabels(job_id, keywords, file_id)
+	},
 
-    getResultsForJob: function (jobId: string): Promise<any> {
-        return pglabel.getResultsForJob(jobId)
-    },
+	getResultsForFile: function (fileName: string): Promise<any> {
+		return pglabel.getResultsForFile(fileName)
+	},
 
-    updateJobResults: function (jobId: string, result: any): Promise<any> {
-        return pglabel.updateJobResults(jobId, result)
-    },
+	getResultsForMultipleFiles: function (fileNames: string[]): Promise<any> {
+		return pglabel.getResultsForMultipleFiles(fileNames)
+	},
 
-    fetchFileForJob: function (jobId: string): Promise<any> {
-        return pglabel.fetchFileForJob(jobId)
-    },
+	getResultsForJob: function (jobId: string): Promise<any> {
+		return pglabel.getResultsForJob(jobId)
+	},
 
-    checkIfUserExists: function (username:string): Promise<any> {
-        return pgChuqlabUser.checkIfUserExists(username)
-    },
+	updateJobResults: function (jobId: string, result: any): Promise<any> {
+		return pglabel.updateJobResults(jobId, result)
+	},
 
-    createUser: function (username:string): Promise<any> {
-        return pgChuqlabUser.createUserEntry(username)
-    }
+	fetchFileForJob: function (jobId: string): Promise<any> {
+		return pglabel.fetchFileForJob(jobId)
+	},
+
 }
 
 function getDatabaseService(): DatabaseService {
