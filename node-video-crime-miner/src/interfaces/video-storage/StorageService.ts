@@ -71,7 +71,7 @@ function getStorageService(): StorageService {
 		return azure
 
 	}else{
-		console.log("The video-vtorage service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		console.log("The video-storage service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
 		return
 	}
 }

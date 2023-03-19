@@ -36,11 +36,12 @@ function getVideoAnalysisService() {
 	let service = process.env['VIDEO_ANALYSIS_SERVICE'] || 'VIDEO ANALYSIS SERVICE NOT DEFINED IN .env'
 
 	if (service == 'rekog' || service == 'Rekog' || service == 'REKOG' || service == 'Rekognition' || service == 'rekognition') {
-		return rekog
-
+		console.log("video-analysis service: Rekognition")
+        return rekog
+	}else{
+		console.log("The video-analysis service in use is : " + service + ", which isn't known. SERVER NEEDS RESTART!")
+		return
 	}
-
-	console.log("The Video Analysis Service in use is : " + service)
 }
 
 /*Get Storage Service variable from env*/

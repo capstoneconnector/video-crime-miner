@@ -19,14 +19,13 @@ export class FileRekognitionViewComponent implements OnInit {
   ngOnInit(): void {
     this.jobId = this.route.snapshot.paramMap.get('jobId') || '1'
     this.requestFileForID().subscribe(fileidname => {
-      this.videoFileName = fileidname.data[0].fileId
-      this.videoItems[0].src = this.CDN_WrapFileUrl(this.videoFileName)
-      this.videoItems[0].name = this.videoFileName
+      this.setVideoFileName(fileidname.data[0].fileId)
+      this.setVideoPlayerSrcAndName( this.CDN_WrapFileUrl(this.videoFileName), this.videoItems[0].name )
     })
     this.requestLabels().subscribe(labels => {
-      this.videoData = labels.data.VideoMetadata
-      this.labels = this.tablePrepper(labels.data.Labels)
-      this.labelTotal = this.sumTotalLabelOccurrences(this.labels)
+      this.setVideoData(  labels.data.VideoMetadata )
+      this.setLabels( this.tablePrepper(labels.data.Labels) )
+      this.setLabelTotal( this.sumTotalLabelOccurrences(this.labels) )
     })
   }
 
@@ -45,6 +44,7 @@ export class FileRekognitionViewComponent implements OnInit {
   private videoData?: JSON
   private currentBorderBox: HTMLElement | null = null
   private data: any
+
   public seekTimestampInVideo(timestamp:number, boxinfo:any): void{
     this.data.seekTime(timestamp/1000)
     var containerForBox: HTMLElement | null = document.getElementById('containerforbox')
@@ -56,12 +56,14 @@ export class FileRekognitionViewComponent implements OnInit {
     containerForBox!.appendChild(newBox)
     this.currentBorderBox = newBox
   }
+
   onPlayerReady(api: VgApiService) {
     this.data = api;
     this.data.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this));
     this.data.getDefaultMedia().subscriptions.ended.subscribe(this.nextVideo.bind(this));
     
   }
+
   nextVideo() {
     this.activeIndex++
     if (this.activeIndex === this.videoItems.length) {
@@ -77,6 +79,16 @@ export class FileRekognitionViewComponent implements OnInit {
     this.activeIndex = index;
     this.currentVideo = item;
   }
+
+  public setVideoPlayerSrcAndName(newVideoSrc:string, newVideoName:string): void {
+    this.videoItems[0].src = newVideoSrc
+    this.videoItems[0].name = newVideoName
+  }
+
+  public getVideoPlayerSrcAndName(): string[] {
+    return [ this.videoItems[0].src, this.videoItems[0].name ]
+  }
+
   public getAssociatedFile(): string {
     return this.videoFileName!
   }
@@ -94,6 +106,10 @@ export class FileRekognitionViewComponent implements OnInit {
     return this.jobId || 'Route Not Valid'
   }
 
+  public setJobId(newJobId:string): void {
+    this.jobId = newJobId
+  }
+
   /* Request and handle labels */
   private labels?: JSON
   private labelTotal?: JSON
@@ -104,8 +120,30 @@ export class FileRekognitionViewComponent implements OnInit {
   public getLabels(): any {
     return this.labels
   }
+  public setLabels(newLabels:JSON): void {
+    this.labels = newLabels
+  }
   public getLabelTotal(){
     return this.labelTotal
+  }
+  public setLabelTotal(newLabelTotal:JSON): void {
+    this.labelTotal = newLabelTotal
+  }
+
+  public getVideoFileName(): string {
+    return this.videoFileName!
+  }
+
+  public setVideoFileName(newVideoFileName:string): void {
+    this.videoFileName = newVideoFileName
+  }
+
+  public getVideoData(): JSON {
+    return this.videoData!
+  }
+
+  public setVideoData(newVideoData:JSON): void {
+    this.videoData = newVideoData
   }
 
   /* List of labels helper methods */
