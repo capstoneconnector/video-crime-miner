@@ -1,4 +1,4 @@
-import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../src/interfaces/database/postgres/db.labels'
+import { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults } from '../../../src/interfaces/database/postgres/db.labels'
 import * as pg from 'pg'
 
 // Mock the Pool of Connection
