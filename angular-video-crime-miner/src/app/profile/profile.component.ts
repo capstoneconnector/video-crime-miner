@@ -24,6 +24,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  public str(): string {
+    return JSON.stringify(this.user)
+  }
+
   public update(): void {
     this.loading = true;
 
