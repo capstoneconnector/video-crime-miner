@@ -5,12 +5,12 @@
             <h1>LABEL DETECTION OUTPUT</h1>
             <p><b>Job ID:</b> {{this.getJobId()}}</p>
             <!--  <p><b>Case Name:</b></p>  -->
-            <p *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
+            <p class = "label-count" *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
         </div>
     </div>
 
     <!-- Video Player and Label Selector Box -->
-    <div class="pageFormat">
+    <div class="page-content">
         <div class="videoplayer">
             <vg-player (onPlayerReady)="onPlayerReady($event)" id="containerforbox">
                 <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>

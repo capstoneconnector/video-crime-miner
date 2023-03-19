@@ -17,14 +17,18 @@ export interface IUser {
 })
 export class CognitoService {
 
-  private authenticationSubject: BehaviorSubject<any>;
+  private authenticationSubject: BehaviorSubject<boolean>
+
+  public getAuthenticationSubject(): BehaviorSubject<boolean> {
+    return this.authenticationSubject
+  }
 
   constructor() {
     Amplify.configure({
       Auth: environment.cognito,
     });
 
-    this.authenticationSubject = new BehaviorSubject<boolean>(false);
+    this.authenticationSubject = new BehaviorSubject<boolean>(false)
   }
 
   public signUp(user: IUser): Promise<any> {
@@ -38,21 +42,17 @@ export class CognitoService {
     return Auth.confirmSignUp(user.email, user.code);
   }
 
-  public signIn(user: IUser): Promise<any> {
-    return Auth.signIn(user.email, user.password)
-    .then(() => {
-      this.authenticationSubject.next(true);
-    });
+  public async signIn(user: IUser): Promise<any> {
+    await Auth.signIn(user.email, user.password);
+    this.authenticationSubject.next(true);
   }
 
-  public signOut(): Promise<any> {
-    return Auth.signOut()
-    .then(() => {
-      this.authenticationSubject.next(false);
-    });
+  public async signOut(): Promise<any> {
+    await Auth.signOut();
+    this.authenticationSubject.next(false);
   }
 
-  public isAuthenticated(): Promise<boolean> {
+  public async checkIfAuthenticated(): Promise<boolean> {
     if (this.authenticationSubject.value) {
       return Promise.resolve(true);
     } else {
@@ -73,10 +73,8 @@ export class CognitoService {
     return Auth.currentUserInfo();
   }
 
-  public updateUser(user: IUser): Promise<any> {
-    return Auth.currentUserPoolUser()
-    .then((cognitoUser: any) => {
-      return Auth.updateUserAttributes(cognitoUser, user);
-    });
+  public async updateUser(user: IUser): Promise<any> {
+    const cognitoUser = await Auth.currentUserPoolUser();
+    return await Auth.updateUserAttributes(cognitoUser, user);
   }
 }

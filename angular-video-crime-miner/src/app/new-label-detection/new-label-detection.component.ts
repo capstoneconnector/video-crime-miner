@@ -11,43 +11,27 @@ import { Observable } from 'rxjs'
 })
 export class NewLabelDetectionComponent implements OnInit {
 
-
-  
-
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
   private baseUrl = 'http://localhost:8000'
-  private fileId! : string
-  private fileInfo?: JSON
+  private files!: any
   private caseId!: number
-  public caseInfo?: JSON
   private labels: string[] = []
   public textValue: string = ""
+  public selectedFile! : string
   public newLabelForm: FormGroup = new FormGroup({
     label: new FormControl("")
   })
 
   ngOnInit(): void {
-    this.fileId = this.route.snapshot.paramMap.get('fileId') || '1'
-    this.requestFileInfo().subscribe(res => {
-
-      this.setFileInfo( res.data )
-      this.setCaseId(res.data[0].case_id)
-
-      this.requestCaseInfo().subscribe(res =>{ // Must be nested because requestCaseInfo() relies on this.caseId, set by another subscription
-        
-        this.setCaseInfo(res.data)
-
-      })
+    this.caseId = parseInt(this.route.snapshot.paramMap.get("caseId") || "0")
+    this.requestCaseFiles().subscribe((res) => {
+      this.files = res.data
     })
   }
 
-  public getFileId(): string {
-    return this.fileId
-  }
-
-  public setFileId(newFileId:string): void {
-    this.fileId = newFileId
+  public getFiles(): any {
+    return this.files
   }
 
   public getCaseId(): number {
@@ -58,36 +42,12 @@ export class NewLabelDetectionComponent implements OnInit {
     this.caseId = newCaseId
   }
 
-  public getFileInfo(): any {
-    return this.fileInfo
-  }
-
-  public setFileInfo(newFileInfo:JSON): void {
-    this.fileInfo = newFileInfo
-  }
-
-  public getCaseInfo(): any {
-    return this.caseInfo
-  }
-
-  public setCaseInfo(newCaseInfo:JSON): void {
-    this.caseInfo = newCaseInfo
-  }
-
   public getLabels(): string[] {
     return this.labels
   }
 
   public setLabels(newLabels:string[]): void {
     this.labels = newLabels
-  }
-
-  public requestFileInfo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/files/info/${this.fileId}`)
-  }
-
-  public requestCaseInfo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cases/${this.caseId}`)
   }
 
   public addNewLabel(): void {
@@ -116,11 +76,15 @@ export class NewLabelDetectionComponent implements OnInit {
     }
     */
     var body:Object = {"labels": this.labels}
-    this.http.post(`${this.baseUrl}/labels/file/${this.fileId}`, body).subscribe((res:any) => {
+    this.http.post(`${this.baseUrl}/labels/file/${this.selectedFile}`, body).subscribe((res:any) => {
       if(res.jobId != undefined){
         this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
       }
     })
+  }
+
+  public requestCaseFiles(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/files/case/${this.caseId}`)
   }
 
 }

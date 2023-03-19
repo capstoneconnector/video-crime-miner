@@ -5,7 +5,7 @@ import { Router } from 'express'
 import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID } from './controllers/api.labels.js'
 
 /* CASE ROUTES */
-import { fetchAllCases, fetchCaseById, createNewCase } from './controllers/api.cases.js'
+import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails } from './controllers/api.cases.js'
 
 /* FILE ROUTES */
 import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile, fetchFileInfo } from './controllers/api.files.js'
@@ -40,6 +40,10 @@ router.post('/cases', createNewCase)
 
 /* GET all files in S3 Bucket */
 router.get('/files', fetchAllFiles)
+
+
+/*PUT update case details*/
+router.put('/update/cases/:caseId', updateCaseDetails)
 
 /* GET all files in S3 Bucket for a certain case Id */
 router.get('/files/case/:caseId', fetchFilesByCaseId)

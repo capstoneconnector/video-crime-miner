@@ -193,7 +193,62 @@ button:hover i::after {
   }
 }
 
+.custom-select {
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: .375rem .75rem .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  appearance: none; /* remove default arrow on Firefox */
+  -moz-appearance: none; /* remove default arrow on Firefox */
+  -webkit-appearance: none; /* remove default arrow on Chrome, Safari, and Edge */
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'><path d='M8 12.293L2.854 7.146a.5.5 0 01.708-.708L8 10.586l4.438-4.438a.5.5 0 01.708.708L8 12.293z'/></svg>");
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  background-position: right 0 center; /* increase right value to move arrow further away */
+}
 
+.custom-select::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid #999;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  padding-left: 0.5em;
+}
 
+.custom-select:hover, .custom-select:focus {
+  outline: none;
+  border-color: #555;
+}
 
+.custom-select:hover::after, .custom-select:focus::after {
+  border-top-color: #555;
+}
 
+.custom-select::placeholder {
+  color: #aaa;
+}
+
+.custom-select:not(.placeholder-selected):after {
+  content: '\f077';
+}
+
+.custom-select:not(.placeholder-selected) {
+  padding-left: 20px;
+}

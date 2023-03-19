@@ -8,23 +8,6 @@
 .page-content::-webkit-scrollbar {
   display: none;
 }
-h1 {
-  font-weight: normal;
-  letter-spacing: -1px;
-  color: #34495E;
-  position: relative;
-  width: 80%;
-  font-size: 21px;
-  font-weight: 600;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  background-image: repeating-radial-gradient(farthest-side at 5px 5px,#553c9a, #ee4b2b, #553c9a);
-  }
-.pageFormat{
-  width: 100%;
-  height: 100%;
-}
 .videoplayer{
   height: 85%;
   width: 70%;
