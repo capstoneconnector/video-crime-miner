@@ -78,7 +78,7 @@ async function updateCaseDetails(req: Request, res: Response) {
 	try {
 		var response = emptyOutput
 		response.data = await databaseService.updateCaseDetails(req.params['caseId'], 
-		req.body.name, req.body.description, req.body.tags, req.body.notes)
+		req.body.name, req.body.description, req.body.tags, req.body.notes, req.body.username)
 		
 		response.success = true
 		response = standardizeResponse(response).convertToJson()
