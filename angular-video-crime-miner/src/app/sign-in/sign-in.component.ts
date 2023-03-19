@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { IUser, CognitoService } from '../cognito.service';
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
+import { IUser, CognitoService } from '../cognito.service'
 
 @Component({
   selector: 'app-sign-in',
@@ -10,22 +9,21 @@ import { IUser, CognitoService } from '../cognito.service';
 })
 export class SignInComponent {
 
-  loading: boolean;
-  user: IUser;
+  loading: boolean
+  user: IUser
 
-  constructor(private router: Router,
-              private cognitoService: CognitoService) {
-    this.loading = false;
-    this.user = {} as IUser;
+  constructor(private router: Router, private cognitoService: CognitoService) {
+    this.loading = false
+    this.user = {} as IUser
   }
 
   public signIn(): void {
-    this.loading = true;
+    this.loading = true
     this.cognitoService.signIn(this.user)
     .then(() => {
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/profile'])
     }).catch(() => {
-      this.loading = false;
-    });
+      this.loading = false
+    })
   }
 }

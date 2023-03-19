@@ -20,7 +20,7 @@
     <!-- Cognito Buttons -->
     <ul class="sidenav-nav">
         <!-- Register -->
-        <li class="sidenav-nav-item" *ngIf="!getIsAuthenticated()">
+        <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signUp/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-camera"></i>
@@ -28,7 +28,7 @@
             </a>
         </li>
         <!-- Sign in -->
-        <li class="sidenav-nav-item" *ngIf="!getIsAuthenticated()">
+        <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-camera"></i>
@@ -36,7 +36,7 @@
             </a>
         </li>
         <!-- Profile -->
-        <li class="sidenav-nav-item" *ngIf="getIsAuthenticated()">
+        <li class="sidenav-nav-item" *ngIf="isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/profile/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-camera"></i>
@@ -44,7 +44,7 @@
             </a>
         </li>
         <!-- Sign out -->
-        <li class="sidenav-nav-item" *ngIf="getIsAuthenticated()">
+        <li class="sidenav-nav-item" *ngIf="isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}" (click)="signOut()">
                 <i class="sidenav-link-icon fal fa-camera"></i>

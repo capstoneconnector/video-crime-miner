@@ -1,12 +1,12 @@
-import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
-import { CognitoService } from '../cognito.service';
-import { navbarData } from './nav-data';
+import { animate, keyframes, style, transition, trigger } from '@angular/animations'
+import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core'
+import { Router } from '@angular/router'
+import { CognitoService } from '../cognito.service'
+import { navbarData } from './nav-data'
 
 interface SideNavToggle {
-  screenWidth: number;
-  collapsed: boolean;
+  screenWidth: number
+  collapsed: boolean
 }
 
 @Component({
@@ -42,53 +42,44 @@ interface SideNavToggle {
 })
 export class SidenavComponent implements OnInit {
 
-  constructor(private router: Router, private cognitoService: CognitoService) {
-    this.isAuthenticated = false;
-  }
+  public isAuthenticated: boolean = false
 
-  ngOnInit(): void {
-    this.screenWidth = window.innerWidth;
-    this.cognitoService.isAuthenticated().then((success: boolean) => {
-      this.isAuthenticated = success;
+  constructor(private router: Router, private cognitoService: CognitoService) {
+    cognitoService.getAuthenticationSubject().subscribe((value) => {
+      this.isAuthenticated = value
     })
   }
 
+  ngOnInit(): void {
+    this.screenWidth = window.innerWidth
+  }
+
   /* Regular Nav Bar Stuff */
-  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
-  collapsed = false;
-  screenWidth = 0;
-  navData = navbarData;
+  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter()
+  collapsed = false
+  screenWidth = 0
+  navData = navbarData
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.screenWidth = window.innerWidth;
+    this.screenWidth = window.innerWidth
     if(this.screenWidth <= 768 ) {
-      this.collapsed = false;
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+      this.collapsed = false
+      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
     }
   }
 
   toggleCollapse(): void {
-    this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+    this.collapsed = !this.collapsed
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
   }
 
   closeSidenav(): void {
-    this.collapsed = false;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+    this.collapsed = false
+    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
   }
 
   /* Cognito Buttons */
-  private isAuthenticated: boolean;
-
-  public getIsAuthenticated(): boolean {
-    return this.isAuthenticated
-  }
-
-  public setIsAuthenticated(isAuthenticated: boolean): void {
-    this.isAuthenticated = isAuthenticated
-  }
-
   public signOut(): void {
     this.cognitoService.signOut()
     .then(() => {
