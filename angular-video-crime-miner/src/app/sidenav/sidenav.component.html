@@ -48,7 +48,7 @@
         <li class="sidenav-nav-item" *ngIf="isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}" (click)="signOut()">
-                <i class="sidenav-link-icon fal fa-user-plus"></i>
+                <i class="sidenav-link-icon fal fa-user-minus"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign Out</span>
             </a>
         </li>

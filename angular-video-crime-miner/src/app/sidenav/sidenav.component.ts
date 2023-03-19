@@ -66,25 +66,13 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  timerId: any = null
-  /*
-  toggleCollapse(): void {
-    if (this.timerId) {
-      clearTimeout(this.timerId) // cancel the previous timer
-    }
-    this.timerId = setTimeout(() => {
-      this.collapsed = !this.collapsed
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
-    }, 3000) // set a new timer
-  }
-  */
-
+  private timerId: any = null
   toggleCollapse(): void {
     if (this.timerId) {
       clearTimeout(this.timerId) // cancel the previous timer
     }
   
-    if (this.collapsed) { // delay of
+    if (this.collapsed) { // delay of 1 second
       this.timerId = setTimeout(() => {
         this.collapsed = false
         this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
