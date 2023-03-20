@@ -89,10 +89,9 @@ export class NewLabelDetectionComponent implements OnInit {
   }
 
   public addNewLabel(newLabel:string): void {
-    //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
-    //var label = this.newLabelForm.value.label
+    
     this.labels.push(newLabel)
-    //this.newLabelForm.reset()
+
     this.updateLabelList()
   }
 
@@ -123,10 +122,6 @@ export class NewLabelDetectionComponent implements OnInit {
 
   public requestCaseFiles(): Observable<any> {
     return this.http.get(`${this.baseUrl}/files/case/${this.caseId}`)
-  }
-
-  public getLabelListFromCSV() {
-
   }
 
 }
