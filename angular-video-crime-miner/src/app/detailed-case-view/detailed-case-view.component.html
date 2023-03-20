@@ -108,11 +108,20 @@
 
 <!-- Popup for viewing label detection jobs -->
 <div class="cm-popup" *ngIf="showViewLabelJobsPopup">
-    <div class="cm-popup-content" >
+    <div class="cm-popup-content view-label-detection-popup" >
         <div class="cm-popup-close" (click)="closeViewLabelJobsPopup()">
         &times; <!-- &times; is the X icon -->
         </div>
         <h4>Label Detection Jobs</h4>
+        <div class="fileTable">
+            <div *ngFor="let output of this.getCaseOutputs()">
+                <div class = "clickableFile" [class.selected]="output === selectedOutput" 
+                (click)="onSelectOutput(output)">
+                    <div class="fileCol">{{ output.fileId }}</div>
+                    <div class="tagsCol">{{ output.tags }}</div>
+                </div>
+            </div>
+        </div>
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>

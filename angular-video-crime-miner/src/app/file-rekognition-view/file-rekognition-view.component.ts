@@ -172,6 +172,8 @@ export class FileRekognitionViewComponent implements OnInit {
   public onSelectLabel(label: any): void{
     this.selectedLabel = label
     this.seekTimestampInVideo(label.Timestamp, label.Instances[0].BoundingBox)
+    const overlay = document.getElementById("overlay")!
+    overlay.style.display = 'none'
   }
 
   public onDoubleClickLabel(label: any): void{

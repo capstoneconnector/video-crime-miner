@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
 
@@ -30,12 +30,13 @@ export class DetailedCaseViewComponent implements OnInit {
   message = ''
   fileInfos?: Observable<any>
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private uploadService: FileService) { }
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, 
+    private router: Router, private uploadService: FileService) { }
 
 
 
   ngOnInit(): void {
-    this.caseId = this.route.snapshot.paramMap.get('caseId') || '1'
+    this.caseId = this.activatedRoute.snapshot.paramMap.get('caseId') || '1'
     this.requestCaseInfo().subscribe(res => {
 
       this.setCaseInfo(res.data[0])
@@ -177,6 +178,13 @@ export class DetailedCaseViewComponent implements OnInit {
   }
   public onDoubleClickFile(file:any){
     // TODO: add popup for detailed file view
+  }
+
+  /* Clickable output methods */
+  public selectedOutput=""
+  public onSelectOutput(output: any){
+    this.selectedOutput = output
+    this.router.navigateByUrl('/file-rekognition-view/' + output.jobId)
   }
 
   /* Popup for upload file */

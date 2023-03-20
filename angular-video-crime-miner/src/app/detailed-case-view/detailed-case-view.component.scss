@@ -56,3 +56,22 @@
 .new-label-detection-content{
   align-items: center;
 }
+
+.view-label-detection-popup{
+  height: 60%;
+  width: 80%;
+}
+
+.fileCol{
+  width: 60%;
+  height: auto;
+  padding-left: 10px;
+  float: left;
+  overflow: hidden;
+}
+.tagsCol{
+  float: left;
+  height: auto;
+  width: 40%;
+  overflow: hidden;
+}
