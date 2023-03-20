@@ -33,7 +33,36 @@ export class DetailedCaseViewComponent implements OnInit {
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, 
     private router: Router, private uploadService: FileService) { }
 
+    // listener callback for new-label-detection component
+  public onJobStartedEmission(emittedNum:string) {
+    console.log("JOB STARTED")
+    //this.router.navigateByUrl('/detailed-case-view/' + emittedNum)
+    
 
+    this.requestCaseInfo().subscribe(res => {
+
+      this.setCaseInfo(res.data[0])
+
+      if(this.caseInfo == undefined){
+        this.setCaseInfo(JSON.parse("{}"))
+      }
+
+    })
+
+    this.requestCaseFiles().subscribe(res => {
+
+      this.setCaseFiles(res.data)
+
+      this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
+        this.setCaseOutputs(res.data)
+        console.log(this.getCaseOutputs())
+        this.closeStartLabelJobPopup()
+        this.openViewLabelJobsPopup()
+      })
+    })
+
+    
+  }
 
   ngOnInit(): void {
     this.caseId = this.activatedRoute.snapshot.paramMap.get('caseId') || '1'
