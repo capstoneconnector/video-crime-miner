@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
@@ -11,7 +11,45 @@ import { Observable } from 'rxjs'
 })
 export class NewLabelDetectionComponent implements OnInit {
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+  @ViewChild('labelField') labelField: any;
+
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { 
+    this.http.get('assets/AmazonRekognitionAllLabels_v3.0.csv', {responseType: 'text'})
+    .subscribe(
+        data => {
+            let csvToRowArray = data.split("\r\n");
+            for (let index = 1; index < csvToRowArray.length - 1; index++) {
+              let row = csvToRowArray[index].split(",");
+              this.labelArray.push( { "label": row[0] } );
+            }
+            console.log(this.labelArray);
+        },
+        error => {
+            console.log(error);
+        }
+    );
+   }
+
+   public labelArray: Array<any> = []
+
+  
+
+  public keyword:string = 'label'
+
+  selectEvent(item:any) {
+    // do something with selected item
+    this.addNewLabel(item.label)
+    this.labelField.clear()
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+  
+  onFocused(e:any){
+    // do something when input is focused
+  }
 
   private baseUrl = 'http://localhost:8000'
   private files!: any
@@ -50,11 +88,11 @@ export class NewLabelDetectionComponent implements OnInit {
     this.labels = newLabels
   }
 
-  public addNewLabel(): void {
+  public addNewLabel(newLabel:string): void {
     //TODO: Data sanitization; we need to make sure only alphanumeric characters are there
-    var label = this.newLabelForm.value.label
-    this.labels.push(label)
-    this.newLabelForm.reset()
+    //var label = this.newLabelForm.value.label
+    this.labels.push(newLabel)
+    //this.newLabelForm.reset()
     this.updateLabelList()
   }
 
@@ -85,6 +123,10 @@ export class NewLabelDetectionComponent implements OnInit {
 
   public requestCaseFiles(): Observable<any> {
     return this.http.get(`${this.baseUrl}/files/case/${this.caseId}`)
+  }
+
+  public getLabelListFromCSV() {
+
   }
 
 }
