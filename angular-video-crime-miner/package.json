@@ -54,6 +54,7 @@
     "@aws-sdk/client-sqs": "^3.204.0",
     "@ionic/angular": "^6.3.9",
     "@videogular/ngx-videogular": "latest",
+    "angular-ng-autocomplete": "^2.0.12",
     "aws-amplify": "^5.0.18",
     "aws-sdk": "^2.1247.0",
     "bootstrap": "^5.2.3",
