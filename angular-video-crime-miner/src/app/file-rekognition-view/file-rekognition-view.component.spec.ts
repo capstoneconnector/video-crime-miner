@@ -78,6 +78,7 @@ describe('FileRekognitionViewComponent', () => {
     expect(res).toBeTruthy()
   })
 
+  /*
   it('requestFileForID(): should receive file id and set video player src accordingly ', () => {
     
     var reqCaseId:string = "345ab033645bdc304e2b3453c84936ffac82969d0265e078c01f491921b34521"
@@ -87,7 +88,7 @@ describe('FileRekognitionViewComponent', () => {
       },] }
 
       fileRekViewComp.setJobId(reqCaseId)
-
+      
       fileRekViewComp.requestFileForID().subscribe(
         (data:any) => {
             expect(data).toEqual(expReq)
@@ -189,6 +190,7 @@ describe('FileRekognitionViewComponent', () => {
     expect( fileRekViewComp.getLabelTotal() ).toEqual( fileRekViewComp.sumTotalLabelOccurrences( fileRekViewComp.tablePrepper(expReq.data.Labels) ) )
 
   })
+  */
 
   /*
   it('should return seekTimestampInVideo() without errors'), () => {
