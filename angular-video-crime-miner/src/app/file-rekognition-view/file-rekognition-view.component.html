@@ -15,6 +15,7 @@
             <vg-player (onPlayerReady)="onPlayerReady($event)" id="containerforbox">
                 <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
             </vg-player>
+            <div class="init-overlay-text" id="overlay">Click on a label to the right to see it in the video</div>
         </div>
         <div class="scrollbox">
             <div *ngFor="let label of this.getLabels()">
