@@ -26,10 +26,28 @@
               <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
             </div>
       </div>
+      <thead>
+        <tr>
+          <div style="word-spacing: 10em;">ID Name Tags Description</div>
+        </tr>
+      </thead>
       <!-- Clickable case rows -->
-      <div class="caseTable">
+      <table *ngFor="let case of this.getCaseInfos()" id="table" class="table table-hover table-mc-light-blue">
+
+        <tbody [class.selected]="case === selectedCase"
+        (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
+          <tr>
+            <td data-title="Case:ID">1</td>
+            <td data-title="Name">{{ case.name }}</td>
+            <td data-title="Tags"*ngIf="(case.tags).length!=0">{{ case.tags }}</td>
+            <td data-title="Tags"*ngIf="(case.tags).length==0">None</td>
+            <td data-title="Description">{{ case.description }}</td>
+          </tr>
+      </table>
+      <!----
+      <div class="caseTable">`
         <div *ngFor="let case of this.getCaseInfos()">
-            <div class = "clickableCase" [class.selected]="case === selectedCase" 
+            <div class = "clickableCase" [class.selected]="case === selectedCase"
             (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
               <div class="nameCol">{{ case.name }}</div>
               <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>
@@ -42,7 +60,7 @@
   </div>
 </div>
 
-<!-- Table of cases -->
+ Table of cases -->
 <!--
 <table class="rwd-table">
     <thead>

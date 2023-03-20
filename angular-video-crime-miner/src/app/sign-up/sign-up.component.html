@@ -1,3 +1,4 @@
+<!--
 <div class="row justify-content-center my-5">
   <div class="col-4">
     <div class="card">
@@ -47,3 +48,46 @@
     </div>
   </div>
 </div>
+-->
+
+<form action="#">
+  <script>$("form").validate();</script>
+  <fieldset *ngIf="!isConfirm">
+
+    <legend>Sign Up</legend>
+    <label for="email" class="vhide">Email:</label>
+    <input placeholder="Email" id="email" name="email" type="email" #email="ngModel" required minlength="2" [(ngModel)]="user.email">
+    <br>
+    <label for="password" class="vhide">Password</label>
+    <input placeholder="Password" [type]="user.showPassword ? 'text' : 'password'" id="password" name="password" #password="ngModel" [(ngModel)]="user.password" required minlength="6">
+
+    <input type="checkbox" name="remember" id="remember" class="vhide">
+    <label for="remember">
+      <i class="octicon octicon-check"></i> Remember all the things
+    </label>
+
+    <button type="button" (click)="signUp()" class="signin" [disabled]="loading">
+    <span role="status" aria-hidden="true" *ngIf="loading"></span>
+    Sign Up</button>
+
+    <button type="button" class="signin" (click) ="user.showPassword = !user.showPassword">
+    <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword,
+    'bi-eye-slash-fill': user.showPassword}"></i> </button>
+
+    <button type="button" (click)="signUp()" class="cm-standard-button" [disabled]="loading">
+      <span role="status" aria-hidden="true" *ngIf="loading"></span>
+      Sign up </button>
+
+      <div *ngIf="isConfirm">
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="user.code">
+      </div>
+
+        <button type="button" (click)="confirmSignUp()" class="signin" [disabled]="loading">
+        <span role="status" aria-hidden="true" *ngIf="loading"></span>
+        Confirm </button>
+
+
+  </fieldset>
+
+</form>

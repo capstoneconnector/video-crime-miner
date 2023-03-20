@@ -1,4 +1,4 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''" (mouseenter)="toggleCollapse()" 
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''" (mouseenter)="toggleCollapse()"
 (mouseleave)="toggleCollapse()">
     <!-- Crime Miner Logo -->
     <div class="logo-container">
@@ -19,7 +19,7 @@
     <ul class="sidenav-nav">
         <!-- Register -->
         <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
-            <a class="sidenav-nav-link" routerLink="/signUp/" routerLinkActive="active" 
+            <a class="sidenav-nav-link" routerLink="/signUp/" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-user-plus"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign Up</span>
@@ -27,15 +27,15 @@
         </li>
         <!-- Sign in -->
         <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
-            <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
+            <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-user-plus"></i>
-                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Log In</span>
+                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign In</span>
             </a>
         </li>
         <!-- Profile -->
         <li class="sidenav-nav-item" *ngIf="isAuthenticated">
-            <a class="sidenav-nav-link" routerLink="/profile/" routerLinkActive="active" 
+            <a class="sidenav-nav-link" routerLink="/profile/" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
                 <i class="sidenav-link-icon fal fa-user"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Profile</span>
@@ -43,7 +43,7 @@
         </li>
         <!-- Sign out -->
         <li class="sidenav-nav-item" *ngIf="isAuthenticated">
-            <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
+            <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}" (click)="signOut()">
                 <i class="sidenav-link-icon fal fa-user-minus"></i>
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign Out</span>

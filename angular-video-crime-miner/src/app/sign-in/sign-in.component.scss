@@ -1,0 +1,264 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+
+@mixin phold() {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content
+  }
+  &::-moz-placeholder {
+    @content
+  }
+  &:-ms-input-placeholder {
+    @content
+  }
+}
+
+$bg: #000000;
+$fg: lighten($bg,60%);
+
+$hi: #6291c3;
+$hib: #317ac7;
+
+$error: #99001f;
+$warn: #ffa200;
+
+
+
+
+fieldset {
+
+  margin: 1em auto;
+  padding: 2em;
+  width: 22em;
+  position: relative;
+
+  border-radius: 2px;
+  border-color: lighten($bg,10%);
+  background: white;
+  box-shadow: 0 2px 15px darken( $bg, 2% );
+
+  legend {
+
+    font-weight: 700;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.5em 2em;
+    background: $hi;
+    border-image: linear-gradient( 180deg, rgba(255,255,255,0) 50%, lighten($bg,10%) 50%) 1 round;
+    border-width: 1px;
+    border-style: solid;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+
+  }
+
+}
+
+input {
+
+  &, & + label > i {
+
+    border-radius: 10px;
+    box-shadow: none;
+    border: 1px solid black;
+    background: white;
+    display: block;
+    width: 100%;
+      color: rgb(0, 0, 0);
+
+    transition: all 0.3s ease;
+
+  }
+
+  &[type=text] {
+
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 0.3em 0.4em;
+    margin: 0 0.5em 1em 0;
+    color: #000000;
+
+    @include phold() {
+
+      color: black;
+      line-height: 1.2;
+      transition: all 0.2s ease;
+
+    }
+
+    & + label.error {
+
+      color: $error;
+      margin: -1em 0 2em;
+      display: block;
+      transition: all 0.2s ease;
+
+    }
+
+    &:hover {
+
+      border-color: black;
+
+      @include phold() {
+        color: black;
+      }
+
+    }
+
+    &.error {
+
+      border-color: $error;
+
+      &:hover,
+      &:focus {
+
+        border-color: $warn;
+
+        & + label.error {
+
+          color: $warn;
+
+        }
+
+      }
+
+    }
+
+    &:focus {
+
+      outline: none;
+      border-color: $hi;
+
+      @include phold() {
+        transform: translateX(20px);
+        opacity: 0;
+      }
+
+    }
+
+  }
+
+  &[type=checkbox] {
+
+    & + label {
+
+      line-height: 1;
+      ///vertical-align: middle;
+      display: block;
+      color: transparentize( $fg, 0.6 );
+      margin: 1em 0;
+      position: relative;
+
+      transition: all 0.2s ease;
+
+      > i {
+
+        color: lighten( $bg, 7% );
+        cursor: pointer;
+        width: 1.2em;
+        height: 1.2em;
+        vertical-align: middle;
+        position: relative;
+        margin-right: 0.3em;
+        top: -1px;
+
+        &:before {
+
+          position: relative;
+          top: 1px;
+          left: 3px;
+
+        }
+
+      }
+
+      &:hover {
+
+        color: darken($fg, 25%);
+
+        > i {
+
+          border-color: lighten($bg,25%);
+          color: lighten( $bg, 15% );
+
+        }
+
+      }
+
+    }
+
+    &:checked + label {
+
+      color: $hi;
+
+      > i {
+
+        border-color: $hi;
+        background: darken($hi, 15%);
+        color: lighten( $fg, 13% );
+        text-shadow: 0 1px 0 $bg;
+
+      }
+
+    }
+
+  }
+
+}
+
+.signin {
+
+  font-size: 1.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: $hib;
+  border: 1px solid transparent;
+  color: $bg;
+  padding: 0.5em 2em;
+  margin: 2em 0 0;
+  ///vertical-align: middle;
+  display: block;
+  width: 100%;
+  border-radius: 3px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+
+  &:hover {
+
+    opacity: 1;
+
+  }
+
+}
+
+
+
+body {
+
+  font-family: "Lato";
+  font-size: 16px;
+  background: $bg;
+  color: $fg;
+  padding: 1em 0 10em;
+
+}
+
+.vhide {
+
+  opacity: 0;
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+
+}
+
+* {
+
+  box-sizing: border-box;
+
+}

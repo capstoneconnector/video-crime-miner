@@ -9,6 +9,7 @@ import { IUser, CognitoService } from '../cognito.service'
 })
 export class SignInComponent {
 
+  
   loading: boolean
   user: IUser
 
