@@ -34,20 +34,57 @@
 				<div class="content">
 					<div class="contentBx">
 						<h3>Add Tags</h3>
+            <!--<div class="ng-autocomplete">
+              <ng-autocomplete 
+                [data]="thedata"
+                [searchKeyword]="keyword"
+                placeholder="Select country"
+                (selected)='selectEvent($event)'
+                (inputChanged)='onChangeSearch($event)'
+                (inputFocused)='onFocused($event)'
+                [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate">
+              </ng-autocomplete>
+              
+              <ng-template #itemTemplate let-item>
+              <a [innerHTML]="item.name"></a>
+              </ng-template>
+              
+              <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+              </ng-template>
+              </div> -->
             <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
           <br>
             <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
           <br>
             <div>
-                <form [formGroup]="newLabelForm" (ngSubmit)="addNewLabel()">
-                    <input formControlName="label" type="text" value="" placeholder="Custom Tag"/>
-                  <br>
-                    <button style="--clr:#8A2BE2" type="submit" value="ADD" [disabled]="newLabelForm.value.label.length<3"><span>Add</span><i></i></button>
-                </form>
+              <ng-autocomplete 
+              [data]="labelArray"
+              [searchKeyword]="keyword"
+              placeholder="Select Label"
+              (selected)='selectEvent($event)'
+              (inputChanged)='onChangeSearch($event)'
+              (inputFocused)='onFocused($event)'
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate"
+              #labelField >                                 
+            </ng-autocomplete>
+            
+            <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.label"></a>
+            </ng-template>
+            
+            <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+            </ng-template>
+            </div>
+
+                
+
             </div>
 					</div>
 				</div>
-			</div>
 
 			<div class="card">
 				<div class="content">
