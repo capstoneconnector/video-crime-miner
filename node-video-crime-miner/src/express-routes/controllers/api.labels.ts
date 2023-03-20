@@ -90,7 +90,9 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
     const keywords = req.body.labels || [] // Filter keywords
     // const snsTopic = await createTopic(req.params["fileName"])
     const job_id = await vidService.startJob(req.params['fileName'], keywords)
+    console.log("Job ID: ", job_id)
     await databaseService.createNewLabels(job_id.JobID, keywords, req.params['fileName'])
+    response.data = { "JobId": job_id.JobID } 
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)

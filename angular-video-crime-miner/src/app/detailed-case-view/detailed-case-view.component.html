@@ -134,7 +134,7 @@
         <div class="cm-popup-close" (click)="closeStartLabelJobPopup()">
         &times; <!-- &times; is the X icon -->
         </div>
-        <app-new-label-detection class="new-label-detection-content"></app-new-label-detection>
+        <app-new-label-detection class="new-label-detection-content" (popUpToDetCasePageEmitter)="this.onJobStartedEmission($event)"></app-new-label-detection>
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
