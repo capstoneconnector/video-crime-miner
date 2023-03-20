@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ViewComponent } from './view/view.component';
 import { MediaComponent } from './media/media.component';
 
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+
 import { ReportsComponent } from './reports/reports.component';
 
 import { IonicModule } from '@ionic/angular';
@@ -59,7 +61,8 @@ import { ProfileComponent } from './profile/profile.component';
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule
+    VgBufferingModule,
+    AutocompleteLibModule
 
   ],
   providers: [],
