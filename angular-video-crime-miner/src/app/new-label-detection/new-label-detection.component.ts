@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
@@ -12,6 +12,13 @@ import { Observable } from 'rxjs'
 export class NewLabelDetectionComponent implements OnInit {
 
   @ViewChild('labelField') labelField: any;
+
+  @Output() popUpToDetCasePageEmitter = new EventEmitter<any> // used to transmit to parent component
+
+  // transmit job has started to parent component
+  public emitJobSentToDetCaseView(eventMsg:any): void {
+    this.popUpToDetCasePageEmitter.emit(eventMsg)
+  }
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { 
     this.http.get('assets/AmazonRekognitionAllLabels_v3.0.csv', {responseType: 'text'})
@@ -114,8 +121,11 @@ export class NewLabelDetectionComponent implements OnInit {
     */
     var body:Object = {"labels": this.labels}
     this.http.post(`${this.baseUrl}/labels/file/${this.selectedFile}`, body).subscribe((res:any) => {
-      if(res.jobId != undefined){
-        this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
+      console.log("Job ID Response: ", res)
+      if(res.data.JobId != undefined){
+        console.log("REACHED HERE")
+        this.emitJobSentToDetCaseView(this.getCaseId().toString())
+        //this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
       }
     })
   }
