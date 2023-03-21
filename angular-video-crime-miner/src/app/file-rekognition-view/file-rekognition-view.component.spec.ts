@@ -78,7 +78,7 @@ describe('FileRekognitionViewComponent', () => {
     expect(res).toBeTruthy()
   })
 
-  /*
+  
   it('requestFileForID(): should receive file id and set video player src accordingly ', () => {
     
     var reqCaseId:string = "345ab033645bdc304e2b3453c84936ffac82969d0265e078c01f491921b34521"
@@ -92,8 +92,8 @@ describe('FileRekognitionViewComponent', () => {
       fileRekViewComp.requestFileForID().subscribe(
         (data:any) => {
             expect(data).toEqual(expReq)
-            fileRekViewComp.setVideoFileName(data.data[0].fileId)
-            fileRekViewComp.setVideoPlayerSrcAndName( fileRekViewComp.CDN_WrapFileUrl(fileRekViewComp.getVideoFileName()), fileRekViewComp.getVideoFileName() )
+            //fileRekViewComp.setVideoFileName(data.data[0].fileId)
+            //fileRekViewComp.setVideoPlayerSrcAndName( fileRekViewComp.CDN_WrapFileUrl(fileRekViewComp.getVideoFileName()), fileRekViewComp.getVideoFileName() )
         } // 
       );
 
@@ -104,11 +104,10 @@ describe('FileRekognitionViewComponent', () => {
     // Expect server to return the response after GET
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
-
-    // expect getVideoFileName === expReq.data[0].fileId
+    
     // expect getVideoPlayerSrcAndName === [ `https://dthqh9b9a8scb.cloudfront.net/${expReq.data[0].fileId}`, expReq.data[0].fileId ]
-        expect( fileRekViewComp.getVideoFileName() ).toEqual( expReq.data[0].fileId )
-        expect( fileRekViewComp.getVideoPlayerSrcAndName() ).toEqual( [ `https://dthqh9b9a8scb.cloudfront.net/${expReq.data[0].fileId}`, expReq.data[0].fileId ] )
+        //expect( fileRekViewComp.video ).toEqual( expReq.data[0].fileId )
+        //expect( fileRekViewComp.getVideoPlayerSrcAndName() ).toEqual( [ `https://dthqh9b9a8scb.cloudfront.net/${expReq.data[0].fileId}`, expReq.data[0].fileId ] )
 
   })
 
@@ -171,7 +170,7 @@ describe('FileRekognitionViewComponent', () => {
       fileRekViewComp.requestLabels().subscribe(
         (data:any) => { 
             expect(data).toEqual(expReq) //  
-            fileRekViewComp.setVideoData(  data.data.VideoMetadata )
+            //fileRekViewComp.setVideoData(  data.data.VideoMetadata )
             fileRekViewComp.setLabels( fileRekViewComp.tablePrepper(data.data.Labels) )
             fileRekViewComp.setLabelTotal( fileRekViewComp.sumTotalLabelOccurrences( fileRekViewComp.getLabels() ) )
     }
@@ -185,23 +184,67 @@ describe('FileRekognitionViewComponent', () => {
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
-    expect(fileRekViewComp.getVideoData()).toEqual( expReq.data.VideoMetadata )
+    //expect(fileRekViewComp.getVideoData()).toEqual( expReq.data.VideoMetadata )
     expect( fileRekViewComp.getLabels() ).toEqual( fileRekViewComp.tablePrepper(expReq.data.Labels) )
     expect( fileRekViewComp.getLabelTotal() ).toEqual( fileRekViewComp.sumTotalLabelOccurrences( fileRekViewComp.tablePrepper(expReq.data.Labels) ) )
 
   })
-  */
+  
 
-  /*
-  it('should return seekTimestampInVideo() without errors'), () => {
-    var mockedDocElement = document.createElement('div');
-    //document.getElementById = mockedDocElement
-    const res = component.seekTimestampInVideo(0, {
-      "Height": 0.2557867467403412,
-      "Left": 0.6801146268844604,
-      "Top": 0.06833687424659729,
-      "Width": 0.025330115109682083
+  
+  
+  it('should return seekTimestampInVideo() without errors', () => {
+    var dummyElement = document.createElement('div');
+    document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(dummyElement);
+    var instances = [
+      {
+          "BoundingBox": {
+              "Height": 0.16393329203128815,
+              "Left": 0.7162388563156128,
+              "Top": 0.12068342417478561,
+              "Width": 0.030095195397734642
+          },
+          "Confidence": 97.83622741699219
+      },
+      {
+          "BoundingBox": {
+              "Height": 0.2557867467403412,
+              "Left": 0.6801146268844604,
+              "Top": 0.06833687424659729,
+              "Width": 0.025330115109682083
+          },
+          "Confidence": 71.76848602294922
+      }
+  ]
+
+    const res = fileRekViewComp.seekTimestampInVideo(0, instances)
+    expect(res).toBeFalsy()
   })
-  }
-  */
+  
+
+  it('should prettify a timestamp with prettifyTimestamp(timestamp:number)', () => {
+    expect(fileRekViewComp.prettifyTimestamp(324599)).toEqual('00:05:24')
+  })
+
+  it('getter functions work', () => {
+    fileRekViewComp.videoAttributes = {
+      name: 'video',
+      src: ' ',
+      type: 'video/mp4'
+    }
+    fileRekViewComp.setVideoPlayerSrcAndName('vidsrc', 'vidname')
+    expect(fileRekViewComp.videoAttributes).toEqual({
+      name: 'vidname',
+      src: 'vidsrc',
+      type: 'video/mp4'
+    })
+  })
+
+  it('setter functions work', () => {
+    (fileRekViewComp as any).videoFileName = 'filename';
+    (fileRekViewComp as any).jobId = 'jobId';
+    expect(fileRekViewComp.getAssociatedFile()).toBe('filename')
+    expect(fileRekViewComp.getJobId()).toBe('jobId')
+  })
+  
 })
