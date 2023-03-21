@@ -95,6 +95,10 @@ export class NewLabelDetectionComponent implements OnInit {
     this.labels = newLabels
   }
 
+  public setSelectedFile(newSelectedFile:string): void {
+    this.selectedFile = newSelectedFile
+  }
+
   public addNewLabel(newLabel:string): void {
     
     this.labels.push(newLabel)
@@ -102,30 +106,20 @@ export class NewLabelDetectionComponent implements OnInit {
     this.updateLabelList()
   }
 
-  private updateLabelList(){
+  public updateLabelList(){
     var elem:HTMLElement = document.getElementById("labelsList")!
     elem.innerHTML = this.labels.toString()
   }
 
   public sendJobCreationRequest(): void {
-    //this is how the json body should look
-    /*
-    {
-      "labels":
-      [
-          "Label1",
-          "Label2",
-          "Label3"
-      ]
-    }
-    */
+    
     var body:Object = {"labels": this.labels}
     this.http.post(`${this.baseUrl}/labels/file/${this.selectedFile}`, body).subscribe((res:any) => {
-      console.log("Job ID Response: ", res)
+      
       if(res.data.JobId != undefined){
-        console.log("REACHED HERE")
+        
         this.emitJobSentToDetCaseView(this.getCaseId().toString())
-        //this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
+        
       }
     })
   }
