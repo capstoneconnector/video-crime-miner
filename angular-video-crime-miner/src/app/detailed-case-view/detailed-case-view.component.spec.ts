@@ -1,15 +1,15 @@
-import { ComponentFixture, inject, TestBed, fakeAsync, flush } from '@angular/core/testing';
-import { DetailedCaseViewComponent } from './detailed-case-view.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ComponentFixture, inject, TestBed, fakeAsync, flush } from '@angular/core/testing'
+import { DetailedCaseViewComponent } from './detailed-case-view.component'
+import { RouterTestingModule } from '@angular/router/testing'
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
 import { HttpClient, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http'
 
 
 describe('DetailedCaseViewComponent', () => {
   
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
-  let detCaseViewComp: DetailedCaseViewComponent;
+  let httpClient: HttpClient
+  let httpTestingController: HttpTestingController
+  let detCaseViewComp: DetailedCaseViewComponent
 
   beforeEach(() => {
     //Configures testing app module
@@ -19,20 +19,20 @@ describe('DetailedCaseViewComponent', () => {
         DetailedCaseViewComponent
         
       ]
-    });
+    })
 
-    //Instantiates HttpClient, HttpTestingController and EmployeeService
-    httpClient = TestBed.inject(HttpClient);
-    httpTestingController = TestBed.inject(HttpTestingController);
-    detCaseViewComp = TestBed.inject(DetailedCaseViewComponent);
+    //Instantiates HttpClient, HttpTestingController and Detailed Case View Component
+    httpClient = TestBed.inject(HttpClient)
+    httpTestingController = TestBed.inject(HttpTestingController)
+    detCaseViewComp = TestBed.inject(DetailedCaseViewComponent)
 
   })
 
     
 
     afterEach(() => {
-      httpTestingController.verify(); //Verifies that no requests are outstanding
-    });
+      httpTestingController.verify() //Verifies that no requests are outstanding
+    })
 
   //Test case requestCaseInfo
   it('requestCaseInfo(): should return basic info for a case ', () => {
@@ -53,19 +53,19 @@ describe('DetailedCaseViewComponent', () => {
         expect(data).toEqual(expReq)
         detCaseViewComp.setCaseInfo(data)
       } // 
-    );
+    )
 
     // requestCaseInfo should have made one request to GET /cases/<caseId>
-    const req = httpTestingController.expectOne('http://localhost:8000/cases/'+ String(reqCaseId));
-    expect(req.request.method).toEqual('GET');
+    const req = httpTestingController.expectOne('http://localhost:8000/cases/'+ String(reqCaseId))
+    expect(req.request.method).toEqual('GET')
 
     // Expect server to return the response after GET
-    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
-    req.event(expectedResponse);
+    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq })
+    req.event(expectedResponse)
 
     // expect detCaseViewComp.getCaseInfo() === expReq
       expect(detCaseViewComp.getCaseInfo()).toEqual(expReq)
-  });
+  })
 
   //Test case requestCaseFiles
   it('requestCaseFiles(): should return info for file related to given case ', () => {
@@ -88,19 +88,19 @@ describe('DetailedCaseViewComponent', () => {
         detCaseViewComp.setCaseFiles(data)
       } // 
 
-    );
+    )
 
     // requestCaseFiles should have made one request to POST /files/case/<caseId>
-    const req = httpTestingController.expectOne('http://localhost:8000/files/case/'+ String(reqCaseId));
-    expect(req.request.method).toEqual('GET');
+    const req = httpTestingController.expectOne('http://localhost:8000/files/case/'+ String(reqCaseId))
+    expect(req.request.method).toEqual('GET')
 
     // Expect server to return the response after GET
-    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
-    req.event(expectedResponse);
+    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq })
+    req.event(expectedResponse)
 
     // expect detCaseViewComp.getCaseFiles() === expReq
     expect(detCaseViewComp.getCaseFiles()).toEqual(expReq)
-  });
+  })
 
 
   //Test case getFileS3Names
@@ -115,7 +115,7 @@ describe('DetailedCaseViewComponent', () => {
     // check 
     expect(filenames).toEqual( [ "0.mp4", "1.mp4" ] )
     
-  });
+  })
 
 
   //Test case requestCaseOutputs
@@ -138,21 +138,96 @@ describe('DetailedCaseViewComponent', () => {
         expect(data).toEqual(expReq)
         detCaseViewComp.setCaseOutputs(data)
       } // 
-    );
+    )
 
     // requestCaseOutputs should have made one request to POST /labels/multifile
-    const req = httpTestingController.expectOne('http://localhost:8000/labels/multifile');
-    expect(req.request.method).toEqual('POST');
+    const req = httpTestingController.expectOne('http://localhost:8000/labels/multifile')
+    expect(req.request.method).toEqual('POST')
 
     // Expect server to return the response after POST
-    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
-    req.event(expectedResponse);
+    const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq })
+    req.event(expectedResponse)
 
       // expect detCaseViewComp.getCaseOutputs() === expReq
       expect(detCaseViewComp.getCaseOutputs()).toEqual(expReq)
 
-  });
+  })
 
+  it('editCase(name:string, description:string, tags:string , notes: string) should get a response and deal with it accordingly', () => {
+    // blank name should change error message and return
+    detCaseViewComp.editCase('', 'desc', 'notes', 'tags')
+    expect(detCaseViewComp.errorMessage).toEqual('ERROR: Case name must be length 3 or more, and there must be a description')
+    expect(detCaseViewComp.successMessage).toEqual("")
 
+    // valid inputs should be sent
+    detCaseViewComp.successMessage = ''
+    detCaseViewComp.errorMessage = ''
+    detCaseViewComp.editCase('name', 'desc', 'notes', 'tags')
+    expect(detCaseViewComp.errorMessage).toEqual('')
+    expect(detCaseViewComp.successMessage).toEqual('')
+    const req = httpTestingController.expectOne('http://localhost:8000/update/cases/'+detCaseViewComp.getCaseId())
+    expect(req.request.method).toEqual('PUT')
+  })
 
-});
+  it('setFeedbackMessage(success:boolean, message:string = "") should change error and success messages', () => {
+    detCaseViewComp.errorMessage = ""
+    detCaseViewComp.successMessage = "";
+    // since setFeedbackMessage is private, use as any to get around typescript errors! This makes us add explicit semicolons, so don't remove them!
+    (detCaseViewComp as any).setFeedbackMessage(false, "example error");
+    expect(detCaseViewComp.errorMessage).toEqual("example error");
+    expect(detCaseViewComp.successMessage).toEqual("");
+    (detCaseViewComp as any).setFeedbackMessage(true)
+    expect(detCaseViewComp.errorMessage).toEqual("")
+    expect(detCaseViewComp.successMessage).toEqual("Case Created")
+  })
+
+  it('close popup functions should reset inputs', () => {
+    detCaseViewComp.name, detCaseViewComp.description, detCaseViewComp.tags, detCaseViewComp.notes, detCaseViewComp.file = "a value"
+    detCaseViewComp.closeEditCasePopup()
+    expect(detCaseViewComp.name).toEqual("")
+    expect(detCaseViewComp.description).toEqual("")
+    expect(detCaseViewComp.tags).toEqual("")
+    expect(detCaseViewComp.notes).toEqual("")
+    expect(detCaseViewComp.file).toBeNull()
+
+    detCaseViewComp.name, detCaseViewComp.description, detCaseViewComp.tags, detCaseViewComp.notes, detCaseViewComp.file = "a value"
+    detCaseViewComp.closeStartLabelJobPopup()
+    expect(detCaseViewComp.name).toEqual("")
+    expect(detCaseViewComp.description).toEqual("")
+    expect(detCaseViewComp.tags).toEqual("")
+    expect(detCaseViewComp.notes).toEqual("")
+    expect(detCaseViewComp.file).toBeNull()
+
+    detCaseViewComp.name, detCaseViewComp.description, detCaseViewComp.tags, detCaseViewComp.notes, detCaseViewComp.file = "a value"
+    detCaseViewComp.closeUploadFilePopup()
+    expect(detCaseViewComp.name).toEqual("")
+    expect(detCaseViewComp.description).toEqual("")
+    expect(detCaseViewComp.tags).toEqual("")
+    expect(detCaseViewComp.notes).toEqual("")
+    expect(detCaseViewComp.file).toBeNull()
+
+    detCaseViewComp.name, detCaseViewComp.description, detCaseViewComp.tags, detCaseViewComp.notes, detCaseViewComp.file = "a value"
+    detCaseViewComp.closeViewLabelJobsPopup()
+    expect(detCaseViewComp.name).toEqual("")
+    expect(detCaseViewComp.description).toEqual("")
+    expect(detCaseViewComp.tags).toEqual("")
+    expect(detCaseViewComp.notes).toEqual("")
+    expect(detCaseViewComp.file).toBeNull()
+    
+  })
+
+  it('open popup function should show that popup', () => {
+    detCaseViewComp.openEditCasePopup()
+    expect(detCaseViewComp.showEditCasePopup).toEqual(true)
+
+    detCaseViewComp.openStartLabelJobPopup()
+    expect(detCaseViewComp.showStartLabelJobPopup).toEqual(true)
+
+    detCaseViewComp.openUploadFilePopup()
+    expect(detCaseViewComp.showUploadFilePopup).toEqual(true)
+
+    detCaseViewComp.openViewLabelJobsPopup()
+    expect(detCaseViewComp.showViewLabelJobsPopup).toEqual(true)
+  })
+
+})

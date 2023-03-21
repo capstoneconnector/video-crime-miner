@@ -12,7 +12,7 @@
     "build-site": "ng build",
     "watch-site": "ng build --watch --configuration development",
     "test-site": "ng test",
-    "test-site-cover": "ng test --no-watch --code-coverage",
+    "test-site-cover": "ng test --code-coverage",
     "typecheck": "tsc"
   },
   "repository": {

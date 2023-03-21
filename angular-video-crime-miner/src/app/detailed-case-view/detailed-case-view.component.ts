@@ -92,7 +92,7 @@ export class DetailedCaseViewComponent implements OnInit {
     this.caseId = newCaseId
   }
 
-  public getCaseId(caseId:string): any {
+  public getCaseId(): string {
 	return this.caseId
   }
 
@@ -260,7 +260,7 @@ export class DetailedCaseViewComponent implements OnInit {
 	tags: string = ""
 	notes: string = ""
 
-	Edit(name:string, description:string, tags:string , notes: string): void {
+	editCase(name:string, description:string, tags:string , notes: string): void {
 		if(name.length<3 || description.length<1 || tags.length < 1) {
 			// TODO: add a new message that says the fields aren't filled out
 			let message = "ERROR: Case name must be length 3 or more, and there must be a description"
@@ -288,12 +288,6 @@ export class DetailedCaseViewComponent implements OnInit {
 			}
 		  })
 	}
-
-	closepopup(){
-		this.resetInputs()
-		this.showPopup = false
-	  }
-	  
 
 	/* User Message Feedback */
 	public successMessage:string = ""
