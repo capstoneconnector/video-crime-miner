@@ -26,7 +26,7 @@
   overflow-x: hidden;
 }
 .clickableLabel{
-  background-color:#e0d4d1;
+  background-color:#b5e5e7;
   padding: 10px;
   border: 1px;
   border-color:#000000;
@@ -36,7 +36,8 @@
   color:#000000;
 }
 .selected{
-  background-color: #dc8671;
+  transition: 0.1s ease-in-out;
+  background-color: #1e95d4;
 }
 .init-overlay-text{
   position: absolute;
