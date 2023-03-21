@@ -31,7 +31,7 @@
         <div class="card-body">
             <div class="actions">
                 <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload new file</button>
-                <button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>
+                <!--<button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>-->
                 <button class="cm-standard-button" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
                 <button class="cm-standard-button" (click)="openStartLabelJobPopup()">Start new label detection</button>
             </div>
@@ -72,6 +72,7 @@
 </div>
 
 <!-- Popup for editing case details -->
+
 <div class="cm-popup" *ngIf="showEditCasePopup">
     <div class="cm-popup-content" >
         <div class="cm-popup-close" (click)="closeEditCasePopup()">
