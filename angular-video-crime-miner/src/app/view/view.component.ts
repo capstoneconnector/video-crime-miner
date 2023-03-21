@@ -105,7 +105,7 @@ export class ViewComponent implements OnInit {
   /* User Message Feedback */
   public successMessage:string = ""
   public errorMessage:string = ""
-  private setFeedbackMessage(success:boolean, message:string = ""): void{
+  public setFeedbackMessage(success:boolean, message:string = ""): void{
     if(success){
       this.errorMessage = ""
       this.successMessage = "Case Created"
