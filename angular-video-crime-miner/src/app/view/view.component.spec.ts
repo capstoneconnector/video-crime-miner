@@ -24,6 +24,20 @@ describe('DetailedCaseViewComponent', () => {
     fixture.detectChanges();
   });
 
+  it ( 'setFeedbackMessage', () => {
+
+    component.setFeedbackMessage(false, "exampleMessage")
+
+    expect(component.successMessage).toEqual("")
+    expect(component.errorMessage).toEqual("exampleMessage")
+
+    component.setFeedbackMessage(true, "exampleMessage")
+
+    expect(component.successMessage).toEqual("Case Created")
+    expect(component.errorMessage).toEqual("")
+
+  } )
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
