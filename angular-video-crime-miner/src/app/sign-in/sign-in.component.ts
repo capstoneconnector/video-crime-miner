@@ -20,8 +20,10 @@ export class SignInComponent {
   public signIn(): void {
     this.loading = true
     this.cognitoService.signIn(this.user)
-    .then(() => {
+    .then((val) => {
+      this.cognitoService.verifyUserInDB(val).subscribe(() => {
       this.router.navigate(['/profile'])
+    })
     }).catch(() => {
       this.loading = false
     })
