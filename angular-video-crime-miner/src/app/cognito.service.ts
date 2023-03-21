@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs'
 import { Auth, Amplify } from 'aws-amplify'
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js'
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Observable } from 'rxjs'
 
 import { environment } from '../environment/environment'
 
@@ -23,7 +25,9 @@ export class CognitoService {
   private cognitoUser: CognitoUser | null
   private username: BehaviorSubject<string>
 
-  constructor() {
+  private baseUrl = 'http://localhost:8000'
+
+  constructor(private http: HttpClient) {
     Amplify.configure({
       Auth: environment.cognito,
     })
@@ -42,6 +46,12 @@ export class CognitoService {
       this.authenticationSubject.next(true)
       this.username.next(this.cognitoUser.getUsername())
     }
+  }
+
+  public verifyUserInDB(username:string): Observable<any>{
+    const url = 'user/verify'
+    let queryParams = { "username": username }
+    return this.http.get(`${this.baseUrl}/${url}`, { params: queryParams })
   }
 
   public getUsername(): BehaviorSubject<string> {
@@ -64,8 +74,10 @@ export class CognitoService {
   }
 
   public async signIn(user: IUser): Promise<any> {
-    await Auth.signIn(user.email, user.password)
+    var userinfo = await Auth.signIn(user.email, user.password)
+    console.log(userinfo.username)
     this.authenticationSubject.next(true)
+    return userinfo.username
   }
 
   public async signOut(): Promise<any> {
