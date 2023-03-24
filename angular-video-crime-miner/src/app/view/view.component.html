@@ -26,16 +26,16 @@
         </div>
       </div>
       <!-- Clickable case rows -->
-      <div class="caseTable">
-        <div class="tableHeader">
+      <div class="cm-table">
+        <div class="cm-table-header">
           <div class="iconCol"></div>
           <div class="nameCol"><b>Name</b></div>
           <div class="tagsCol"><b>Tags</b></div>
           <div class="descriptionCol"><b>Description</b></div>
         </div>
-          <div class="tableBody">
+          <div class="cm-table-body">
             <div *ngFor="let case of this.getCaseInfos()">
-              <div class = "clickableCase" [class.selected]="case === selectedCase" 
+              <div class = "cm-table-row" [class.selected]="case === selectedCase" 
               (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
                 <div class="iconCol"><i class="fal fa-folder"></i></div>
                 <div class="nameCol">{{ case.name }}</div>

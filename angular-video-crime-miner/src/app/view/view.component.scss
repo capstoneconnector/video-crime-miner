@@ -44,58 +44,16 @@ body{
   padding: 0;
   height: 100vh;
 }
-
 .createCasePopupButton{
   float: right;
   margin-right: 20px;
 }
-
 .createCasePopupButton{
   float: center;
 }
 
-/* Div table of clickable cases */
-.caseTable{
-  width: 100%;
-  height: 100%;
-  margin-top: 20px;
-  background-color:#e1e4e7;
-  border: 1px solid;
-  border-top: 0; //overrides border-top so it don't double up with border-bottom
-  font-size: 1.25rem;
-}
-.tableHeader{
-  display: flex;
-  border-top: 1px solid;
-  border-bottom: 2px solid;
-  padding: 10px;
-}
-.tableBody{
-  .selected div{
-    background-color: #317ac7 !important;
-  }
-  :hover div{
-    background-color: #98c1d9;
-    transition: background-color 250ms;
-  }
-}
-.clickableCase{
-  display: flex;
-}
-.clickableCase div{
-  color:#000000;
-  height: 4rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  float: left;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: block;
-  white-space: nowrap;
-}
+/* cm-table column definitions */
 .iconCol{
-  padding-right: 2px;
-  height: 100%;
   width: 5%;
   padding-left: 10px;
 }
