@@ -1,63 +1,29 @@
+<!-- Basic Page info/headers -->
+<h1>LABEL DETECTION OUTPUT</h1>
+<p *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
+<!-- Video Player and Label Selector Box -->
 <div class="page-content">
-    <!-- Basic Page info/headers -->
-    <div class="floatstyle">
-        <div class="fixedBox1">
-            <h1>LABEL DETECTION OUTPUT</h1>
-            <p><b>Job ID:</b> {{this.getJobId()}}</p>
-            <!--  <p><b>Case Name:</b></p>  -->
-            <p class = "label-count" *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
-        </div>
+    <div class="videoplayer">
+        <vg-player (onPlayerReady)="loadVideoIntoPlayer($event)" id="video-container">
+            <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
+        </vg-player>
+        <div class="init-overlay-text" id="overlay">Click on a label to the right to see it in the video</div>
     </div>
-
-    <!-- Video Player and Label Selector Box -->
-    <div class="page-content">
-        <div class="videoplayer">
-            <vg-player (onPlayerReady)="loadVideoIntoPlayer($event)" id="video-container">
-                <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
-            </vg-player>
-            <div class="init-overlay-text" id="overlay">Click on a label to the right to see it in the video</div>
+    <div class="cm-table scrollbox">
+        <div class="cm-table-header">
+            <div class="nameCol"><b>Label</b></div>
+            <div class="timeCol"><b>Time</b></div>
+            <div class="confidenceCol"><b>Confidence</b></div>
         </div>
-        <div class="scrollbox">
+        <div class="cm-table-body">
             <div *ngFor="let label of this.getLabels()">
-                <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
+                <div class="cm-table-row" [class.selected]="label === selectedLabel" 
                 (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
-                    <div>{{label.Name}}</div>
-                    <div>{{prettifyTimestamp(label.Timestamp)}}</div>
-                    <div>{{prettifyConfidence(label.Confidence)}}</div>
+                    <div class="nameCol">{{label.Name}}</div>
+                    <div class="timeCol">{{prettifyTimestamp(label.Timestamp)}}</div>
+                    <div class="confidenceCol">{{prettifyConfidence(label.Confidence)}}</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Extra HTML not used at the moment
-<div class="card">
-<div class="card-head">Reports</div>
-<div class="card-body">
-    <div class="search">
-    <form class="search-form">
-        <input type="text" placeholder="Search for cases">
-        <input type="submit" value="Submit">
-    </form>
-    </div>
-    <table class="rwd-table">
-    <thead>
-        <th>Case Number</th>
-        <th>Case Name</th>
-        <th>Date Created</th>
-        <th>View More</th>
-
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-    </table>
-
-</div>
-</div>
--->

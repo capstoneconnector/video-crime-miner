@@ -9,6 +9,8 @@
 .page-content::-webkit-scrollbar {
   display: none;
 }
+
+/* Video Player */
 .videoplayer{
   height: 85%;
   width: 70%;
@@ -16,28 +18,6 @@
   padding-right: 10px;
   float: left;
   position: relative; /* add position relative to allow absolute positioning of the overlay */
-}
-.scrollbox{
-  float: left;
-  width: 30%;
-  height: 85%;
-  padding-left: 10px;
-  overflow:scroll;
-  overflow-x: hidden;
-}
-.clickableLabel{
-  background-color:#b5e5e7;
-  padding: 10px;
-  border: 1px;
-  border-color:#000000;
-  border-style: solid;
-}
-.clickableLabel div{
-  color:#000000;
-}
-.selected{
-  transition: 0.1s ease-in-out;
-  background-color: #1e95d4;
 }
 .init-overlay-text{
   position: absolute;
@@ -53,8 +33,25 @@
   justify-content: center;
 }
 
-.bounding-box-container{
-  border-style:double;
-  position:absolute;
-  border-color:blue;
+/* Table Adjustments */
+.cm-table{
+  float: right;
+  margin: 0;
+  width: 30%;
+  height: 85%;
+  overflow-y: scroll;
+}
+
+/* Label + Time and Confidence columns */
+.nameCol{
+  padding-left: 5px;
+  width: 35%;
+}
+.timeCol{
+  width: 35%;
+}
+.confidenceCol{
+  padding-right: 5px;
+  width: 30%;
+  text-align: center;
 }
