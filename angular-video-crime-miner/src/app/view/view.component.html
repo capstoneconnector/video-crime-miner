@@ -5,9 +5,9 @@
       <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
       <button class="cm-standard-button createCasePopupButton" (click)="openpopup()" >Create New Case</button>
       <!-- Popup for creating new case -->
-      <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
-        <div class="content" >
-          <div class="close" (click)="closepopup()">
+      <div class="cm-popup" *ngIf="showPopup" (click)="closeoverlay($event)">
+        <div class="cm-popup-content" >
+          <div class="cm-popup-close" (click)="closepopup()">
             &times; <!-- &times; is the X icon -->
           </div>
           <h4>Create New Case</h4>
@@ -19,7 +19,7 @@
             <label for="description"><span>*</span> Description</label>
             <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
           </div>
-          <button class="cm-standard-button" (click)="addNewCase(newCaseName, newCaseDescription)"
+          <button class="cm-standard-button createCaseSubmitButton" (click)="addNewCase(newCaseName, newCaseDescription)"
           >Create Case</button>
           <div [(ngModel)]="successMessage">{{successMessage}}</div>
           <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
