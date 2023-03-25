@@ -36,6 +36,7 @@ export class SignUpComponent {
     this.loading = true;
     this.cognitoService.confirmSignUp(this.user)
     .then(() => {
+      
       this.router.navigate(['/signIn']);
     }).catch(() => {
       this.loading = false;
