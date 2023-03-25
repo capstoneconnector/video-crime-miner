@@ -33,18 +33,18 @@
           <div class="tagsCol"><b>Tags</b></div>
           <div class="descriptionCol"><b>Description</b></div>
         </div>
-          <div class="cm-table-body">
-            <div *ngFor="let case of this.getCaseInfos()">
-              <div class = "cm-table-row" [class.selected]="case === selectedCase" 
-              (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
-                <div class="iconCol"><i class="fal fa-folder"></i></div>
-                <div class="nameCol">{{ case.name }}</div>
-                <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>
-                <div class="tagsCol" *ngIf="(case.tags).length==0">None</div>
-                <div class="descriptionCol">{{ case.description }}</div>
-              </div>
+        <div class="cm-table-body">
+          <div *ngFor="let case of this.getCaseInfos()">
+            <div class = "cm-table-row" [class.selected]="case === selectedCase" 
+            (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
+              <div class="iconCol"><i class="fal fa-folder"></i></div>
+              <div class="nameCol">{{ case.name }}</div>
+              <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>
+              <div class="tagsCol" *ngIf="(case.tags).length==0">None</div>
+              <div class="descriptionCol">{{ case.description }}</div>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
