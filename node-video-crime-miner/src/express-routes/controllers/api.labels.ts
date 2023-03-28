@@ -135,8 +135,8 @@ async function createMultiLabelJob (req: Request, res: Response, next: NextFunct
 
     for (const filename of filenames) {
       var newJobId = await vidService.startJob(filename, keywords)
-      await databaseService.createNewLabels(newJobId, keywords, filename)
-      jobIdsForFiles.push( { "jobId": newJobId, "filename": filename } )
+      await databaseService.createNewLabels(newJobId.JobID, keywords, filename)
+      jobIdsForFiles.push( { "jobId": newJobId.JobID, "filename": filename } )
     }
 
     response.data = { jobIdsForFiles }
