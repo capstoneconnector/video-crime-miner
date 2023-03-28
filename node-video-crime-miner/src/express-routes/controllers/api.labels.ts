@@ -123,4 +123,34 @@ async function fetchFileForJobID (req: Request, res: Response, next: NextFunctio
   }
 }
 
-export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID }
+
+/* POST new AWS Labels Job for multiple files */
+async function createMultiLabelJob (req: Request, res: Response, next: NextFunction) {
+  try {
+    var response = emptyOutput
+    const keywords = req.body.labels || [] // Filter keywords
+    const filenames = req.body.filenames || []
+    
+    var jobIdsForFiles = []
+
+    for (const filename of filenames) {
+      var newJobId = await vidService.startJob(filename, keywords)
+      await databaseService.createNewLabels(newJobId, keywords, filename)
+      jobIdsForFiles.push( { "jobId": newJobId, "filename": filename } )
+    }
+
+    response.data = { jobIdsForFiles }
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
+  } catch (err: any) {
+    console.log("app.post('/labels/files') errored out")
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
+  }
+}
+
+
+export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob }
