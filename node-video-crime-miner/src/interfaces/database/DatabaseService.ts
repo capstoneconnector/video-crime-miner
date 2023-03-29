@@ -29,6 +29,8 @@ interface DatabaseService {
 
     fetchFileForJob (jobId: string): Promise<any>
 
+	fetchFilesByKeywords (keywords: string[]): Promise<any>
+
     /* Operations for the ChuqlabUser table*/
     checkIfUserExists (username:string) : Promise<any>;
 
@@ -96,6 +98,10 @@ const postgres : DatabaseService = {
 
 	fetchFileForJob: function (jobId: string): Promise<any> {
 		return pglabel.fetchFileForJob(jobId)
+	},
+
+	fetchFilesByKeywords: function (keywords: string[]): Promise<any> {
+		return pglabel.getFilesByKeywords(keywords)
 	},
 
     checkIfUserExists: function (username:string): Promise<any> {
