@@ -2,7 +2,7 @@
 import { Router } from 'express'
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob } from './controllers/api.labels.js'
+import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords } from './controllers/api.labels.js'
 
 /* CASE ROUTES */
 import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails } from './controllers/api.cases.js'
@@ -31,6 +31,9 @@ router.post('/labels/file/:fileName', createNewLabelDetectionJob)
 
 /* POST new AWS Labels Jobs for multiple files */
 router.post('/labels/files', createMultiLabelJob )
+
+/* GET AWS Labels Results for all jobs on a case using given keywords */
+router.get('/labels/keywords', fetchFilesByKeywords)
 
 /* GET all cases */
 router.get('/cases', fetchAllCases)
