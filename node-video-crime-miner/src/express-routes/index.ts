@@ -2,7 +2,7 @@
 import { Router } from 'express'
 
 /* LABEL DETECTION ROUTES */
-import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords } from './controllers/api.labels.js'
+import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords, getJobStatusByJobID } from './controllers/api.labels.js'
 
 /* CASE ROUTES */
 import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails } from './controllers/api.cases.js'
@@ -47,6 +47,8 @@ router.post('/cases', createNewCase)
 /* GET all files in S3 Bucket */
 router.get('/files', fetchAllFiles)
 
+/* GET label detection job status */
+router.get('/labels/job/status/:jobId', getJobStatusByJobID)
 
 /*PUT update case details*/
 router.put('/update/cases/:caseId', updateCaseDetails)
