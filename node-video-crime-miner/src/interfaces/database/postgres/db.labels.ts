@@ -110,4 +110,25 @@ async function fetchFileForJob(jobId: string) {
   }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob }
+async function getFilesByKeywords(keywords: string[]) {
+  try {
+    const query = await pool.query(
+      'SELECT file_id, result FROM public.awsoutput WHERE tags = $1',
+      [keywords]
+    )
+    const rows = query.rows
+
+    var result = [] as any[]
+
+    rows.forEach(row => {
+      result.push( { "file_id": row.file_id } )
+    })
+
+    return result
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+}
+
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob, getFilesByKeywords }
