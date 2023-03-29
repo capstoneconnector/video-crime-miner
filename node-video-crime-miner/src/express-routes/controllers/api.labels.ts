@@ -23,19 +23,24 @@ async function fetchLabelDetectionJob (req: Request, res: Response, next: NextFu
     var response = emptyOutput
     response.data = await databaseService.getResultsForJob(req.params['jobId'])
     //let result = await getResultsForJob(req.params['jobId'])
+    if (response.data != null) { console.log( "Fetching results from db: ", req.params['jobId'] ) }
     // if the result is null, it's not stored in the db yet. Let's see what AWS has to say about it!
-    let newResult = await vidService.collectJobResults(req.params['jobId']) // Get results for the id
-    // Now let's trim down the result to only include labels and video metadata
-    let newData = {
-      Labels: newResult[0],
-      VideoMetadata: newResult[1]
+    if (response.data == null) {
+      console.log( "Fetching results for first time: ", req.params['jobId'] )
+      let newResult = await vidService.collectJobResults(req.params['jobId']) // Get results for the id
+      // Now let's trim down the result to only include labels and video metadata
+      let newData = {
+        Labels: newResult[0],
+        VideoMetadata: newResult[1]
+      }
+      response.data = {
+        Labels: newResult[0],
+        VideoMetadata: newResult[1]
+      }
+      await databaseService.updateJobResults(req.params['jobId'], newData) // update the db entry
+      // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
     }
-    response.data = {
-      Labels: newResult[0],
-      VideoMetadata: newResult[1]
-    }
-    await databaseService.updateJobResults(req.params['jobId'], newData) // update the db entry
-    // JobStatus for the AWS Rekognition return is an element of the following set: {IN_PROGRESS, SUCCEEDED, FAILED}
+
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -89,10 +94,10 @@ async function createNewLabelDetectionJob (req: Request, res: Response, next: Ne
     var response = emptyOutput
     const keywords = req.body.labels || [] // Filter keywords
     // const snsTopic = await createTopic(req.params["fileName"])
-    const job_id = await vidService.startJob(req.params['fileName'], keywords)
-    console.log("Job ID: ", job_id)
-    await databaseService.createNewLabels(job_id.JobID, keywords, req.params['fileName'])
-    response.data = { "JobId": job_id.JobID } 
+    const job_data = await vidService.startJob(req.params['fileName'], keywords)
+    console.log("Job ID: ", job_data)
+    await databaseService.createNewLabels(job_data.JobID, keywords, req.params['fileName'], job_data.queueUrl, job_data.topicArn)
+    response.data = { "JobId": job_data.JobID } 
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -134,9 +139,9 @@ async function createMultiLabelJob (req: Request, res: Response, next: NextFunct
     var jobIdsForFiles = []
 
     for (const filename of filenames) {
-      var newJobId = await vidService.startJob(filename, keywords)
-      await databaseService.createNewLabels(newJobId.JobID, keywords, filename)
-      jobIdsForFiles.push( { "jobId": newJobId.JobID, "filename": filename } )
+      var newJobData = await vidService.startJob(filename, keywords)
+      await databaseService.createNewLabels(newJobData.JobID, keywords, filename, newJobData.queueUrl, newJobData.topicArn)
+      jobIdsForFiles.push( { "jobId": newJobData.JobID, "filename": filename } )
     }
 
     response.data = { jobIdsForFiles }
@@ -150,6 +155,64 @@ async function createMultiLabelJob (req: Request, res: Response, next: NextFunct
     response = standardizeResponse(response).convertToJson()
     res.status(500).json(response)
   }
+}
+
+/* GET label detection job status */
+async function getJobStatusByJobID (req: Request, res: Response, next: NextFunction) {
+
+  try {
+    var response = emptyOutput
+
+    const statParams = await databaseService.fetchQUrlByJobId( req.params['jobId'] )
+
+    //console.log("StatPARAMS: ", statParams.QueueUrl)
+
+    if (String(statParams.QueueUrl).length > 2) {
+
+      const stat = await vidService.checkJobStatus( statParams.QueueUrl )
+
+      var actualStatus:string = ""
+
+      if (JSON.stringify( stat ).includes('Body')) {
+        // job finished
+
+        for (var message of stat.Messages) {
+          var notification = JSON.parse(message.Body)
+          var rekMessage = JSON.parse(notification.Message)
+          var messageJobId = rekMessage.JobId
+
+          if ( String( messageJobId ).includes( req.params['jobId'] ) ) {
+
+            if ( String( rekMessage.Status ).includes( String("SUCCEEDED") ) ) {
+              actualStatus = 'finished'
+              await vidService.clearNotifications(statParams.QueueUrl, statParams.TopicArn)
+              await databaseService.markJobAsFinished(req.params['jobId'])
+            }
+
+          }
+
+        }
+
+      } else {
+        // job pending
+        actualStatus = 'pending'
+      }
+    } else {
+      actualStatus = 'finished'
+    }
+
+    response.data = actualStatus
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
+  } catch (err: any) {
+    console.log("app.post('/labels/job/status/:jobId') errored out")
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
+  }
+
 }
 
 /* GET AWS Labels Results for all jobs on a case using given keywords */
@@ -175,4 +238,4 @@ async function fetchFilesByKeywords (req: Request, res: Response, next: NextFunc
 }
 
 
-export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords }
+export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords, getJobStatusByJobID }
