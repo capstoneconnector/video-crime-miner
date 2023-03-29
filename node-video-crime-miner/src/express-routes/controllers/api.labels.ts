@@ -152,5 +152,27 @@ async function createMultiLabelJob (req: Request, res: Response, next: NextFunct
   }
 }
 
+/* GET AWS Labels Results for all jobs on a case using given keywords */
+async function fetchFilesByKeywords (req: Request, res: Response, next: NextFunction) {
+  try {
+    
+    var response = emptyOutput
 
-export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob }
+    const keywords = req.body.labels || []
+
+    response.data = await databaseService.fetchFilesByKeywords(keywords)
+
+    response.success = true
+    response = standardizeResponse(response).convertToJson()
+    res.status(200).json(response)
+  } catch (err: any) {
+    console.log("app.get('/labels/keywords') errored out")
+    response.errors.push(err.message)
+    response.success = false
+    response = standardizeResponse(response).convertToJson()
+    res.status(500).json(response)
+  }
+}
+
+
+export { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords }
