@@ -24,7 +24,7 @@ async function checkJobStatus(job_id: string) {
       'SELECT queueUrl, topicArn FROM public.awsoutput WHERE job_id = $1',
       [job_id]
     )
-     
+    //console.log("JobID: ", job_id)
     //console.log(" query.rows : ", query.rows)
     
 
@@ -143,8 +143,19 @@ async function fetchFileForJob(jobId: string) {
 
 async function getFilesByKeywords(keywords: string[]) {
   try {
+
+    var formattedKeywords:string[] = []
+
+    keywords.forEach( keyword => {
+      formattedKeywords.push( "\'" + keyword + "\'" )
+    } )
+
+    //console.log( "Keywords(db.labels): ", keywords )
+
+    //console.log("Formatted Keywords: ", formattedKeywords.toString())
+
     const query = await pool.query(
-      'SELECT file_id FROM public.awsoutput WHERE tags = $1',
+      'SELECT job_id, file_id, result FROM public.awsoutput WHERE tags = ($1)',
       [keywords]
     )
     const rows = query.rows
@@ -152,7 +163,7 @@ async function getFilesByKeywords(keywords: string[]) {
     var result = [] as any[]
 
     rows.forEach(row => {
-      result.push( { "file_id": row.file_id } )
+      result.push( { "job_id": row.job_id, "file_id": row.file_id, "labels": row.result } )
     })
 
     return result
@@ -162,4 +173,29 @@ async function getFilesByKeywords(keywords: string[]) {
   }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob, getFilesByKeywords, checkJobStatus, markJobAsDone }
+async function getDistinctKeywords (caseId:string) {
+
+  try {
+
+    
+
+    const query = await pool.query(
+      'SELECT DISTINCT tags FROM public.awsoutput WHERE file_id IN (SELECT s3_name FROM public.file WHERE case_id = $1)',
+      [caseId]
+    )
+
+
+    const rows = query.rows
+
+    //console.log( "Keyowrds: ", rows )
+
+    return rows
+
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+
+}
+
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob, getFilesByKeywords, checkJobStatus, markJobAsDone, getDistinctKeywords }
