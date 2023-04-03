@@ -35,6 +35,8 @@ interface DatabaseService {
 
     markJobAsFinished(jobId: string): Promise<any>
 
+	fetchDistinctKeywords(caseId:string): Promise<any>
+
     /* Operations for the ChuqlabUser table*/
     checkIfUserExists (username:string) : Promise<any>;
 
@@ -114,6 +116,10 @@ const postgres : DatabaseService = {
 
     markJobAsFinished: function (jobId: string): Promise<any> {
         return pglabel.markJobAsDone(jobId)
+    },
+
+	fetchDistinctKeywords: function (caseId: string): Promise<any> {
+        return pglabel.getDistinctKeywords(caseId)
     },
 
     checkIfUserExists: function (username:string): Promise<any> {
