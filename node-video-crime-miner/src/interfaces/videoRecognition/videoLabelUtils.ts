@@ -27,31 +27,58 @@ const sqsClient = new SQSClient(attributes)
 
 const snsClient = new SNSClient(attributes)
 
-async function startLabelDetection (videoName: string, labelFilters: string[] = [], clientToUse: RekognitionClient | any = client) {
+async function startLabelDetection (videoName: string, labelFilters: string[] = [], clientToUse: RekognitionClient | any = client, testing:boolean=false) {
   try {
 
-    var newUT = Date.now()
+    var newUT: number
 
-    const newT_Q = await createNewTopicAndQueue(newUT.toString())
+    var newT_Q: any = ["0", "1"]
 
-    const attributes = {
-      Video: {
-        S3Object: {
-          Name: videoName,
-          Bucket: bucketName
+    if (!testing) {
+    newUT = Date.now()
+
+    newT_Q = await createNewTopicAndQueue(newUT.toString())
+    }
+
+    var attributes: any
+
+    if (!testing) {
+      attributes = {
+        Video: {
+          S3Object: {
+            Name: videoName,
+            Bucket: bucketName
+          }
+        },
+        Features: ['GENERAL_LABELS'],
+        Settings: {
+          GeneralLabels: {
+            LabelInclusionFilters: labelFilters // Enter terms to filter here
+          }
+        },
+        NotificationChannel:{
+          RoleArn: roleArn, 
+          SNSTopicArn: newT_Q[1]
         }
-      },
-      Features: ['GENERAL_LABELS'],
-      Settings: {
-        GeneralLabels: {
-          LabelInclusionFilters: labelFilters // Enter terms to filter here
-        }
-      },
-      NotificationChannel:{
-        RoleArn: roleArn, 
-        SNSTopicArn: newT_Q[1]
+        
       }
-      
+    }
+    else {
+      attributes = {
+        Video: {
+          S3Object: {
+            Name: videoName,
+            Bucket: bucketName
+          }
+        },
+        Features: ['GENERAL_LABELS'],
+        Settings: {
+          GeneralLabels: {
+            LabelInclusionFilters: labelFilters // Enter terms to filter here
+          }
+        }
+        
+      }
     }
 
     // Returns jobId, which can be used by the collectLabelDetections method to collect job results
