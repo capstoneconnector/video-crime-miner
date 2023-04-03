@@ -165,7 +165,10 @@ async function collectLabelDetections (labelDetectJobId: string, clientToUse: Re
   const dataCheck = await getLabelDetectionChunk(labelDetectJobId, undefined, clientToUse)
 
   // store first batch of labels
-  labelsDetected.push(dataCheck.Labels)
+  dataCheck.Labels.forEach( (key:any) => {
+    labelsDetected.push(key)
+  } )
+  //labelsDetected.push(dataCheck.Labels)
 
   // tracks current token
   let tokenToUse = dataCheck.NextToken
@@ -181,6 +184,7 @@ async function collectLabelDetections (labelDetectJobId: string, clientToUse: Re
       Object.keys(dataResponse).forEach(function (key) {
         if (key == 'Labels') {
           dataResponse[key].forEach(function (item: any) {
+            labelsDetected.push(item)
             // if (item["Name"] == "Fence") {
             //console.log('\n\n' + JSON.stringify(item))
             // }
@@ -189,7 +193,7 @@ async function collectLabelDetections (labelDetectJobId: string, clientToUse: Re
         }
 
       })
-      labelsDetected.push(dataResponse.Labels)
+      //labelsDetected.push(dataResponse.Labels)
       VideoMetadata = dataResponse.VideoMetadata
 
       // store new token
