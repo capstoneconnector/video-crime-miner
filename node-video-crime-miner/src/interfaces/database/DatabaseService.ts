@@ -17,7 +17,7 @@ interface DatabaseService {
     createNewFileRow (name: string, notes: string, case_id: number): Promise<any>
 
     /* Operations for the  AWSOutput table*/
-    createNewLabels (job_id: string, keywords: string[], file_id: string): Promise<any>
+    createNewLabels (job_id: string, keywords: string[], file_id: string, queueUrl:string, topicArn:string): Promise<any>
 
     getResultsForFile (fileName: string): Promise<any>
 
@@ -28,6 +28,14 @@ interface DatabaseService {
     updateJobResults (jobId: string, result: any): Promise<any>
 
     fetchFileForJob (jobId: string): Promise<any>
+
+	fetchFilesByKeywords (keywords: string[]): Promise<any>
+
+	fetchQUrlByJobId (jobId: string): Promise<any>
+
+    markJobAsFinished(jobId: string): Promise<any>
+
+	fetchDistinctKeywords(caseId:string): Promise<any>
 
     /* Operations for the ChuqlabUser table*/
     checkIfUserExists (username:string) : Promise<any>;
@@ -74,8 +82,8 @@ const postgres : DatabaseService = {
 	},
 
 	/* AWSOutput functions */
-	createNewLabels: function (job_id: string, keywords: string[], file_id: string): Promise<any> {
-		return pglabel.createNewLabels(job_id, keywords, file_id)
+	createNewLabels: function (job_id: string, keywords: string[], file_id: string, queueUrl:string, topicArn:string): Promise<any> {
+		return pglabel.createNewLabels(job_id, keywords, file_id, queueUrl, topicArn)
 	},
 
 	getResultsForFile: function (fileName: string): Promise<any> {
@@ -97,6 +105,22 @@ const postgres : DatabaseService = {
 	fetchFileForJob: function (jobId: string): Promise<any> {
 		return pglabel.fetchFileForJob(jobId)
 	},
+
+	fetchFilesByKeywords: function (keywords: string[]): Promise<any> {
+		return pglabel.getFilesByKeywords(keywords)
+	},
+
+	fetchQUrlByJobId: function (jobId: string): Promise<any> {
+        return pglabel.checkJobStatus(jobId)
+    },
+
+    markJobAsFinished: function (jobId: string): Promise<any> {
+        return pglabel.markJobAsDone(jobId)
+    },
+
+	fetchDistinctKeywords: function (caseId: string): Promise<any> {
+        return pglabel.getDistinctKeywords(caseId)
+    },
 
     checkIfUserExists: function (username:string): Promise<any> {
         return pgChuqlabUser.checkIfUserExists(username)

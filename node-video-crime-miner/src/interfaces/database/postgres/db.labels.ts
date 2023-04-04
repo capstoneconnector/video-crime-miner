@@ -3,13 +3,47 @@ import { pool } from './db.config.js'
 /* Domain Model Imports */
 import ChuqlabLabelOutput from '../../../model/ChuqlabLabelOutput.js'
 
-async function createNewLabels(job_id: string, keywords: string[], file_id: string) {
+async function createNewLabels(job_id: string, keywords: string[], file_id: string, queueUrl:string, topicArn:string) {
   try {
     const query = await pool.query(
-      'INSERT INTO public.awsoutput (job_id, tags, file_id) VALUES ($1, $2, $3)',
-      [job_id, keywords, file_id]
+      'INSERT INTO public.awsoutput (job_id, tags, file_id, queueUrl, topicArn) VALUES ($1, $2, $3, $4, $5)',
+      [job_id, keywords, file_id, queueUrl, topicArn]
     )
     return
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+}
+
+async function checkJobStatus(job_id: string) {
+  try {
+    var qrl: string
+    var topic:string
+    const query = await pool.query(
+      'SELECT queueUrl, topicArn FROM public.awsoutput WHERE job_id = $1',
+      [job_id]
+    )
+    //console.log("JobID: ", job_id)
+    //console.log(" query.rows : ", query.rows)
+    
+
+    return { QueueUrl: query.rows[0].queueurl, TopicArn: query.rows[0].topicarn }
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+}
+
+async function markJobAsDone(job_id: string) {
+  try {
+    
+    const query = await pool.query(
+      'UPDATE public.awsoutput SET queueUrl = $1 WHERE job_id = $2',
+      ["0", job_id]
+    )
+     
+    return true
   } catch (e) {
     console.log({ databaseError: e })
     return { databaseError: e }
@@ -59,14 +93,11 @@ async function getResultsForMultipleFiles(fileNames: any) {
 async function getResultsForJob(jobId: string) {
   try {
     const query = await pool.query(
-      'SELECT * FROM public.awsoutput WHERE job_id = $1',
+      'SELECT result FROM public.awsoutput WHERE job_id = $1',
       [jobId]
     )
     const rows = query.rows
-    var result = new Array<ChuqlabLabelOutput>
-    rows.forEach(row => {
-      result.push(new ChuqlabLabelOutput(row.job_id, row.result, row.file_id, row.tags))
-    })
+    var result = rows[0].result
     return result
   } catch (e) {
     console.log({ databaseError: e })
@@ -110,4 +141,61 @@ async function fetchFileForJob(jobId: string) {
   }
 }
 
-export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob }
+async function getFilesByKeywords(keywords: string[]) {
+  try {
+
+    var formattedKeywords:string[] = []
+
+    keywords.forEach( keyword => {
+      formattedKeywords.push( "\'" + keyword + "\'" )
+    } )
+
+    //console.log( "Keywords(db.labels): ", keywords )
+
+    //console.log("Formatted Keywords: ", formattedKeywords.toString())
+
+    const query = await pool.query(
+      'SELECT job_id, file_id, result FROM public.awsoutput WHERE tags = ($1)',
+      [keywords]
+    )
+    const rows = query.rows
+
+    var result = [] as any[]
+
+    rows.forEach(row => {
+      result.push( { "job_id": row.job_id, "file_id": row.file_id, "labels": row.result } )
+    })
+
+    return result
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+}
+
+async function getDistinctKeywords (caseId:string) {
+
+  try {
+
+    
+
+    const query = await pool.query(
+      'SELECT DISTINCT tags FROM public.awsoutput WHERE file_id IN (SELECT s3_name FROM public.file WHERE case_id = $1)',
+      [caseId]
+    )
+
+
+    const rows = query.rows
+
+    //console.log( "Keyowrds: ", rows )
+
+    return rows
+
+  } catch (e) {
+    console.log({ databaseError: e })
+    return { databaseError: e }
+  }
+
+}
+
+export { createNewLabels, getResultsForFile, getResultsForMultipleFiles, getResultsForJob, updateJobResults, fetchFileForJob, getFilesByKeywords, checkJobStatus, markJobAsDone, getDistinctKeywords }

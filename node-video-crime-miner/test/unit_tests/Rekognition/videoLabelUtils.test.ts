@@ -21,7 +21,7 @@ describe('startLabelDetection function', () => {
       JobId: output
     })
 
-    const response = await startLabelDetection(inputFile, inputKeywords, rekognitionMock)
+    const response = await startLabelDetection(inputFile, inputKeywords, rekognitionMock, true)
     expect(response.JobID).toBe(output)
   })
 })
