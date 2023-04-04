@@ -21,11 +21,21 @@
 				<div class="content">
 					<div class="contentBx">
 						<h3>Choose File</h3>
+
             <div>
-                <select class="custom-select" [(ngModel)]="selectedFile">
-                  <option *ngFor="let file of getFiles()" [ngValue]="file.storageServiceFileName">{{ file.title }}</option>
-                </select>
+              <form [formGroup]="form" (ngSubmit)="submitFileSelection()" novalidate>
+                <div *ngFor="let file of this.getFiles(); let i=index">
+                  <input type="checkbox" formArrayName="selectedFiles" [value]="file.storageServiceFileName" (change)="onCheckboxChange($event)" 
+                  />
+                  {{ file.title}}
+                </div>
+                <!-- not neccesary, onCheckboxChange function does accounting for selection --> <!--<button disabled type="submit">Submit</button>-->
+              </form>
+            
+              <!-- used for debugging checkbox form output --> <!--  <p>{{ form.value | json }}</p>-->
             </div>
+
+            
 					</div>
 				</div>
 			</div>
@@ -34,26 +44,6 @@
 				<div class="content">
 					<div class="contentBx">
 						<h3>Add Tags</h3>
-            <!--<div class="ng-autocomplete">
-              <ng-autocomplete 
-                [data]="thedata"
-                [searchKeyword]="keyword"
-                placeholder="Select country"
-                (selected)='selectEvent($event)'
-                (inputChanged)='onChangeSearch($event)'
-                (inputFocused)='onFocused($event)'
-                [itemTemplate]="itemTemplate"
-                [notFoundTemplate]="notFoundTemplate">
-              </ng-autocomplete>
-              
-              <ng-template #itemTemplate let-item>
-              <a [innerHTML]="item.name"></a>
-              </ng-template>
-              
-              <ng-template #notFoundTemplate let-notFound>
-              <div [innerHTML]="notFound"></div>
-              </ng-template>
-              </div> -->
             <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
           <br>
             <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>

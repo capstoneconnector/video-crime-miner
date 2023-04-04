@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'view', component: ViewComponent},
   {path: 'reports', component: ReportsComponent},
   {path: 'media', component: MediaComponent},
-  {path: 'file-rekognition-view/:jobId', component: FileRekognitionViewComponent},
+  {path: 'file-rekognition-view/:keywords', component: FileRekognitionViewComponent},
   {path: 'detailed-case-view/:caseId', component: DetailedCaseViewComponent},
   {path: 'new-label-detection/:fileId', component: NewLabelDetectionComponent},
   {path: '',redirectTo: 'signIn',pathMatch: 'full',},

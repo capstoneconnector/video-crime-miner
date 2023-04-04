@@ -27,7 +27,7 @@ describe('createNewLabels function', () => {
   it('createNewLabels returns without errors', async () => {
     const queryResult = {}
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
-    const result = await createNewLabels('job id', ['label 1', 'label 2'], 'file id')
+    const result = await createNewLabels('job id', ['label 1', 'label 2'], 'file id', 'queueUrl', 'topicArn')
     expect(result).toBeUndefined()
   })
 })

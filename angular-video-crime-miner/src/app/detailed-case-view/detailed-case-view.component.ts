@@ -20,6 +20,10 @@ export class DetailedCaseViewComponent implements OnInit {
   private caseFiles?: JSON
   private caseOutputs?: JSON
 
+  private caseKeywords!: any
+
+  private finishedKeywords: string[][] = []
+
   /* Popup */
   showPopup = false
 
@@ -57,7 +61,28 @@ export class DetailedCaseViewComponent implements OnInit {
         this.setCaseOutputs(res.data)
         console.log(this.getCaseOutputs())
         this.closeStartLabelJobPopup()
-        this.openViewLabelJobsPopup()
+
+        this.requestDistinctKeywordsForCase( this.caseId ).subscribe(res => {
+          this.setCaseKeywords( res.data )
+
+          this.caseKeywords.forEach( (keywords:any) => {
+
+            /* WANT TO REMOVE THIS I THINK */
+            this.checkTagsJobSatus(keywords.tags).subscribe( (res:any) => {
+                if (res.data === "finished") {
+                  console.log("Adding to Finished Tags: ", keywords.tags)
+                  this.addTagsToFinishedKeywords(keywords.tags)
+                }
+            } )
+            /* END */ 
+
+
+            this.openViewLabelJobsPopup()
+          })
+
+          
+        } )
+
       })
     })
 
@@ -66,6 +91,48 @@ export class DetailedCaseViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.caseId = this.activatedRoute.snapshot.paramMap.get('caseId') || '1'
+    
+    // tracks class instance for using in async function repeatingTagsJobStatusCheck
+    const masterThis: this = this 
+
+    // this async function will repeatedly call itself every 5 seconds, as long as detailed-case-view page/component is open
+    async function repeatingTagsJobStatusCheck() {
+
+      // fetch Distinct sets of keywords used in video analysis jobs from db
+      masterThis.requestDistinctKeywordsForCase( masterThis.caseId ).subscribe(async res => {
+        
+        // update local copy of distinct keywords
+        masterThis.setCaseKeywords( res.data )
+
+        // loop through distinct keywords
+        masterThis.caseKeywords.forEach( async(keywords:any) => {
+          
+          // check status for each distinct set of keywords
+          masterThis.checkTagsJobSatus(keywords.tags).subscribe( (res:any) => {
+            
+            // update list of distinct keywords that have finsihed jobs
+            if (res.data === "finished") {
+
+              masterThis.addTagsToFinishedKeywords(keywords.tags)
+            }
+            
+          } )
+          
+        
+
+      })
+
+      // wait 5 seconds and recursively call repeatingTagsJobStatusCheck
+      await new Promise( resolve => setTimeout(resolve, 5000) ) // 5000 milliseconds
+      repeatingTagsJobStatusCheck()
+
+    } )
+    
+  }
+
+  // start recursive function
+  repeatingTagsJobStatusCheck()
+
     this.requestCaseInfo().subscribe(res => {
 
       this.setCaseInfo(res.data[0])
@@ -85,6 +152,7 @@ export class DetailedCaseViewComponent implements OnInit {
 
       })
     })
+
     this.fileInfos = this.uploadService.getFiles()
   }
 
@@ -120,11 +188,43 @@ export class DetailedCaseViewComponent implements OnInit {
     this.caseFiles = newCaseFiles
   }
 
+  // local copy of distinct keywords for awsoutput Table
+  public getCaseKeywords(): any {
+    return this.caseKeywords
+  }
+
+  public setCaseKeywords(newKeywords:any): void {
+    this.caseKeywords = newKeywords
+  }
+
   public requestCaseOutputs(obj:any): Observable<any> {
     var names = this.getFileS3Names(obj)
     var body:Object = {files: names}
 
     return this.http.post(`${this.baseUrl}/labels/multifile`, body)
+  }
+
+  // calls back-end webhook function to fetch all distinct keywords for label detection jobs
+  public requestDistinctKeywordsForCase(caseId:string): Observable<any> {
+    return this.http.get( `${this.baseUrl}/case/keywords/${caseId}` )
+  }
+
+  // calls back-end webhook function to check the status of all jobs associated with given keywords ('tags' column in db awsoutput table)
+  public checkTagsJobSatus(tags:string[]): Observable<any> {
+    
+    return this.http.get( `${this.baseUrl}/labels/tags/status/${tags.toString()}` )
+  }
+
+  // checks if tags param is present in this.finishedKeywords, and adds them if they aren't
+  public addTagsToFinishedKeywords(tags:string[]): void{
+    if (!this.finishedKeywords.includes(tags)) {
+      this.finishedKeywords.push(tags)
+    }
+  }
+
+  // checks local copy of finished batch jobs for tags Param
+  public checkForTagsInFinished(tags:string[]): boolean {
+    return this.finishedKeywords.includes(tags)
   }
 
   public getCaseOutputs(): any {
@@ -214,6 +314,13 @@ export class DetailedCaseViewComponent implements OnInit {
   public onSelectOutput(output: any){
     this.selectedOutput = output
     this.router.navigateByUrl('/file-rekognition-view/' + output.jobId)
+  }
+
+  // used for keywords checkbox form when creating new video analysis job
+  public selectedKeywords = ""
+  public onSelectKeywords(keywords: any) {
+    this.selectedKeywords = keywords
+    this.router.navigateByUrl( `/file-rekognition-view/${keywords.tags.toString() + ',' + this.caseId}` )
   }
 
   /* Popup for upload file */
