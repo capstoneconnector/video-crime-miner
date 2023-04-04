@@ -122,6 +122,24 @@
         &times; <!-- &times; is the X icon -->
         </div>
         <h4>Label Detection Jobs</h4>
+        <div class="cm-table">
+            <div class="cm-table-header">
+                <div class="iconCol"></div>
+                <div class="fileCol"><b>File Title</b></div>
+                <div class="tagsCol"><b>Searched Tags</b></div>
+            </div>
+            <div class="cm-table-body">
+                <div *ngFor="let keywords of this.getCaseKeywords()">
+                    <div class = "cm-table-row" [class.selected]="keywords === selectedKeywords"
+                    (click)="onSelectKeywords(keywords)">
+                        <div class="iconCol"><i class="fal fa-video"></i></div>
+                        <div class="tagsCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">{{ keywords.tags }}</div>
+                        <div class="tagsCol">{{ keywords.tags }} (Pending...)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
         <div class="fileTable">
             <div *ngFor="let keywords of this.getCaseKeywords()">
                 <div *ngIf="this.checkForTagsInFinished(keywords.tags)" class = "clickableFile" [class.selected]="keywords === selectedKeywords" 
@@ -134,6 +152,7 @@
                 </div>
             </div>
         </div>
+        -->
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
