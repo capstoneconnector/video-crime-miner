@@ -125,8 +125,8 @@
         <div class="cm-table">
             <div class="cm-table-header">
                 <div class="iconCol"></div>
-                <div class="fileCol"><b>File Title</b></div>
                 <div class="tagsCol"><b>Searched Tags</b></div>
+                <div class="statusCol"><b>Status</b></div>
             </div>
             <div class="cm-table-body">
                 <div *ngFor="let keywords of this.getCaseKeywords()">
@@ -134,7 +134,8 @@
                     (click)="onSelectKeywords(keywords)">
                         <div class="iconCol"><i class="fal fa-video"></i></div>
                         <div class="tagsCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">{{ keywords.tags }}</div>
-                        <div class="tagsCol">{{ keywords.tags }} (Pending...)</div>
+                        <div class="statusCol" *ngIf="!this.checkForTagsInFinished(keywords.tags)">ANALYZING...</div>
+                        <div class="statusCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">FINISHED</div>
                     </div>
                 </div>
             </div>

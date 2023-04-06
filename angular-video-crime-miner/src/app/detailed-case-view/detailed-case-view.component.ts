@@ -306,7 +306,7 @@ export class DetailedCaseViewComponent implements OnInit {
     this.selectedFile = file
   }
   public onDoubleClickFile(file:any){
-    // TODO: add popup for detailed file view
+    // TODO: add popup for detailed file view, possibly playing the video?
   }
 
   /* Clickable output methods */
