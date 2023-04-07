@@ -23,50 +23,64 @@
             </vg-player>
             <div class="init-overlay-text" id="overlay">Click on a label to the right to see it in the video</div>
         </div>
-        <!-- Scrollbox -->
-        <div class="cm-table scrollbox">
-            <div class="scrollbox">
-                <div class="cm-table-header">
-                    <div class="nameCol"><b>Label</b></div>
-                    <div class="timeCol"><b>Time</b></div>
-                    <div class="confidenceCol"><b>Confidence</b></div>
-                </div>
-                <!-- Sorted by file view -->
-                <div *ngIf="this.getSortMethod() === this.labelSortTypes[0]">
-                    <div *ngFor="let fileSegment of this.getLabelsByFile()">
-                        <div class="clickableLabel" [class.selected]="fileSegment === currentFile" (click)="setCurrentFile(fileSegment.file_id)"> {{fileSegment.file_id}} </div>
-                        
-                        <div *ngFor="let label of fileSegment.labels.Labels" >
-                            <div class="clickableLabel" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)" (click)="this.selectLabelDetection(label,fileSegment.file_id,label.Timestamp,label.Label.Instances)"> {{label.Label.Name}}, {{this.prettifyTimestamp(label.Timestamp)}}, {{this.prettifyConfidence(label.Label.Confidence)}} </div>
+        <!-- Dropdown Table -->
+        <div class="dropdownTable">
+            <!-- Sorted by file view -->
+            <div *ngIf="this.getSortMethod() === this.labelSortTypes[0]">
+                <!--File View Body-->
+                <div *ngFor="let fileSegment of this.getLabelsByFile()">
+                    <div class="dropdownRow" [class.selected]="fileSegment === currentFile" (click)="setCurrentFile(fileSegment.file_id)">
+                        <div class="fileNameCol"> {{fileSegment.file_id}}</div>
+                        <i class="fal fa-triangle fa-rotate-90 dropdownIconCol" *ngIf="fileSegment.file_id !== currentFile"></i>
+                        <i class="fal fa-triangle fa-rotate-180 dropdownIconCol" *ngIf="fileSegment.file_id === currentFile"></i>
+                    </div>
+                    <div class="cm-table">
+                        <div class="cm-table-header" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)">
+                            <div class="nameCol"><b>Label</b></div>
+                            <div class="timeCol"><b>Time</b></div>
+                            <div class="confidenceCol"><b>Confidence</b></div>
                         </div>
-                        
-                    </div>
-                </div>
-
-                <!-- Sorted by keyword view -->
-                
-                <div *ngIf="this.getSortMethod() === this.labelSortTypes[1]">
-                    <div *ngFor="let keyword of this.getKeywords()">
-                        <div class="clickableLabel" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)"> {{keyword}} </div>
-                        
-                        <div *ngFor="let label of this.scanLabelsForKeyword(keyword)" >
-                            <div class="clickableLabel" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)" (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)"> {{label.file_id}}, {{this.prettifyTimestamp(label.label.Timestamp)}}, {{this.prettifyConfidence(label.label.Label.Confidence)}} </div>
+                        <div class="cm-table-body" *ngFor="let label of fileSegment.labels.Labels">
+                            <div class="cm-table-row" [class.selected]="label === selectedLabel" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)" 
+                            (click)="this.selectLabelDetection(label,fileSegment.file_id,label.Timestamp,label.Label.Instances)">
+                                <div class="nameCol">{{label.Label.Name}}</div>
+                                <div class="timeCol">{{this.prettifyTimestamp(label.Timestamp)}}</div>
+                                <div class="confidenceCol">{{this.prettifyConfidence(label.Label.Confidence)}}</div>
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
-                
-                <!--<div *ngFor="let label of this.getLabels()">
-                    <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
-                    (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
-                        <div class="nameCol">{{label.Name}}</div>
-                        <div class="timeCol">{{prettifyTimestamp(label.Timestamp)}}</div>
-                        <div class="confidenceCol">{{prettifyConfidence(label.Confidence)}}</div>
-                    </div>
-                </div> -->
-
-
             </div>
+            <!-- Sorted by keyword view -->
+            <div *ngIf="this.getSortMethod() === this.labelSortTypes[1]">
+                <!--Keyword View Header-->
+                <div class="cm-table-header">
+                    <div class="nameCol"><b>KW Label</b></div>
+                    <div class="timeCol"><b>KW Time</b></div>
+                    <div class="confidenceCol"><b>KW Confidence</b></div>
+                </div>
+                <!--Keyword View Body-->
+                <div *ngFor="let keyword of this.getKeywords()">
+                    <div class="clickableLabel" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)"> {{keyword}} </div>
+                    
+                    <div *ngFor="let label of this.scanLabelsForKeyword(keyword)" >
+                        <div class="clickableLabel" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)" (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)"> {{label.file_id}}, {{this.prettifyTimestamp(label.label.Timestamp)}}, {{this.prettifyConfidence(label.label.Label.Confidence)}} </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!--<div *ngFor="let label of this.getLabels()">
+                <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
+                (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
+                    <div class="nameCol">{{label.Name}}</div>
+                    <div class="timeCol">{{prettifyTimestamp(label.Timestamp)}}</div>
+                    <div class="confidenceCol">{{prettifyConfidence(label.Confidence)}}</div>
+                </div>
+            </div> -->
+
+
         </div>
     </div>
+    <div>{{currentFile}}</div>
 </div>

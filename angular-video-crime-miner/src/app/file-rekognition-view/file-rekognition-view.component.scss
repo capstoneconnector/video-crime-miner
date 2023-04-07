@@ -59,21 +59,54 @@
 }
 
 /* Table Adjustments */
-.cm-table{
+.dropdownTable{
   float: right;
   margin: 0;
   width: 30%;
   height: 100%;
   overflow-y: scroll;
+  .cm-table{ /* For the nested table in each file/keyword, depending on sort selection by user */
+    width:100%;
+    margin: 0;
+  }
+  border: 1px solid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.dropdownRow{
+  height: 3rem;
+  display: flex;
+  line-height: 1.75rem; // Centers text vertically
+  background-color: #c5e6e2;
+  font-size: 1.25rem;
+  div, i{
+    color:#000000;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    float: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+  }
+  .fileNameCol{
+    width: 90%;
+  }
+  .dropdownIconCol{
+    float: right;
+  }
 }
 
 /* Label + Time and Confidence columns */
 .nameCol{
   padding-left: 5px;
-  width: 35%;
+  width: 45%;
 }
 .timeCol{
-  width: 35%;
+  width: 25%;
 }
 .confidenceCol{
   padding-right: 5px;
