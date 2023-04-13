@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core'
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 
@@ -20,7 +20,11 @@ export class NewLabelDetectionComponent implements OnInit {
     this.popUpToDetCasePageEmitter.emit(eventMsg)
   }
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { 
+  public form!: FormGroup
+
+  // constructor fetches dataset containing all valid labels for Rekognition and constructs checkbox form for selected files from job
+  // eventually dataset should be something fetched from backend, instead of retrieved locally by Angular Client
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) { 
     this.http.get('assets/AmazonRekognitionAllLabels_v3.0.csv', {responseType: 'text'})
     .subscribe(
         data => {
@@ -35,7 +39,32 @@ export class NewLabelDetectionComponent implements OnInit {
             console.log(error);
         }
     );
+
+    this.form = fb.group({
+      selectedFiles: new FormArray([])
+    })
+
    }
+
+   // event triggered by changing any values on checkbox form
+  onCheckboxChange(event: any) {
+    
+    const selectedFiles = (this.form.controls['selectedFiles'] as FormArray);
+    if (event.target.checked) {
+      selectedFiles.push(new FormControl(event.target.value));
+      //this.selectedFiles.push(event.target.value)
+    } else {
+      const index = selectedFiles.controls
+      .findIndex(x => x.value === event.target.value);
+      selectedFiles.removeAt(index);
+    }
+  }
+
+  // submit method for checkbox form
+  // NOT USED, but project won't build without valid reference
+  submitFileSelection() {
+    console.log(this.form.value);
+  }
 
    public labelArray: Array<any> = []
 
@@ -68,6 +97,9 @@ export class NewLabelDetectionComponent implements OnInit {
     label: new FormControl("")
   })
 
+  // tracks files used to create new video analysis job
+  public selectedFiles: string[] = []
+
   ngOnInit(): void {
     this.caseId = parseInt(this.route.snapshot.paramMap.get("caseId") || "0")
     this.requestCaseFiles().subscribe((res) => {
@@ -76,6 +108,7 @@ export class NewLabelDetectionComponent implements OnInit {
   }
 
   public getFiles(): any {
+    //console.log(this.files)
     return this.files
   }
 
@@ -95,6 +128,14 @@ export class NewLabelDetectionComponent implements OnInit {
     this.labels = newLabels
   }
 
+  public setSelectedFile(newSelectedFile:string): void {
+    this.selectedFile = newSelectedFile
+  }
+
+  public addSelectedFile(newSelectedFile:string): void {
+    this.selectedFiles.push(newSelectedFile)
+  }
+
   public addNewLabel(newLabel:string): void {
     
     this.labels.push(newLabel)
@@ -102,32 +143,32 @@ export class NewLabelDetectionComponent implements OnInit {
     this.updateLabelList()
   }
 
-  private updateLabelList(){
+  public updateLabelList(){
     var elem:HTMLElement = document.getElementById("labelsList")!
     elem.innerHTML = this.labels.toString()
   }
 
   public sendJobCreationRequest(): void {
-    //this is how the json body should look
-    /*
-    {
-      "labels":
-      [
-          "Label1",
-          "Label2",
-          "Label3"
-      ]
-    }
-    */
-    var body:Object = {"labels": this.labels}
-    this.http.post(`${this.baseUrl}/labels/file/${this.selectedFile}`, body).subscribe((res:any) => {
-      console.log("Job ID Response: ", res)
-      if(res.data.JobId != undefined){
-        console.log("REACHED HERE")
+    
+    const selectedFiles = (this.form.controls['selectedFiles'] as FormArray).value
+
+    
+
+    var body:Object = {"labels": this.labels, "filenames": selectedFiles}
+
+    console.log("Keywords: ", body)
+
+    // starts video analysis job for all files included in "filenames" attribute in body
+    this.http.post(`${this.baseUrl}/labels/files`, body).subscribe( (res:any) => {
+      if(res.data.jobIdsForFiles.length != 0){
+        console.log("Job Ids For Files: ", res)
+
+        // if job was successfully started, opens pop-up to view label detection jobs, which will show all existing jobs, including the newly created one
         this.emitJobSentToDetCaseView(this.getCaseId().toString())
-        //this.router.navigateByUrl('/detailed-case-view/' + this.getCaseId())
+        
       }
-    })
+    } )
+
   }
 
   public requestCaseFiles(): Observable<any> {

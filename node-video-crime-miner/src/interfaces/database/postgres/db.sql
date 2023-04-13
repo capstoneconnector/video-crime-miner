@@ -97,6 +97,8 @@ CREATE TABLE IF NOT EXISTS public.awsoutput
     result json,
     file_id text COLLATE pg_catalog."default" NOT NULL,
     tags text[] COLLATE pg_catalog."default" NOT NULL,
+    queueUrl text COLLATE pg_catalog."default",
+    topicArn text COLLATE pg_catalog."default",
     CONSTRAINT "aws-output_pkey" PRIMARY KEY (job_id),
     CONSTRAINT "aws-output_file_id_fkey" FOREIGN KEY (file_id)
         REFERENCES public.file (s3_name) MATCH SIMPLE
@@ -139,13 +141,13 @@ INSERT INTO public.file(
 
 -- Insert awsoutput rows
 INSERT INTO public.awsoutput(
-    job_id, result, file_id, tags) 
-    VALUES ('EMPTY JSON EXAMPLE 1', JSON '{}', '[DEMO] Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt']);
+    job_id, result, file_id, tags, queueUrl, topicArn) 
+    VALUES ('EMPTY JSON EXAMPLE 1', JSON '{}', '[DEMO] Real Crime Video.mp4', ARRAY ['car', 'truck', 'red shirt'], 'example', 'example');
 INSERT INTO public.awsoutput(
-    job_id, result, file_id, tags) 
-    VALUES ('EMPTY JSON EXAMPLE 2', JSON '{}', '[DEMO] Fish Video.mp4', ARRAY ['tire']);
+    job_id, result, file_id, tags, queueUrl, topicArn) 
+    VALUES ('EMPTY JSON EXAMPLE 2', JSON '{}', '[DEMO] Fish Video.mp4', ARRAY ['tire'], 'example', 'example');
 INSERT INTO public.awsoutput(
-    job_id, result, file_id, tags) 
-    VALUES ('EMPTY JSON EXAMPLE 3', JSON '{}', '[DEMO] Crowd of People.mp4', ARRAY ['checks', 'money', 'suit']);
+    job_id, result, file_id, tags, queueUrl, topicArn) 
+    VALUES ('EMPTY JSON EXAMPLE 3', JSON '{}', '[DEMO] Crowd of People.mp4', ARRAY ['checks', 'money', 'suit'], 'example', 'example');
 
 \q

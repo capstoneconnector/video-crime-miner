@@ -1,6 +1,10 @@
 
 import { RekognitionClient, StartLabelDetectionCommand, GetLabelDetectionCommand } from '@aws-sdk/client-rekognition'
 
+import { SNSClient, CreateTopicCommand, SubscribeCommand, DeleteTopicCommand } from '@aws-sdk/client-sns'
+
+import { SQSClient, CreateQueueCommand, GetQueueUrlCommand, GetQueueAttributesCommand, SetQueueAttributesCommand, ReceiveMessageCommand, DeleteQueueCommand } from '@aws-sdk/client-sqs'
+
 const region = process.env['REGION'] || 'REGION NOT DEFINED IN .ENV'
 const accessKeyId = process.env['AWS_ACCESS_KEY_ID'] || 'AWS ACCESS KEY NOT DEFINED IN .ENV'
 const secretAccessKey = process.env['AWS_SECRET_ACCESS_KEY'] || 'AWS SECRET ACCESS KEY REGION NOT DEFINED IN .ENV'
@@ -19,22 +23,62 @@ const attributes = {
 // console.log(attributes)
 const client = new RekognitionClient(attributes)
 
-async function startLabelDetection (videoName: string, labelFilters: string[] = [], clientToUse: RekognitionClient | any = client) {
+const sqsClient = new SQSClient(attributes)
+
+const snsClient = new SNSClient(attributes)
+
+async function startLabelDetection (videoName: string, labelFilters: string[] = [], clientToUse: RekognitionClient | any = client, testing:boolean=false) {
   try {
-    const attributes = {
-      Video: {
-        S3Object: {
-          Name: videoName,
-          Bucket: bucketName
+
+    var newUT: number
+
+    var newT_Q: any = ["0", "1"]
+
+    if (!testing) {
+    newUT = Date.now()
+
+    newT_Q = await createNewTopicAndQueue(newUT.toString())
+    }
+
+    var attributes: any
+
+    if (!testing) {
+      attributes = {
+        Video: {
+          S3Object: {
+            Name: videoName,
+            Bucket: bucketName
+          }
+        },
+        Features: ['GENERAL_LABELS'],
+        Settings: {
+          GeneralLabels: {
+            LabelInclusionFilters: labelFilters // Enter terms to filter here
+          }
+        },
+        NotificationChannel:{
+          RoleArn: roleArn, 
+          SNSTopicArn: newT_Q[1]
         }
-      },
-      Features: ['GENERAL_LABELS'],
-      Settings: {
-        GeneralLabels: {
-          LabelInclusionFilters: labelFilters // Enter terms to filter here
-        }
+        
       }
-      
+    }
+    else {
+      attributes = {
+        Video: {
+          S3Object: {
+            Name: videoName,
+            Bucket: bucketName
+          }
+        },
+        Features: ['GENERAL_LABELS'],
+        Settings: {
+          GeneralLabels: {
+            LabelInclusionFilters: labelFilters // Enter terms to filter here
+          }
+        }
+        
+      }
     }
 
     // Returns jobId, which can be used by the collectLabelDetections method to collect job results
@@ -42,15 +86,101 @@ async function startLabelDetection (videoName: string, labelFilters: string[] = 
 
     const result = await clientToUse.send(command)
 
-    var stringvalue:string = result.JobId
+    var newJobId:string = result.JobId
 
-    return { JobID: stringvalue }
+    return { JobID: newJobId, queueUrl: newT_Q[0], topicArn: newT_Q[1] }
     
   } catch (e) {
     console.log('error', e)
     return {
       startLabelsError: e
     }
+  }
+}
+
+async function createNewTopicAndQueue(unixtime:string) {
+
+  try {
+
+    const snsTopicName = "AmazonRekognitionExample" + unixtime;
+    const snsTopicParams = {Name: snsTopicName}
+    const sqsQueueName = "AmazonRekognitionQueue-" + unixtime;
+
+    // Set the parameters
+    const sqsParams = {
+      QueueName: sqsQueueName, //SQS_QUEUE_URL
+      Attributes: {
+        DelaySeconds: "60", // Number of seconds delay.
+        MessageRetentionPeriod: "86400", // Number of seconds delay.
+      },
+    };
+
+    // Create SNS topic
+    const topicResponse = await snsClient.send(new CreateTopicCommand(snsTopicParams));
+    const topicArn = topicResponse.TopicArn
+
+    // Create SQS Queue
+    const sqsResponse = await sqsClient.send(new CreateQueueCommand(sqsParams));
+    const sqsQueueCommand = await sqsClient.send(new GetQueueUrlCommand({QueueName: sqsQueueName}))
+    const sqsQueueUrl = sqsQueueCommand.QueueUrl
+    const attribsResponse = await sqsClient.send(new GetQueueAttributesCommand({QueueUrl: sqsQueueUrl, AttributeNames: ['QueueArn']}))
+    const attribs = attribsResponse.Attributes
+
+    const queueArn = attribs['QueueArn']
+    // subscribe SQS queue to SNS topic
+    const subscribed = await snsClient.send(new SubscribeCommand({TopicArn: topicArn, Protocol:'sqs', Endpoint: queueArn}))
+
+    const policy = {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Sid: "MyPolicy",
+          Effect: "Allow",
+          Principal: {AWS: "*"},
+          Action: "SQS:SendMessage",
+          Resource: queueArn,
+          Condition: {
+            ArnEquals: {
+              'aws:SourceArn': topicArn
+            }
+          }
+        }
+      ]
+    };
+
+    const response = await sqsClient.send(new SetQueueAttributesCommand({QueueUrl: sqsQueueUrl, Attributes: {Policy: JSON.stringify(policy)}}))
+
+    return [ sqsQueueUrl, topicArn ]
+  } catch (e) {
+    console.log('error', e)
+  }
+}
+
+async function checkJobStatus(qrl:string, clientToUse: RekognitionClient | any = client) {
+  try {
+
+    //console.log("INPUT QUEUEURL: ", qrl)
+    var sqsReceivedResponse = await sqsClient.send(new ReceiveMessageCommand({QueueUrl:qrl, MaxNumberOfMessages:10}))
+
+    //var responseString = JSON.stringify(sqsReceivedResponse)
+    
+    return sqsReceivedResponse
+
+  } catch (e) {
+    console.log('error', e)
+  }
+}
+
+async function deleteTAndQ (qrl:string, topic:string, clientToUse: RekognitionClient | any = client) {
+  try {
+
+    const deleteQueue = await sqsClient.send(new DeleteQueueCommand({QueueUrl: qrl}));
+    const deleteTopic = await snsClient.send(new DeleteTopicCommand({TopicArn: topic}));
+
+    return deleteTopic
+
+  } catch (e) {
+    console.log('error', e)
   }
 }
 
@@ -62,7 +192,10 @@ async function collectLabelDetections (labelDetectJobId: string, clientToUse: Re
   const dataCheck = await getLabelDetectionChunk(labelDetectJobId, undefined, clientToUse)
 
   // store first batch of labels
-  labelsDetected.push(dataCheck.Labels)
+  dataCheck.Labels.forEach( (key:any) => {
+    labelsDetected.push(key)
+  } )
+  //labelsDetected.push(dataCheck.Labels)
 
   // tracks current token
   let tokenToUse = dataCheck.NextToken
@@ -78,15 +211,16 @@ async function collectLabelDetections (labelDetectJobId: string, clientToUse: Re
       Object.keys(dataResponse).forEach(function (key) {
         if (key == 'Labels') {
           dataResponse[key].forEach(function (item: any) {
+            labelsDetected.push(item)
             // if (item["Name"] == "Fence") {
-            console.log('\n\n' + JSON.stringify(item))
+            //console.log('\n\n' + JSON.stringify(item))
             // }
           })
           // console.log('Key : ' + key + ', Value : ' + JSON.stringify(dataResponse[key]))
         }
 
       })
-      labelsDetected.push(dataResponse.Labels)
+      //labelsDetected.push(dataResponse.Labels)
       VideoMetadata = dataResponse.VideoMetadata
 
       // store new token
@@ -148,4 +282,4 @@ async function getLabelDetectionResults (id: string, clientToUse: RekognitionCli
   }
 }
 
-export { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections, client }
+export { startLabelDetection, getLabelDetectionResults, getLabelDetectionChunk, collectLabelDetections, checkJobStatus, deleteTAndQ, client }

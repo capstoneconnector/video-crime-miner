@@ -1,4 +1,4 @@
-import { startLabelDetection, collectLabelDetections, client } from './videoLabelUtils.js'
+import { startLabelDetection, collectLabelDetections, checkJobStatus, deleteTAndQ, client } from './videoLabelUtils.js'
 
 interface videoAnalysisService {
 
@@ -6,8 +6,14 @@ interface videoAnalysisService {
     // start job, returns object with jobID attribute
     startJob (videoName:string, labelFilters:string[]) : Promise<any>;
 
+    // check if results are ready to fetch
+    checkJobStatus (jobId:string) : Promise<any>;
+
     // collect results for job, returns object 
     collectJobResults(labelDetectJobId:string): Promise<any>;
+
+    // clear SNS topic and SQS Queue
+    clearNotifications(qrl:string, topic:string): Promise<any>;
 
 }
 
@@ -19,8 +25,16 @@ const rekog : videoAnalysisService = {
         return startLabelDetection(videoName, labelFilters, targetClient);
     },
 
+    checkJobStatus: function (jobId:string, targetClient:any=client) : Promise<any> {
+        return checkJobStatus(jobId, targetClient);
+    },
+
     collectJobResults: function(labelDetectJobId:string, targetClient:any=client) : Promise<any> {
         return collectLabelDetections(labelDetectJobId, targetClient)
+    },
+
+    clearNotifications: function(qrl:string, topic:string, targetClient:any=client): Promise<any> {
+        return deleteTAndQ(qrl, topic, targetClient)
     }
 
 

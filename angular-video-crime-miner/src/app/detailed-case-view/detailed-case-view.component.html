@@ -5,7 +5,7 @@
             <a [routerLink]="['/view/']">&laquo; Back to Cases</a>
         </div>
     </div>
-    <h1>{{getCaseInfo().name}}</h1>
+    <h1>Case: {{this.getCaseId()}}</h1>
 
     <!-- Clickable files table -->
     <div class="card">
@@ -115,11 +115,14 @@
         </div>
         <h4>Label Detection Jobs</h4>
         <div class="fileTable">
-            <div *ngFor="let output of this.getCaseOutputs()">
-                <div class = "clickableFile" [class.selected]="output === selectedOutput" 
-                (click)="onSelectOutput(output)">
-                    <div class="fileCol">{{ output.fileId }}</div>
-                    <div class="tagsCol">{{ output.tags }}</div>
+            <div *ngFor="let keywords of this.getCaseKeywords()">
+                <div *ngIf="this.checkForTagsInFinished(keywords.tags)" class = "clickableFile" [class.selected]="keywords === selectedKeywords" 
+                (click)="onSelectKeywords(keywords)">
+                    <div class="fileCol">{{ keywords.tags }}</div>
+                </div>
+                <div *ngIf="!this.checkForTagsInFinished(keywords.tags)" class = "clickableFile" [class.selected]="keywords === selectedKeywords" 
+                >
+                    <div class="fileCol">{{ keywords.tags }} (Pending...)</div>
                 </div>
             </div>
         </div>
