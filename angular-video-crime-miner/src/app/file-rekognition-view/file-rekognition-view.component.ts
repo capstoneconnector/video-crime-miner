@@ -43,7 +43,6 @@ export class FileRekognitionViewComponent implements OnInit {
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
-
     // extracts URL Param, list of keywords and last element is caseId
     this.keywordsParam = this.route.snapshot.paramMap.get('keywords') as string
 
@@ -64,9 +63,6 @@ export class FileRekognitionViewComponent implements OnInit {
     } )
 
     //console.log("LabelsByFile: ", this.labelsByFile)
-
-    
-
   }
 
   /* Video Player */
@@ -98,6 +94,7 @@ export class FileRekognitionViewComponent implements OnInit {
 
   public seekTimestampInVideo(timestamp:number, instances: any[]): void{
     // Change timestamp
+    this.st = timestamp/1000
     this.rawVideoData.seekTime(timestamp/1000, false)
     this.generateBoundingBoxes(instances)
   }
@@ -116,11 +113,10 @@ export class FileRekognitionViewComponent implements OnInit {
       const confidence = labelInstances[i].Confidence
       newBox.setAttribute("style", `top:${boxinfo.Top * 100}%;left:${boxinfo.Left * 100}%;width:${videoContainer!.getBoundingClientRect().width * boxinfo.Width}px;height:${videoContainer!.getBoundingClientRect().height * boxinfo.Height}px;`)
       newBox.style.borderColor = "blue"
-      newBox.style.borderStyle = "double"
+      newBox.style.borderStyle = "solid"
       newBox.style.position = "absolute"
       newBox.style.zIndex = "2"
       newBox.className = "bounding-box"
-      newBox.innerHTML = this.prettifyConfidence(confidence)
       videoContainer.appendChild(newBox)
       this.currentBorderBoxes.push(newBox)
     }
