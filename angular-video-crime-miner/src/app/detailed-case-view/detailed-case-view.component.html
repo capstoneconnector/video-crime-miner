@@ -133,7 +133,7 @@
                     <div class = "cm-table-row" [class.selected]="keywords === selectedKeywords"
                     (click)="onSelectKeywords(keywords)">
                         <div class="iconCol"><i class="fal fa-video"></i></div>
-                        <div class="tagsCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">{{ keywords.tags }}</div>
+                        <div class="tagsCol">{{ keywords.tags }}</div>
                         <div class="statusCol" *ngIf="!this.checkForTagsInFinished(keywords.tags)">ANALYZING...</div>
                         <div class="statusCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">FINISHED</div>
                     </div>
