@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
+import { CognitoService } from '../cognito.service'
 
 
 @Component({
@@ -35,7 +36,7 @@ export class DetailedCaseViewComponent implements OnInit {
   fileInfos?: Observable<any>
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, 
-    private router: Router, private uploadService: FileService) { }
+    private router: Router, private uploadService: FileService, private userService: CognitoService) { }
 
     // listener callback for new-label-detection component
   public onJobStartedEmission(emittedNum:string) {
@@ -165,7 +166,7 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   public requestCaseInfo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cases/${this.caseId}`)
+    return this.http.get(`${this.baseUrl}/cases/${this.caseId}?user=${this.userService.getUsername().getValue()}`)
   }
 
   public getCaseInfo(): any {
@@ -380,9 +381,6 @@ export class DetailedCaseViewComponent implements OnInit {
 				tags: [tags],
 				notes: [notes]
 			  }
-		  }
-
-
 		  this.http.put(`${this.baseUrl}/update/cases/${this.caseId}`, body).subscribe((res:any) => {
 			if(res.success){
 			  this.resetInputs()
@@ -394,7 +392,8 @@ export class DetailedCaseViewComponent implements OnInit {
 			  this.setFeedbackMessage(false, "ERROR: The case could not be created")
 			}
 		  })
-	}
+	  }
+  }
 
 	/* User Message Feedback */
 	public successMessage:string = ""
