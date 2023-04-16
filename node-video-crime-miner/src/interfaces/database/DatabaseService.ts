@@ -9,6 +9,8 @@ interface DatabaseService {
 
 	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string, username:string): Promise<any>
 
+	deleteCase(case_id: string): Promise<any>
+
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
 
@@ -52,20 +54,24 @@ import * as pgChuqlabUser from './postgres/db.ChuqlabUser.js'
 
 const postgres : DatabaseService = {
 	/* Case functions */
-	getAllCases: function (username:string): Promise<any> {
+	getAllCases: function (username: string): Promise<any> {
 		return pgcase.getAllCases(username)
 	},
 
-	getCaseById: function (id: string, username:string): Promise<any> {
+	getCaseById: function (id: string, username: string): Promise<any> {
 		return pgcase.getCaseById(id, username)
 	},
 
-	insertNewCase: function (name: string, description: string, tags: string[], username:string): Promise<any> {
+	insertNewCase: function (name: string, description: string, tags: string[], username: string): Promise<any> {
 		return pgcase.insertNewCase(name, description, tags, username)
 	},
 
-	updateCaseDetails: function (id: string, name:string, description: string, tags: string[], notes:string, username:string): Promise<any> {
+	updateCaseDetails: function (id: string, name: string, description: string, tags: string[], notes: string, username: string): Promise<any> {
 		return pgcase.updateCaseDetails(id, name, description, tags, notes, username)
+	},
+
+	deleteCase: function (case_id: string): Promise<any> {
+		return pgcase.deleteCase(case_id)
 	},
 
 	/* File functions */
@@ -82,7 +88,7 @@ const postgres : DatabaseService = {
 	},
 
 	/* AWSOutput functions */
-	createNewLabels: function (job_id: string, keywords: string[], file_id: string, queueUrl:string, topicArn:string): Promise<any> {
+	createNewLabels: function (job_id: string, keywords: string[], file_id: string, queueUrl: string, topicArn: string): Promise<any> {
 		return pglabel.createNewLabels(job_id, keywords, file_id, queueUrl, topicArn)
 	},
 
@@ -111,25 +117,24 @@ const postgres : DatabaseService = {
 	},
 
 	fetchQUrlByJobId: function (jobId: string): Promise<any> {
-        return pglabel.checkJobStatus(jobId)
-    },
+		return pglabel.checkJobStatus(jobId)
+	},
 
-    markJobAsFinished: function (jobId: string): Promise<any> {
-        return pglabel.markJobAsDone(jobId)
-    },
+	markJobAsFinished: function (jobId: string): Promise<any> {
+		return pglabel.markJobAsDone(jobId)
+	},
 
 	fetchDistinctKeywords: function (caseId: string): Promise<any> {
-        return pglabel.getDistinctKeywords(caseId)
-    },
+		return pglabel.getDistinctKeywords(caseId)
+	},
 
-    checkIfUserExists: function (username:string): Promise<any> {
-        return pgChuqlabUser.checkIfUserExists(username)
-    },
+	checkIfUserExists: function (username: string): Promise<any> {
+		return pgChuqlabUser.checkIfUserExists(username)
+	},
 
-    createUser: function (username:string): Promise<any> {
-        return pgChuqlabUser.createUserEntry(username)
-    }
-
+	createUser: function (username: string): Promise<any> {
+		return pgChuqlabUser.createUserEntry(username)
+	},
 }
 
 function getDatabaseService(): DatabaseService {
