@@ -92,4 +92,23 @@ async function updateCaseDetails(req: Request, res: Response) {
 	}
 }
 
-export { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails }
+async function deleteCase(req: Request, res: Response) {
+	try {
+		var response = emptyOutput
+		response.data = await databaseService.deleteCase(req.body.caseId)
+
+		response.success = true
+		response = standardizeResponse(response).convertToJson()
+		res.status(204).json(response)
+
+	} catch (error: any) {
+		console.log("app.delete('/case') errored out")
+		response.errors.push(error.message)
+		response.success = false
+		response = standardizeResponse(response).convertToJson()
+		res.status(504).json(response)
+	}
+}
+
+
+export { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails, deleteCase }
