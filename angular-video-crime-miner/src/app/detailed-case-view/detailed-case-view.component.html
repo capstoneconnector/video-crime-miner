@@ -38,10 +38,13 @@
         <div class="card-head">Actions</div>
         <div class="card-body">
             <div class="actions">
-                <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload new file</button>
+                <button class="cm-standard-button" (click)="openUploadFilePopup()"
+                [class.shockwaveButton]="getCaseFiles().length==0">Upload Video Files</button>
                 <button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>
-                <button class="cm-standard-button" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
-                <button class="cm-standard-button" (click)="openStartLabelJobPopup()">Start new label detection</button>
+                <button class="cm-standard-button" (click)="openViewLabelJobsPopup()"
+                [disabled]="getCaseOutputs().length==0 || getCaseFiles().length==0">View Video Analyses</button>
+                <button class="cm-standard-button" (click)="openStartLabelJobPopup()" 
+                [disabled]="getCaseFiles().length==0" [class.shockwaveButton]="getCaseOutputs().length==0 && getCaseFiles().length>0">Analyze Videos for Evidence</button>
             </div>
         </div>
     </div>
@@ -54,14 +57,13 @@
         <div class="cm-popup-close" (click)="closeUploadFilePopup()">
         &times; <!-- &times; is the X icon -->
         </div>
-        <h4>Upload New File</h4>
+        <h4>Upload New Video Files</h4>
         <!--
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
         -->
-        <label class="btn btn-default p-0">
-            <input type="file" (change)="selectFile($event)"/>
-        </label>
+        <label for="file">ctrl + click to select multiple files</label>
+        <input name="file" type="file" multiple (change)="selectFile($event)"/>
         <button class="cm-standard-button" [disabled]="!selectedFiles" (click)="upload()"> Upload </button>
         <div *ngIf="currentFile" class="progress-bar">
             <div
@@ -173,3 +175,50 @@
         -->
     </div>
 </div>
+
+<div class="cm-popup playVideoPopup" *ngIf="showPlayVideoPopup">
+    <div class="cm-popup-close" (click)="closePlayVideoPopup()">
+        &times; <!-- &times; is the X icon -->
+    </div>
+    <div class="videoplayer">
+        <vg-player (onPlayerReady)="loadVideoIntoPlayer($event)" id="video-container">
+            <vg-overlay-play></vg-overlay-play>
+            <vg-buffering></vg-buffering>
+          
+            <vg-controls>
+                <vg-play-pause></vg-play-pause>
+                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          
+                <vg-scrub-bar>
+                   <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                   <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                </vg-scrub-bar>
+          
+                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+          
+                <vg-track-selector></vg-track-selector>
+                <vg-mute></vg-mute>
+                <vg-volume></vg-volume>
+          
+                <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+            <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
+        </vg-player>
+    </div>
+</div>
+
+<!-- Popup for a semi-tutorial for newly created case -->
+<!--
+<div class="cm-popup" *ngIf="showNewCasePopup">
+    <div class="cm-popup-content new-case-popup">
+        <h1 class="cm-popup-header">Analyze for Evidence in Your New Case</h1>
+        <div class="filesUploadNewCase">
+            <h4 class="filesUploadNewCaseHeader">Upload Files</h4>
+        </div>
+        <div class="tagsSelectNewCase">
+            <h4 class="tagsSelectNewCaseHeader">Find Evidence in Them</h4>
+        </div>
+        <div class="cm-popup-close new-case-popup-close-msg" (click)="closeNewCasePopup()">skip this for now</div>
+    </div>
+</div>
+-->
