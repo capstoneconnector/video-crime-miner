@@ -96,10 +96,11 @@ async function deleteCase(req: Request, res: Response) {
 	try {
 		var response = emptyOutput
 
-		var caseNames: string[] = req.body.caseNames.split(',') /* MAKE SURE THERE ARE NO TRAILING WHITESPACES BETWEEN ITEMS TO BE ITERATED ON  */
+		var caseNames: string[] = req.body.caseNames.map((item: string) => item.trim())
+
 		caseNames.forEach(async (item) => {
-			await databaseService.deleteCase(item)
-		})
+			await databaseService.deleteCase(item);
+		  })
 
 		response.data = `${caseNames} Cases Successfully Deleted`
 		response.success = true
