@@ -5,6 +5,7 @@
             <a [routerLink]="['/view/']">&laquo; Back to Cases</a>
         </div>
     </div>
+	<button class="cm-standard-button deleteFileButton" (click) = "deleteFiles()" >Delete Files</button>
     <h1>Case: {{this.getCaseId()}}</h1>
 
     <!-- Clickable files table -->

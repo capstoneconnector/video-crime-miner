@@ -308,8 +308,23 @@ export class DetailedCaseViewComponent implements OnInit {
   public onSelectFile(file: any){
     this.selectedFile = file
   }
-  public onDoubleClickFile(file:any){
-    // TODO: add popup for detailed file view, possibly playing the video?
+
+  public onDoubleClickFile(file: any) {
+	const fileName = file.title;
+	const downloadUrl = `http://localhost:8000/files/download/${fileName}`;
+  
+	fetch(downloadUrl)
+	  .then(response => response.blob())
+	  .then(blob => {
+		const url = window.URL.createObjectURL(new Blob([blob]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', fileName);
+		document.body.appendChild(link);
+		link.click();
+		link.remove();
+	  })
+	  .catch(error => console.error(error));
   }
 
   /* Clickable output methods */
@@ -420,6 +435,10 @@ export class DetailedCaseViewComponent implements OnInit {
 		this.successMessage = ""
 		this.errorMessage = message
 	  }
+	}
+
+	public deleteFiles() {
+		console.log("Delete Button Clicked")
 	}
 
 }
