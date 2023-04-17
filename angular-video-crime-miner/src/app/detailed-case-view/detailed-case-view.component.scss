@@ -131,3 +131,20 @@
   right: 0;
   border-radius: 50%;
 }
+
+/* Video Player Popup */
+.videoplayer{
+  width: 71rem;
+  height: 40rem;
+  position: relative; /* add position relative to allow absolute positioning of the overlay */
+  text-align: center;
+}
+
+.playVideoPopup{
+  width: 90%;
+  height: 90%;
+  padding: 50px;
+}
+vg-controls{
+  background-color: #98C1D9;
+}
