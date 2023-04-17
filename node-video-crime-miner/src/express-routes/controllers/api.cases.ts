@@ -95,11 +95,16 @@ async function updateCaseDetails(req: Request, res: Response) {
 async function deleteCase(req: Request, res: Response) {
 	try {
 		var response = emptyOutput
-		response.data = await databaseService.deleteCase(req.body.caseId)
 
+		var caseNames: string[] = req.body.caseNames.split(',') /* MAKE SURE THERE ARE NO TRAILING WHITESPACES BETWEEN ITEMS TO BE ITERATED ON  */
+		caseNames.forEach(async (item) => {
+			await databaseService.deleteCase(item)
+		})
+
+		response.data = `${caseNames} Cases Successfully Deleted`
 		response.success = true
 		response = standardizeResponse(response).convertToJson()
-		res.status(204).json(response)
+		res.status(200).json(response)
 
 	} catch (error: any) {
 		console.log("app.delete('/case') errored out")
