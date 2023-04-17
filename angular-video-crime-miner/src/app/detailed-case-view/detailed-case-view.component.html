@@ -38,10 +38,12 @@
         <div class="card-head">Actions</div>
         <div class="card-body">
             <div class="actions">
-                <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload new file</button>
+                <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload Video Files</button>
                 <button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>
-                <button class="cm-standard-button" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
-                <button class="cm-standard-button" (click)="openStartLabelJobPopup()">Start new label detection</button>
+                <button class="cm-standard-button" (click)="openViewLabelJobsPopup()"
+                [disabled]="getCaseOutputs().length==0 || getCaseFiles().length==0">View Video Analyses</button>
+                <button class="cm-standard-button" (click)="openStartLabelJobPopup()" 
+                [disabled]="getCaseFiles().length==0">Analyze Videos for Evidence</button>
             </div>
         </div>
     </div>

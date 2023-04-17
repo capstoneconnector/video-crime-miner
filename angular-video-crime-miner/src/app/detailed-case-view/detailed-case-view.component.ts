@@ -258,8 +258,6 @@ export class DetailedCaseViewComponent implements OnInit {
     this.progress = 0
 
     if (this.selectedFiles) {
-      //const file: File | null = this.selectedFiles.item(0)
-
       for (let i = 0; i<this.selectedFiles.length; i++)  {
         const file: File | null = this.selectedFiles.item(i)
         this.currentFile = file!
@@ -289,8 +287,9 @@ export class DetailedCaseViewComponent implements OnInit {
     }
     // Update case files by reloading page (probably bad practice but oh well!)
     this.requestCaseFiles().subscribe( async res => {
+      this.getCaseFiles()
       this.closeUploadFilePopup()
-	  this.ngOnInit()
+	  //this.ngOnInit()
     })
   }
 
