@@ -54,7 +54,8 @@ async function insertNewCase (name: string, description: string, tags: string[],
 
 async function updateCaseDetails (case_id:string, name:string, description: string, tags:string[], notes:string, username:string) {
 	try {
-	  const query = await pool.query('UPDATE public.case SET description = $1, tags = $2, notes = $3, name = $4 WHERE case_id = $5 AND user_id = $6',
+  
+		const query = await pool.query('UPDATE public.case SET description = $1, tags = $2, notes = $3, name = $4 WHERE case_id= $5 AND user_id = $6',
 		[description, tags, notes, name, case_id, username])
 	  console.log(`Case ${case_id} updated successfully.`)
   

@@ -39,7 +39,7 @@
         <div class="card-body">
             <div class="actions">
                 <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload new file</button>
-                <!--<button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>-->
+                <button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>
                 <button class="cm-standard-button" (click)="openViewLabelJobsPopup()">View all label detection jobs</button>
                 <button class="cm-standard-button" (click)="openStartLabelJobPopup()">Start new label detection</button>
             </div>
@@ -89,29 +89,29 @@
         <h4>Edit Case Details</h4>
 			<div class="form-group">
 				<label for="name"><span>*</span> Name</label>
-				<input [(ngModel)]="name" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+				<input [name]="name" placeholder="Enter case name" [(ngModel)]="name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="tags"><span>*</span> tags</label>
-				<input [(ngModel)]="tags" placeholder="Enter tags name" type="text" cols="5" rows="5" name="tags" id="tags" aria-required="true" aria-invalid="true" required>
+				<input [name]="tags" placeholder="Enter tags" [(ngModel)]="tags" type="text" cols="5" rows="5" name="tags" id="tags" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="notes"><span>*</span> Notes</label>
-				<input [(ngModel)]="notes" placeholder="Enter notes name" type="text" cols="5" rows="5" name="notes" id="notes" aria-required="true" aria-invalid="true" required>
+				<input [name]="notes" placeholder="Enter notes" [(ngModel)]="notes" type="text" cols="5" rows="5" name="notes" id="notes" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="description"><span>*</span> Description</label>
-				<textarea [(ngModel)]="description" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
+				<textarea [name]="description" aria-required="true" placeholder="Add case description" [(ngModel)]="description" name="myTextBox" cols="55" rows="10"></textarea>
 			</div>
 
-			<button class="cm-standard-button" (click) = "editCase(name, description, tags, notes)"> Edit Case Details </button>
-        <!--
+			<button class="cm-standard-button" (click) = "editCase(name, description, tags, notes)"> Update </button>
+        
         <div [(ngModel)]="successMessage">{{successMessage}}</div>
         <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
-        -->
+        
     </div>
 </div>
 
@@ -133,7 +133,7 @@
                     <div class = "cm-table-row" [class.selected]="keywords === selectedKeywords"
                     (click)="onSelectKeywords(keywords)">
                         <div class="iconCol"><i class="fal fa-video"></i></div>
-                        <div class="tagsCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">{{ keywords.tags }}</div>
+                        <div class="tagsCol">{{ keywords.tags }}</div>
                         <div class="statusCol" *ngIf="!this.checkForTagsInFinished(keywords.tags)">ANALYZING...</div>
                         <div class="statusCol" *ngIf="this.checkForTagsInFinished(keywords.tags)">FINISHED</div>
                     </div>

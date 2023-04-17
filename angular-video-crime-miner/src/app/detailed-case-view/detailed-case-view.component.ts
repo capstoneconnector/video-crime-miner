@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
+import { CognitoService } from '../cognito.service'
 
 
 @Component({
@@ -35,7 +36,7 @@ export class DetailedCaseViewComponent implements OnInit {
   fileInfos?: Observable<any>
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, 
-    private router: Router, private uploadService: FileService) { }
+    private router: Router, private uploadService: FileService, private userService: CognitoService) { }
 
     // listener callback for new-label-detection component
   public onJobStartedEmission(emittedNum:string) {
@@ -165,7 +166,7 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   public requestCaseInfo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cases/${this.caseId}`)
+    return this.http.get(`${this.baseUrl}/cases/${this.caseId}?user=${this.userService.getUsername().getValue()}`)
   }
 
   public getCaseInfo(): any {
@@ -292,9 +293,9 @@ export class DetailedCaseViewComponent implements OnInit {
 
   private resetInputs(): void{
     this.name = ""
-	this.description = ""
-	this.tags = ""
-	this.notes = ""
+    this.description = ""
+    this.tags = ""
+    this.notes = ""
     this.file = null
   }
 
@@ -337,6 +338,10 @@ export class DetailedCaseViewComponent implements OnInit {
   showEditCasePopup = false
   openEditCasePopup(){
     this.showEditCasePopup = true
+    this.name = this.getCaseInfo().name
+    this.tags = this.getCaseInfo().tags
+    this.notes = this.getCaseInfo().notes
+    this.description = this.getCaseInfo().description
   }
   closeEditCasePopup(){
     this.resetInputs()
@@ -378,11 +383,9 @@ export class DetailedCaseViewComponent implements OnInit {
 				name: name,
 				description: description,
 				tags: [tags],
-				notes: [notes]
+				notes: [notes],
+        username: this.userService.getUsername().getValue()
 			  }
-		  }
-
-
 		  this.http.put(`${this.baseUrl}/update/cases/${this.caseId}`, body).subscribe((res:any) => {
 			if(res.success){
 			  this.resetInputs()
@@ -394,7 +397,8 @@ export class DetailedCaseViewComponent implements OnInit {
 			  this.setFeedbackMessage(false, "ERROR: The case could not be created")
 			}
 		  })
-	}
+	  }
+  }
 
 	/* User Message Feedback */
 	public successMessage:string = ""
@@ -402,7 +406,7 @@ export class DetailedCaseViewComponent implements OnInit {
 	private setFeedbackMessage(success:boolean, message:string = ""): void{
 	  if(success){
 		this.errorMessage = ""
-		this.successMessage = "Case Created"
+		this.successMessage = "Case Updated"
 	  }else{
 		this.successMessage = ""
 		this.errorMessage = message

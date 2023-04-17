@@ -95,6 +95,9 @@
   .fileNameCol{
     width: 90%;
   }
+  .keywordNameCol{
+    width: 90%;
+  }
   .dropdownIconCol{
     float: right;
   }
@@ -102,6 +105,10 @@
 
 /* Label + Time and Confidence columns */
 .nameCol{
+  padding-left: 5px;
+  width: 45%;
+}
+.fileCol{
   padding-left: 5px;
   width: 45%;
 }

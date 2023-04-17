@@ -53,34 +53,30 @@
             </div>
             <!-- Sorted by keyword view -->
             <div *ngIf="this.getSortMethod() === this.labelSortTypes[1]">
-                <!--Keyword View Header-->
-                <div class="cm-table-header">
-                    <div class="nameCol"><b>KW Label</b></div>
-                    <div class="timeCol"><b>KW Time</b></div>
-                    <div class="confidenceCol"><b>KW Confidence</b></div>
-                </div>
                 <!--Keyword View Body-->
                 <div *ngFor="let keyword of this.getKeywords()">
-                    <div class="clickableLabel" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)"> {{keyword}} </div>
-                    
-                    <div *ngFor="let label of this.scanLabelsForKeyword(keyword)" >
-                        <div class="clickableLabel" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)" (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)"> {{label.file_id}}, {{this.prettifyTimestamp(label.label.Timestamp)}}, {{this.prettifyConfidence(label.label.Label.Confidence)}} </div>
+                    <div class="dropdownRow" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)">
+                        <div class="keywordNameCol"> {{keyword}} </div>
+                        <i class="fal fa-triangle fa-rotate-90 dropdownIconCol" *ngIf="keyword !== currentKeyword"></i>
+                        <i class="fal fa-triangle fa-rotate-180 dropdownIconCol" *ngIf="keyword === currentKeyword"></i>
                     </div>
-                    
+                    <div class="cm-table">
+                        <div class="cm-table-header" *ngIf="this.checkAgainstCurrentKeyword(keyword)">
+                            <div class="fileCol"><b>File</b></div>
+                            <div class="timeCol"><b>Time</b></div>
+                            <div class="confidenceCol"><b>Confidence</b></div>
+                        </div>
+                        <div class="cm-table-body" *ngFor="let label of this.scanLabelsForKeyword(keyword)">
+                            <div class="cm-table-row" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)"
+                            (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)">
+                                <div class="fileCol">{{label.file_id}}</div>
+                                <div class="timeCol">{{this.prettifyTimestamp(label.label.Timestamp)}}</div>
+                                <div class="confidenceCol">{{this.prettifyConfidence(label.label.Label.Confidence)}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!--<div *ngFor="let label of this.getLabels()">
-                <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
-                (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
-                    <div class="nameCol">{{label.Name}}</div>
-                    <div class="timeCol">{{prettifyTimestamp(label.Timestamp)}}</div>
-                    <div class="confidenceCol">{{prettifyConfidence(label.Confidence)}}</div>
-                </div>
-            </div> -->
-
-
         </div>
     </div>
-    <div>{{currentFile}}</div>
 </div>
