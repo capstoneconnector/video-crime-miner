@@ -1,44 +1,6 @@
-
-
-// More practical CSS...
-// using mobile first method (IE8,7 requires respond.js polyfill https://github.com/scottjehl/Respond)
-
-$breakpoint-alpha: 480px; // adjust to your needs
-
 .page-content {
   height:100%;
   overflow-y: auto;
-}
-
-///for popup window
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color:rgba(255, 255, 255, 0.495);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-///for popup window
-.content {
-  background-color: #fff;
-  width: 600px;
-  height: 600px;
-  padding: 20px;
-}
-///for popup window
-.wrapper {
-  width: 20%;
-  height: 2vh;
-}
-///for popup window
-.close{
-  position: relative;
-  top: -10px;
-  cursor: pointer;
 }
 body{
   margin: 0;
@@ -46,53 +8,27 @@ body{
   height: 100vh;
 }
 
+/* cm-popup create case */
 .createCasePopupButton{
   float: right;
   margin-right: 20px;
 }
-
-.createCasePopupButton{
-  float: center;
+.createCaseSubmitButton{
+  position: relative;
 }
 
-/* Div table of clickable cases */
-.caseTable{
-  width: 100%;
-  height: 100%;
-  margin-top: 20px;
-}
-.clickableCase{
-  margin-top:5px;
-  margin-bottom:5px;
-}
-.clickableCase div{
-  border-color:#000000;
-  border-width: 2px;
-  border-bottom: solid;
-  background-color:#e0d4d1;
-  padding: 10px;
-  color:#000000;
+/* cm-table table columns */
+.iconCol{
+  width: 5%;
+  padding-left: 10px;
 }
 .nameCol{
-  width: 33%;
-  height: auto;
-  padding-left: 10px;
-  float: left;
-  overflow: hidden;
+  width: 35%;
 }
 .tagsCol{
-  float: left;
-  height: auto;
-  width: 33%;
-  overflow: hidden;
+  width: 20%;
 }
 .descriptionCol{
-  float: left;
-  height: auto;
-  width: 33%;
+  width: 40%;
   padding-right: 10px;
-  overflow: hidden;
-}
-.selected div{
-  background-color: #dc8671;
 }

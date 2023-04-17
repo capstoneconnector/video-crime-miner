@@ -57,21 +57,22 @@
   align-items: center;
 }
 
+/* View Label Detection Popup */
 .view-label-detection-popup{
-  height: 60%;
+  height: fit-content;
+  max-height: 60%;
   width: 80%;
 }
 
-.fileCol{
-  width: 60%;
-  height: auto;
+/* cm-table columns */
+.iconCol{
+  width: 5%;
   padding-left: 10px;
-  float: left;
-  overflow: hidden;
 }
 .tagsCol{
-  float: left;
-  height: auto;
-  width: 40%;
-  overflow: hidden;
+  width: 65%;
+  padding-right: 10px;
+}
+.statusCol{
+  width: 30%;
 }

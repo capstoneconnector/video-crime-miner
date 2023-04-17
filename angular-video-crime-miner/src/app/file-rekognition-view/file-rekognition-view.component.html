@@ -1,94 +1,82 @@
+<!-- Basic Page info/headers -->
+<!-- Video Player and Label Selector Box -->
 <div class="page-content">
     <!-- Basic Page info/headers -->
-    <div class="floatstyle">
-        <div class="fixedBox1">
-            <h1>LABEL DETECTION OUTPUT</h1>
+    <h1>Video Analysis Output</h1>
+    <div class="actionsAndInfo">
+        <div class="quickInfo">
             <p><b>Case ID:</b> {{this.getCaseId()}}</p>
-            <p><b>Keywords:</b> {{this.getKeywords()}}</p>
+            <p><b>Tags:</b> {{this.getKeywords()}}</p>
+            <p *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
             <!--  <p><b>Case Name:</b></p>  -->
             <p class = "label-count" *ngIf="this.getLabels()">Found <b>{{this.getLabelTotal()}}</b> Labels Over <b>{{this.getLabels().length}}</b> Timestamps</p>
         </div>
+        <div class="sortButtons">
+            <div class="cm-standard-button" (click)="this.setSortMethod(this.labelSortTypes[0])" > Sort By File </div>
+            <div class="cm-standard-button" (click)="this.setSortMethod(this.labelSortTypes[1])" > Sort By Keyword </div>
+        </div>
     </div>
-
-    <!-- Video Player and Label Selector Box -->
-    <div class="page-content">
+    <div class="labelVisualizer">
         <div class="videoplayer">
             <vg-player (onPlayerReady)="loadVideoIntoPlayer($event)" id="video-container">
                 <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
             </vg-player>
             <div class="init-overlay-text" id="overlay">Click on a label to the right to see it in the video</div>
         </div>
-        <div class="scrollbox">
-
-            <div>
-                <div (click)="this.setSortMethod(this.labelSortTypes[0])" > By File </div>
-                <div (click)="this.setSortMethod(this.labelSortTypes[1])" > By Keyword </div>
-            </div>
-            
+        <!-- Dropdown Table -->
+        <div class="dropdownTable">
+            <!-- Sorted by file view -->
             <div *ngIf="this.getSortMethod() === this.labelSortTypes[0]">
+                <!--File View Body-->
                 <div *ngFor="let fileSegment of this.getLabelsByFile()">
-                    <div class="clickableLabel" [class.selected]="fileSegment === currentFile" (click)="setCurrentFile(fileSegment.file_id)"> {{fileSegment.file_id}} </div>
-                    
-                    <div *ngFor="let label of fileSegment.labels.Labels" >
-                        <div class="clickableLabel" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)" (click)="this.selectLabelDetection(label,fileSegment.file_id,label.Timestamp,label.Label.Instances)"> {{label.Label.Name}}, {{this.prettifyTimestamp(label.Timestamp)}}, {{this.prettifyConfidence(label.Label.Confidence)}} </div>
+                    <div class="dropdownRow" [class.selected]="fileSegment === currentFile" (click)="setCurrentFile(fileSegment.file_id)">
+                        <div class="fileNameCol"> {{fileSegment.file_id}}</div>
+                        <i class="fal fa-triangle fa-rotate-90 dropdownIconCol" *ngIf="fileSegment.file_id !== currentFile"></i>
+                        <i class="fal fa-triangle fa-rotate-180 dropdownIconCol" *ngIf="fileSegment.file_id === currentFile"></i>
                     </div>
-                    
+                    <div class="cm-table">
+                        <div class="cm-table-header" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)">
+                            <div class="nameCol"><b>Label</b></div>
+                            <div class="timeCol"><b>Time</b></div>
+                            <div class="confidenceCol"><b>Confidence</b></div>
+                        </div>
+                        <div class="cm-table-body" *ngFor="let label of fileSegment.labels.Labels">
+                            <div class="cm-table-row" [class.selected]="label === selectedLabel" *ngIf="this.checkAgainstCurrentFile(fileSegment.file_id)" 
+                            (click)="this.selectLabelDetection(label,fileSegment.file_id,label.Timestamp,label.Label.Instances)">
+                                <div class="nameCol">{{label.Label.Name}}</div>
+                                <div class="timeCol">{{this.prettifyTimestamp(label.Timestamp)}}</div>
+                                <div class="confidenceCol">{{this.prettifyConfidence(label.Label.Confidence)}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
+            <!-- Sorted by keyword view -->
             <div *ngIf="this.getSortMethod() === this.labelSortTypes[1]">
+                <!--Keyword View Body-->
                 <div *ngFor="let keyword of this.getKeywords()">
-                    <div class="clickableLabel" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)"> {{keyword}} </div>
-                    
-                    <div *ngFor="let label of this.scanLabelsForKeyword(keyword)" >
-                        <div class="clickableLabel" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)" (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)"> {{label.file_id}}, {{this.prettifyTimestamp(label.label.Timestamp)}}, {{this.prettifyConfidence(label.label.Label.Confidence)}} </div>
+                    <div class="dropdownRow" [class.selected]="keyword === currentKeyword" (click)="setCurrentKeyword(keyword)">
+                        <div class="keywordNameCol"> {{keyword}} </div>
+                        <i class="fal fa-triangle fa-rotate-90 dropdownIconCol" *ngIf="keyword !== currentKeyword"></i>
+                        <i class="fal fa-triangle fa-rotate-180 dropdownIconCol" *ngIf="keyword === currentKeyword"></i>
                     </div>
-                    
+                    <div class="cm-table">
+                        <div class="cm-table-header" *ngIf="this.checkAgainstCurrentKeyword(keyword)">
+                            <div class="fileCol"><b>File</b></div>
+                            <div class="timeCol"><b>Time</b></div>
+                            <div class="confidenceCol"><b>Confidence</b></div>
+                        </div>
+                        <div class="cm-table-body" *ngFor="let label of this.scanLabelsForKeyword(keyword)">
+                            <div class="cm-table-row" [class.selected]="label === this.selectedLabel" *ngIf="this.checkAgainstCurrentKeyword(keyword)"
+                            (click)="this.selectLabelDetection(label.label,label.file_id,label.label.Timestamp,label.label.Label.Instances)">
+                                <div class="fileCol">{{label.file_id}}</div>
+                                <div class="timeCol">{{this.prettifyTimestamp(label.label.Timestamp)}}</div>
+                                <div class="confidenceCol">{{this.prettifyConfidence(label.label.Label.Confidence)}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!--<div *ngFor="let label of this.getLabels()">
-                <div class = "clickableLabel" [class.selected]="label === selectedLabel" 
-                (click)="onSelectLabel(label)" (dblclick)="onDoubleClickLabel(label)">
-                    <div>{{label.Name}}</div>
-                    <div>{{prettifyTimestamp(label.Timestamp)}}</div>
-                    <div>{{prettifyConfidence(label.Confidence)}}</div>
-                </div>
-            </div> -->
-
-
         </div>
     </div>
 </div>
-
-<!-- Extra HTML not used at the moment
-<div class="card">
-<div class="card-head">Reports</div>
-<div class="card-body">
-    <div class="search">
-    <form class="search-form">
-        <input type="text" placeholder="Search for cases">
-        <input type="submit" value="Submit">
-    </form>
-    </div>
-    <table class="rwd-table">
-    <thead>
-        <th>Case Number</th>
-        <th>Case Name</th>
-        <th>Date Created</th>
-        <th>View More</th>
-
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-    </table>
-
-</div>
-</div>
--->

@@ -39,9 +39,7 @@ async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
 
-    var user_id = req.body.username
-
-    response.data = await databaseService.getCaseById(req.params['caseId'], user_id)
+    response.data = await databaseService.getCaseById(req.params['caseId'], req.query['user'].toString())
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
