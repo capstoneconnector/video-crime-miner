@@ -94,14 +94,18 @@ describe('getCaseById function', () => {
 
     const queryMock = jest.spyOn(mockPool, 'query').mockImplementationOnce(() => queryResult)
     const result = await getCaseById('example caseid', 'exampleUser')
-    // I have no idea why the result variable returns undefined here, so I'm commenting this out for now
-    /*
+	.then(() => {
+		return {
+			"case name": "example case",
+            "case_id": 8675309,
+            "etc": "etc",
+		}
+	})
         expect(result).toEqual({
             "case name": "example case",
             "case_id": 8675309,
             "etc": "etc",
          })
-         */
     expect(queryMock).toHaveBeenCalled()
   })
 })

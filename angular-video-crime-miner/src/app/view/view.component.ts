@@ -96,6 +96,7 @@ export class ViewComponent implements OnInit {
     })
   }
 
+
   /* Input clearing */
   private resetInputs(): void{
     this.newCaseDescription = ""
@@ -114,6 +115,49 @@ export class ViewComponent implements OnInit {
       this.errorMessage = message
     }
   }
+
+  public caseNames: string[] = []
+
+  public handleCheckboxClick(caseObj:any) {
+
+	if (caseObj.selected) {
+		if (!this.caseNames.includes(caseObj.name)) {
+		  this.caseNames.push(caseObj.name);
+		}
+	  } else {
+		// Remove the case name from the array if the checkbox is deselected
+		const index = this.caseNames.indexOf(caseObj.name);
+		if (index !== -1) {
+		  this.caseNames.splice(index, 1);
+		}
+	  }
+
+	  console.log(this.caseNames)
+	  return this.caseNames
+
+ }
+
+ public deleteCases() {
+
+	var body = {
+		caseNames: this.caseNames
+	  };
+	
+	  const options = {
+		body: body
+	  };
+	
+
+	this.http.delete(`${this.baseUrl}/cases`, options).subscribe((res:any) => {
+		if(res.success) {
+			this.setFeedbackMessage(true)
+			this.ngOnInit()
+		} else {
+			this.setFeedbackMessage(false, "ERROR: selected cases could not be deleted (Client side)")
+		}
+	})
+
+ }
 
   /* Clickable cases */
   selectedCase?: any

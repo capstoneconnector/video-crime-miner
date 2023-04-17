@@ -4,6 +4,7 @@
     <div class="card-body">
       <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
       <button class="cm-standard-button createCasePopupButton" (click)="openpopup()" >Create New Case</button>
+	  <button class="cm-standard-button deleteCaseButton" (click)= "deleteCases()">Delete Cases</button>
       <!-- Popup for creating new case -->
       <div class="cm-popup" *ngIf="showPopup" (click)="closeoverlay($event)">
         <div class="cm-popup-content" >
@@ -21,6 +22,7 @@
           </div>
           <button class="cm-standard-button createCaseSubmitButton" (click)="addNewCase(newCaseName, newCaseDescription)"
           >Create Case</button>
+
           <div [(ngModel)]="successMessage">{{successMessage}}</div>
           <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
         </div>
@@ -37,6 +39,9 @@
           <div *ngFor="let case of this.getCaseInfos()">
             <div class = "cm-table-row" [class.selected]="case === selectedCase" 
             (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
+			  <div class="selectCol">
+				<input type="checkbox" [(ngModel)]="case.selected" (change)="handleCheckboxClick(case)">
+			  </div>
               <div class="iconCol"><i class="fal fa-folder"></i></div>
               <div class="nameCol">{{ case.name }}</div>
               <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>

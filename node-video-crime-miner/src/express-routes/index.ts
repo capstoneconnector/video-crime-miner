@@ -5,7 +5,7 @@ import { Router } from 'express'
 import { fetchLabelDetectionJob, fetchLabelDetectionIdsForFile, fetchAllLabelDetectionForMultipleFiles, createNewLabelDetectionJob, fetchFileForJobID, createMultiLabelJob, fetchFilesByKeywords, getJobStatusByJobID, fetchDistinctKeywords, getJobStatusByTags } from './controllers/api.labels.js'
 
 /* CASE ROUTES */
-import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails } from './controllers/api.cases.js'
+import { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails, deleteCase} from './controllers/api.cases.js'
 
 /* FILE ROUTES */
 import { fetchAllFiles, fetchFilesByCaseId, fetchFileByName, createAndUploadFile, fetchFileInfo } from './controllers/api.files.js'
@@ -49,6 +49,9 @@ router.post('/cases', createNewCase)
 
 /* GET all files in S3 Bucket */
 router.get('/files', fetchAllFiles)
+
+/* DELETE case */
+router.delete('/cases', deleteCase)
 
 /* GET label detection job status */
 router.get('/labels/job/status/:jobId', getJobStatusByJobID)
