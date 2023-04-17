@@ -24,7 +24,7 @@
 /* Standard Clickable Buttons */
 .cm-standard-button{
   text-decoration: none;
-  background-color: #317ac7;
+  background-color: #98C1D9;
   padding: 15px 10px;
   border-radius: 9999px;
   color: rgb(0, 0, 0);
@@ -36,7 +36,6 @@
 }
 .cm-standard-button:hover {
   transform: scale(1.1);
-  background-color: #7cf6fd;
 }
 .cm-standard-button:disabled{
   opacity: .7;
@@ -46,7 +45,7 @@
 /* General Stuff */
 * {
   font-family: 'Roboto', Arial, sans-serif;
-  color: #616161;
+  color: #000000;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -107,7 +106,7 @@ label {
   padding: 2px;
   margin: 2px;
   width: 10px;
-  background-color: #317ac7;
+  background-color: #98C1D9;
 }
 ::-webkit-scrollbar-thumb {
   background-color: white;
@@ -125,20 +124,20 @@ label {
     color: black;
   }
   .prev{
-    background-color: #317ac7;
+    background-color: #F4F7FA;
     color: black;
     margin: 10px;
     padding: 10px;
   }
   // prev text should be "&laquo; [insert text here]"
   .prev:hover{
-    background-color: #7cf6fd;
+    background-color: #98C1D9;
     color: black;
   }
   
   // next text should be "[insert text here] &raquo;"
   .next{
-    background-color: #317ac7;
+    background-color: #98C1D9;
     color: black;
     margin: 10px;
     padding: 10px;
@@ -179,7 +178,7 @@ label {
   width: 100%;
   height: 100%;
   margin-top: 20px;
-  background-color:#e1e4e7;
+  background-color: #F4F7FA;
   border: 1px solid;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -213,10 +212,13 @@ label {
   }
   .cm-table-body{
     .selected div{
-      background-color: #317ac7 !important;
+      font-weight: bold;
+      background-color: #98C1D9 !important;
     }
     :hover div{
-      background-color: #98c1d9;
+      font-weight: bold;
+      background-color: #d2d0d0;
+      
       transition: background-color 250ms;
     }
     .cm-table-row{

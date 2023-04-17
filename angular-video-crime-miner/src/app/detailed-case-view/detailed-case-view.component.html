@@ -38,12 +38,13 @@
         <div class="card-head">Actions</div>
         <div class="card-body">
             <div class="actions">
-                <button class="cm-standard-button" (click)="openUploadFilePopup()">Upload Video Files</button>
+                <button class="cm-standard-button" (click)="openUploadFilePopup()"
+                [class.shockwaveButton]="getCaseFiles().length==0">Upload Video Files</button>
                 <button class="cm-standard-button" (click)="openEditCasePopup()">Edit case details</button>
                 <button class="cm-standard-button" (click)="openViewLabelJobsPopup()"
                 [disabled]="getCaseOutputs().length==0 || getCaseFiles().length==0">View Video Analyses</button>
                 <button class="cm-standard-button" (click)="openStartLabelJobPopup()" 
-                [disabled]="getCaseFiles().length==0">Analyze Videos for Evidence</button>
+                [disabled]="getCaseFiles().length==0" [class.shockwaveButton]="getCaseOutputs().length==0 && getCaseFiles().length>0">Analyze Videos for Evidence</button>
             </div>
         </div>
     </div>
@@ -176,13 +177,12 @@
 </div>
 
 <!-- Popup for a semi-tutorial for newly created case -->
+<!--
 <div class="cm-popup" *ngIf="showNewCasePopup">
     <div class="cm-popup-content new-case-popup">
         <h1 class="cm-popup-header">Analyze for Evidence in Your New Case</h1>
         <div class="filesUploadNewCase">
             <h4 class="filesUploadNewCaseHeader">Upload Files</h4>
-            <!-- multi-file upload -->
-            
         </div>
         <div class="tagsSelectNewCase">
             <h4 class="tagsSelectNewCaseHeader">Find Evidence in Them</h4>
@@ -190,3 +190,4 @@
         <div class="cm-popup-close new-case-popup-close-msg" (click)="closeNewCasePopup()">skip this for now</div>
     </div>
 </div>
+-->
