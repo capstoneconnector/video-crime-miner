@@ -89,22 +89,22 @@
         <h4>Edit Case Details</h4>
 			<div class="form-group">
 				<label for="name"><span>*</span> Name</label>
-				<input [name]="name" placeholder="Enter case name" [(ngModel)]="getCaseInfo().name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+				<input [name]="name" placeholder="Enter case name" [(ngModel)]="name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="tags"><span>*</span> tags</label>
-				<input [name]="tags" placeholder="Enter tags" [(ngModel)]="getCaseInfo().tags" type="text" cols="5" rows="5" name="tags" id="tags" aria-required="true" aria-invalid="true" required>
+				<input [name]="tags" placeholder="Enter tags" [(ngModel)]="tags" type="text" cols="5" rows="5" name="tags" id="tags" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="notes"><span>*</span> Notes</label>
-				<input [name]="notes" placeholder="Enter notes" [(ngModel)]="getCaseInfo().notes" type="text" cols="5" rows="5" name="notes" id="notes" aria-required="true" aria-invalid="true" required>
+				<input [name]="notes" placeholder="Enter notes" [(ngModel)]="notes" type="text" cols="5" rows="5" name="notes" id="notes" aria-required="true" aria-invalid="true" required>
 			</div>
 
 			<div class="form-group">
 				<label for="description"><span>*</span> Description</label>
-				<textarea [name]="description" aria-required="true" placeholder="Add case description" [(ngModel)]="getCaseInfo().description" name="myTextBox" cols="55" rows="10"></textarea>
+				<textarea [name]="description" aria-required="true" placeholder="Add case description" [(ngModel)]="description" name="myTextBox" cols="55" rows="10"></textarea>
 			</div>
 
 			<button class="cm-standard-button" (click) = "editCase(name, description, tags, notes)"> Update </button>

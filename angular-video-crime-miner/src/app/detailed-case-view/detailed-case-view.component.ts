@@ -293,9 +293,9 @@ export class DetailedCaseViewComponent implements OnInit {
 
   private resetInputs(): void{
     this.name = ""
-	this.description = ""
-	this.tags = ""
-	this.notes = ""
+    this.description = ""
+    this.tags = ""
+    this.notes = ""
     this.file = null
   }
 
@@ -338,6 +338,10 @@ export class DetailedCaseViewComponent implements OnInit {
   showEditCasePopup = false
   openEditCasePopup(){
     this.showEditCasePopup = true
+    this.name = this.getCaseInfo().name
+    this.tags = this.getCaseInfo().tags
+    this.notes = this.getCaseInfo().notes
+    this.description = this.getCaseInfo().description
   }
   closeEditCasePopup(){
     this.resetInputs()
@@ -379,7 +383,8 @@ export class DetailedCaseViewComponent implements OnInit {
 				name: name,
 				description: description,
 				tags: [tags],
-				notes: [notes]
+				notes: [notes],
+        username: this.userService.getUsername().getValue()
 			  }
 		  this.http.put(`${this.baseUrl}/update/cases/${this.caseId}`, body).subscribe((res:any) => {
 			if(res.success){
@@ -401,7 +406,7 @@ export class DetailedCaseViewComponent implements OnInit {
 	private setFeedbackMessage(success:boolean, message:string = ""): void{
 	  if(success){
 		this.errorMessage = ""
-		this.successMessage = "Case Created"
+		this.successMessage = "Case Updated"
 	  }else{
 		this.successMessage = ""
 		this.errorMessage = message
