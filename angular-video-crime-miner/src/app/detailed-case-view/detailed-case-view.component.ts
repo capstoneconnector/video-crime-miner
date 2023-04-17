@@ -56,8 +56,6 @@ export class DetailedCaseViewComponent implements OnInit {
 
     this.requestCaseFiles().subscribe(res => {
 
-      this.setCaseFiles(res.data)
-
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
         this.setCaseOutputs(res.data)
         console.log(this.getCaseOutputs())
@@ -147,6 +145,10 @@ export class DetailedCaseViewComponent implements OnInit {
     this.requestCaseFiles().subscribe(res => {
 
       this.setCaseFiles(res.data)
+      
+      if(res.data.length == 0){
+        this.showNewCasePopup = true
+      }
 
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
         this.setCaseOutputs(res.data)
@@ -256,10 +258,11 @@ export class DetailedCaseViewComponent implements OnInit {
     this.progress = 0
 
     if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0)
+      //const file: File | null = this.selectedFiles.item(0)
 
-      if (file) {
-        this.currentFile = file
+      for (let i = 0; i<this.selectedFiles.length; i++)  {
+        const file: File | null = this.selectedFiles.item(i)
+        this.currentFile = file!
 
         this.uploadService.upload(this.currentFile, this.caseId).subscribe({
           next: (event: any) => {
@@ -322,6 +325,13 @@ export class DetailedCaseViewComponent implements OnInit {
   public onSelectKeywords(keywords: any) {
     this.selectedKeywords = keywords
     this.router.navigateByUrl( `/file-rekognition-view/${keywords.tags.toString() + ',' + this.caseId}` )
+  }
+
+  /* Popup for newly created case */
+  showNewCasePopup = false
+  closeNewCasePopup(){
+    this.resetInputs()
+    this.showNewCasePopup = false
   }
 
   /* Popup for upload file */

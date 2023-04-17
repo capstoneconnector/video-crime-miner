@@ -76,3 +76,33 @@
 .statusCol{
   width: 30%;
 }
+
+/* New Case Popup for User Guiding */
+.new-case-popup{
+  width: 70%;
+}
+.new-case-popup-close-msg{
+  text-decoration: underline;
+  font-size: 12px;
+  text-align: center;
+  top: 0;
+  margin-top: 20%;
+}
+.filesUploadNewCase{
+  width: 40%;
+  margin: 2%;
+  float: left;
+}
+.tagsSelectNewCase{
+  width: 40%;
+  margin: 2%;
+  float: right;
+}
+.filesUploadNewCaseHeader{
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+.tagsSelectNewCaseHeader{
+  border-bottom: 2px solid black;
+  text-align: center;
+}
