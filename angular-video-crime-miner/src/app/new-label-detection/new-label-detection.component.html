@@ -20,7 +20,7 @@
       <div class="card">
 				<div class="content">
 					<div class="contentBx">
-						<h3>Choose File</h3>
+						<h3>Step 1: Choose File</h3>
 
             <div>
               <form [formGroup]="form" (ngSubmit)="submitFileSelection()" novalidate>
@@ -43,10 +43,8 @@
 			<div class="card">
 				<div class="content">
 					<div class="contentBx">
-						<h3>Add Tags</h3>
-            <div><b><u>Note:</u></b> make sure to <b>type with capital letter</b> and <b>one at a time</b> (e.g. 'Person')</div>
-          <br>
-            <div><b><u>Suggestion:</u></b> Try some of these: Person, Gun, Plant, Fish, Horse</div>
+						<h3>Step 2: Add Tags</h3>
+            <div>You can select from the autofill dropdown menu. If something is not available that you want, <a href="mailto:support@chuqlab.com">let Chuqlab know.</a> and we will try our best to get it added.</div>
           <br>
             <div>
               <ng-autocomplete 
@@ -59,15 +57,15 @@
               [itemTemplate]="itemTemplate"
               [notFoundTemplate]="notFoundTemplate"
               #labelField >                                 
-            </ng-autocomplete>
-            
-            <ng-template #itemTemplate let-item>
-            <a [innerHTML]="item.label"></a>
-            </ng-template>
-            
-            <ng-template #notFoundTemplate let-notFound>
-            <div [innerHTML]="notFound"></div>
-            </ng-template>
+              </ng-autocomplete>
+              
+              <ng-template #itemTemplate let-item>
+              <a [innerHTML]="item.label"></a>
+              </ng-template>
+              
+              <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+              </ng-template>
             </div>
 
                 
@@ -79,14 +77,13 @@
 			<div class="card">
 				<div class="content">
 					<div class="contentBx">
-						<h3>Verify and Submit</h3>
-            <div>Note: After clicking submit, return go back in the top left corner to see the label detection job</div>
+						<h3>Step 3: Review and Submit</h3>
             <br>
                 <div><b><u>Selected Labels:</u></b></div>
                 <div id="labelsList"></div>
             </div>
             <br>
-            <button style="--clr:#8A2BE2" type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0"><span>Submit</span><i></i></button>
+            <button class="cm-standard-button" type="button" (click)="sendJobCreationRequest()" [disabled]="getLabels().length==0"><span>Submit</span><i></i></button>
         </div>
 			</div>
 

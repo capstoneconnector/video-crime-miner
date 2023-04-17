@@ -1,9 +1,9 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''" (mouseenter)="toggleCollapse()" 
-(mouseleave)="toggleCollapse()">
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''" (mouseenter)="toggleCollapse()">
     <!-- Crime Miner Logo -->
     <div class="logo-container">
         <button class="logo">CM</button>
         <div class="logo-text" @fadeInOut *ngIf="collapsed">Crime Miner</div>
+        <div class="btn-close" (click)="closeSidenav()">&times;</div>
     </div>
     <!-- Sidenav buttons -->
     <ul class="sidenav-nav">
@@ -18,6 +18,7 @@
     <!-- Cognito Buttons -->
     <ul class="sidenav-nav">
         <!-- Register -->
+        <!--
         <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signUp/" routerLinkActive="active" 
             [routerLinkActiveOptions]="{exact: true}">
@@ -25,6 +26,7 @@
                 <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">Sign Up</span>
             </a>
         </li>
+        -->
         <!-- Sign in -->
         <li class="sidenav-nav-item" *ngIf="!isAuthenticated">
             <a class="sidenav-nav-link" routerLink="/signIn/" routerLinkActive="active" 
