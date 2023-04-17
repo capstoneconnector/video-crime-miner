@@ -66,32 +66,32 @@ async function updateCaseDetails (case_id:string, name:string, description: stri
 	}
   }
 
-  async function deleteCase(case_id: string) {
+  async function deleteCase(case_name: string) {
 	try {
 	  // Delete associated awsoutput files
 	  const query1 = await pool.query(
-		'DELETE FROM public.awsoutput WHERE file_id IN (SELECT s3_name FROM public.file WHERE case_id = $1)',
-		[case_id]
+		'DELETE FROM public.awsoutput WHERE file_id IN (SELECT s3_name FROM public.file WHERE case_id = (SELECT case_id FROM public."case" WHERE name = $1))',
+		[case_name]
 	  );
   
 	  // Delete associated files
 	  const query2 = await pool.query(
-		'DELETE FROM public.file WHERE case_id = $1',
-		[case_id]
+		'DELETE FROM public.file WHERE case_id = (SELECT case_id FROM public."case" WHERE name = $1)',
+		[case_name]
 	  );
   
 	  // Delete case
 	  const query3 = await pool.query(
-		'DELETE FROM public."case" WHERE case_id = $1',
-		[case_id]
+		'DELETE FROM public."case" WHERE name = $1',
+		[case_name]
 	  );
   
-	  console.log(`Case ${case_id} deleted successfully`);
+	  console.log(`Case ${case_name} deleted successfully`);
 	} catch (e) {
 	  console.log({ error: e });
 	  return e;
 	}
-  }
+}
 
 
 export { getAllCases, insertNewCase, getCaseById, updateCaseDetails, deleteCase }

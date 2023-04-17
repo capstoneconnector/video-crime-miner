@@ -9,7 +9,7 @@ interface DatabaseService {
 
 	updateCaseDetails(id: string, name: string, description:string, tags:string[], notes:string, username:string): Promise<any>
 
-	deleteCase(case_id: string): Promise<any>
+	deleteCase(caseName: string): Promise<any>
 
     /* Operations for the File table */
     getFileInfoById(s3_name: string): Promise<any>
@@ -70,8 +70,8 @@ const postgres : DatabaseService = {
 		return pgcase.updateCaseDetails(id, name, description, tags, notes, username)
 	},
 
-	deleteCase: function (case_id: string): Promise<any> {
-		return pgcase.deleteCase(case_id)
+	deleteCase: function (caseName: string): Promise<any> {
+		return pgcase.deleteCase(caseName)
 	},
 
 	/* File functions */
