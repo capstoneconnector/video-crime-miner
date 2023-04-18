@@ -39,9 +39,7 @@ async function fetchCaseById (req: Request, res: Response, next: NextFunction) {
   try {
     var response = emptyOutput
 
-    var user_id = req.body.username
-
-    response.data = await databaseService.getCaseById(req.params['caseId'], user_id)
+    response.data = await databaseService.getCaseById(req.params['caseId'], req.query['user'].toString())
     response.success = true
     response = standardizeResponse(response).convertToJson()
     res.status(200).json(response)
@@ -92,4 +90,29 @@ async function updateCaseDetails(req: Request, res: Response) {
 	}
 }
 
-export { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails }
+async function deleteCase(req: Request, res: Response) {
+	try {
+		var response = emptyOutput
+
+		var caseNames: string[] = req.body.caseNames.map((item: string) => item.trim())
+
+		caseNames.forEach(async (item) => {
+			await databaseService.deleteCase(item);
+		  })
+
+		response.data = `${caseNames} Cases Successfully Deleted`
+		response.success = true
+		response = standardizeResponse(response).convertToJson()
+		res.status(200).json(response)
+
+	} catch (error: any) {
+		console.log("app.delete('/case') errored out")
+		response.errors.push(error.message)
+		response.success = false
+		response = standardizeResponse(response).convertToJson()
+		res.status(504).json(response)
+	}
+}
+
+
+export { fetchAllCases, fetchCaseById, createNewCase, updateCaseDetails, deleteCase }

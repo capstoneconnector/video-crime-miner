@@ -54,17 +54,45 @@ async function insertNewCase (name: string, description: string, tags: string[],
 
 async function updateCaseDetails (case_id:string, name:string, description: string, tags:string[], notes:string, username:string) {
 	try {
-		const query = await pool.query('UPDATE public.case SET description = $1, tags = $2, notes = $3, name = $4 WHERE case_id = $5 AND WHERE user_id = $6',
+  
+		const query = await pool.query('UPDATE public.case SET description = $1, tags = $2, notes = $3, name = $4 WHERE case_id= $5 AND user_id = $6',
 		[description, tags, notes, name, case_id, username])
-		console.log(`Case ${case_id} updated successfully.`)
-
-		return `Case ${case_id} updated successfully. Name: Renamed to ${name}. Description: Renamed to ${description}, Tags: Renamed to ${tags}, Notes: Renamed to ${notes}`
-
+	  console.log(`Case ${case_id} updated successfully.`)
+  
+	  return `Case ${case_id} updated successfully. Name: Renamed to ${name}. Description: Renamed to ${description}, Tags: Renamed to ${tags}, Notes: Renamed to ${notes}`
+  
 	} catch (e) {
-		console.log({error:e})
-		return e
+	  console.log({error:e})
+	  return e
 	}
+  }
 
+  async function deleteCase(case_name: string) {
+	try {
+	  // Delete associated awsoutput files
+	  const query1 = await pool.query(
+		'DELETE FROM public.awsoutput WHERE file_id IN (SELECT s3_name FROM public.file WHERE case_id = (SELECT case_id FROM public."case" WHERE name = $1))',
+		[case_name]
+	  );
+  
+	  // Delete associated files
+	  const query2 = await pool.query(
+		'DELETE FROM public.file WHERE case_id = (SELECT case_id FROM public."case" WHERE name = $1)',
+		[case_name]
+	  );
+  
+	  // Delete case
+	  const query3 = await pool.query(
+		'DELETE FROM public."case" WHERE name = $1',
+		[case_name]
+	  );
+  
+	  console.log(`Case ${case_name} deleted successfully`);
+	} catch (e) {
+	  console.log({ error: e });
+	  return e;
+	}
 }
 
-export { getAllCases, insertNewCase, getCaseById, updateCaseDetails }
+
+export { getAllCases, insertNewCase, getCaseById, updateCaseDetails, deleteCase }

@@ -4,6 +4,8 @@ import { FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
+import { CognitoService } from '../cognito.service'
+import { VgApiService } from '@videogular/ngx-videogular/core'
 
 
 @Component({
@@ -35,7 +37,7 @@ export class DetailedCaseViewComponent implements OnInit {
   fileInfos?: Observable<any>
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, 
-    private router: Router, private uploadService: FileService) { }
+    private router: Router, private uploadService: FileService, private userService: CognitoService) { }
 
     // listener callback for new-label-detection component
   public onJobStartedEmission(emittedNum:string) {
@@ -54,8 +56,6 @@ export class DetailedCaseViewComponent implements OnInit {
     })
 
     this.requestCaseFiles().subscribe(res => {
-
-      this.setCaseFiles(res.data)
 
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
         this.setCaseOutputs(res.data)
@@ -146,6 +146,10 @@ export class DetailedCaseViewComponent implements OnInit {
     this.requestCaseFiles().subscribe(res => {
 
       this.setCaseFiles(res.data)
+      
+      if(res.data.length == 0){
+        this.showNewCasePopup = true
+      }
 
       this.requestCaseOutputs(this.caseFiles).subscribe(res =>{ // Must be nested because requestCaseOutputs relies on this.caseFiles, another subscription
         this.setCaseOutputs(res.data)
@@ -165,7 +169,7 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   public requestCaseInfo(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/cases/${this.caseId}`)
+    return this.http.get(`${this.baseUrl}/cases/${this.caseId}?user=${this.userService.getUsername().getValue()}`)
   }
 
   public getCaseInfo(): any {
@@ -255,10 +259,9 @@ export class DetailedCaseViewComponent implements OnInit {
     this.progress = 0
 
     if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0)
-
-      if (file) {
-        this.currentFile = file
+      for (let i = 0; i<this.selectedFiles.length; i++)  {
+        const file: File | null = this.selectedFiles.item(i)
+        this.currentFile = file!
 
         this.uploadService.upload(this.currentFile, this.caseId).subscribe({
           next: (event: any) => {
@@ -285,16 +288,17 @@ export class DetailedCaseViewComponent implements OnInit {
     }
     // Update case files by reloading page (probably bad practice but oh well!)
     this.requestCaseFiles().subscribe( async res => {
+      this.getCaseFiles()
       this.closeUploadFilePopup()
-	  this.ngOnInit()
+	  //this.ngOnInit()
     })
   }
 
   private resetInputs(): void{
     this.name = ""
-	this.description = ""
-	this.tags = ""
-	this.notes = ""
+    this.description = ""
+    this.tags = ""
+    this.notes = ""
     this.file = null
   }
 
@@ -305,8 +309,10 @@ export class DetailedCaseViewComponent implements OnInit {
   public onSelectFile(file: any){
     this.selectedFile = file
   }
+  private cloudfrontBaseUrl = 'https://dthqh9b9a8scb.cloudfront.net'
   public onDoubleClickFile(file:any){
-    // TODO: add popup for detailed file view
+    this.showPlayVideoPopup = true
+    this.setVideoPlayerSrcAndName(`${this.cloudfrontBaseUrl}/${file.storageServiceFileName}`, "video")
   }
 
   /* Clickable output methods */
@@ -323,6 +329,13 @@ export class DetailedCaseViewComponent implements OnInit {
     this.router.navigateByUrl( `/file-rekognition-view/${keywords.tags.toString() + ',' + this.caseId}` )
   }
 
+  /* Popup for newly created case */
+  showNewCasePopup = false
+  closeNewCasePopup(){
+    this.resetInputs()
+    this.showNewCasePopup = false
+  }
+
   /* Popup for upload file */
   showUploadFilePopup = false
   openUploadFilePopup(){
@@ -337,6 +350,10 @@ export class DetailedCaseViewComponent implements OnInit {
   showEditCasePopup = false
   openEditCasePopup(){
     this.showEditCasePopup = true
+    this.name = this.getCaseInfo().name
+    this.tags = this.getCaseInfo().tags
+    this.notes = this.getCaseInfo().notes
+    this.description = this.getCaseInfo().description
   }
   closeEditCasePopup(){
     this.resetInputs()
@@ -353,16 +370,44 @@ export class DetailedCaseViewComponent implements OnInit {
     this.showViewLabelJobsPopup = false
   }
 
-    /* Popup for start new label detection job */
-    showStartLabelJobPopup = false
-    openStartLabelJobPopup(){
-      this.showStartLabelJobPopup = true
-    }
-    closeStartLabelJobPopup(){
-      this.resetInputs()
-      this.showStartLabelJobPopup = false
-    }
+  /* Popup for start new label detection job */
+  showStartLabelJobPopup = false
+  openStartLabelJobPopup(){
+    this.showStartLabelJobPopup = true
+  }
+  closeStartLabelJobPopup(){
+    this.resetInputs()
+    this.showStartLabelJobPopup = false
+  }
+  
+  /* Play Video popup */
+  showPlayVideoPopup = false
+  private rawVideoData: VgApiService = new VgApiService
+  public videoAttributes: any =
+  {
+    name: 'video',
+    src: ' ',
+    type: 'video/mp4'
+  }
+  public currentVideo = this.videoAttributes
+  closePlayVideoPopup(){
+    this.resetInputs()
+    this.showPlayVideoPopup = false
+  }
+  loadVideoIntoPlayer(api: VgApiService) {
+    this.rawVideoData = api
+    this.rawVideoData.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this))
+  }
+  initVideo() {
+    this.rawVideoData.pause()
+    //this.rawVideoData.seekTime(99999999, false)
+  }
+  public setVideoPlayerSrcAndName(newVideoSrc:string, newVideoName:string): void {
+    this.videoAttributes.src = newVideoSrc
+    this.videoAttributes.name = newVideoName
+  }
 
+  /* Edit Case Popup */
 	description: string = ""
 	tags: string = ""
 	notes: string = ""
@@ -378,11 +423,9 @@ export class DetailedCaseViewComponent implements OnInit {
 				name: name,
 				description: description,
 				tags: [tags],
-				notes: [notes]
+				notes: [notes],
+        username: this.userService.getUsername().getValue()
 			  }
-		  }
-
-
 		  this.http.put(`${this.baseUrl}/update/cases/${this.caseId}`, body).subscribe((res:any) => {
 			if(res.success){
 			  this.resetInputs()
@@ -394,7 +437,8 @@ export class DetailedCaseViewComponent implements OnInit {
 			  this.setFeedbackMessage(false, "ERROR: The case could not be created")
 			}
 		  })
-	}
+	  }
+  }
 
 	/* User Message Feedback */
 	public successMessage:string = ""
@@ -402,7 +446,7 @@ export class DetailedCaseViewComponent implements OnInit {
 	private setFeedbackMessage(success:boolean, message:string = ""): void{
 	  if(success){
 		this.errorMessage = ""
-		this.successMessage = "Case Created"
+		this.successMessage = "Case Updated"
 	  }else{
 		this.successMessage = ""
 		this.errorMessage = message

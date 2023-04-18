@@ -24,7 +24,7 @@
 /* Standard Clickable Buttons */
 .cm-standard-button{
   text-decoration: none;
-  background-color: #317ac7;
+  background-color: #98C1D9;
   padding: 15px 10px;
   border-radius: 9999px;
   color: rgb(0, 0, 0);
@@ -32,19 +32,20 @@
   transition: 0.1s ease-in-out;
   cursor: pointer;
   user-select: none;
+  text-align: center;
 }
 .cm-standard-button:hover {
   transform: scale(1.1);
-  background-color: #7cf6fd;
 }
 .cm-standard-button:disabled{
   opacity: .7;
   pointer-events: none;
 }
 
+/* General Stuff */
 * {
   font-family: 'Roboto', Arial, sans-serif;
-  color: #616161;
+  color: #000000;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -105,7 +106,7 @@ label {
   padding: 2px;
   margin: 2px;
   width: 10px;
-  background-color: #317ac7;
+  background-color: #98C1D9;
 }
 ::-webkit-scrollbar-thumb {
   background-color: white;
@@ -123,20 +124,20 @@ label {
     color: black;
   }
   .prev{
-    background-color: #317ac7;
+    background-color: #F4F7FA;
     color: black;
     margin: 10px;
     padding: 10px;
   }
-  // Previous text is &laquo; [insert text here]
+  // prev text should be "&laquo; [insert text here]"
   .prev:hover{
-    background-color: #7cf6fd;
+    background-color: #98C1D9;
     color: black;
   }
   
-  // Next text is [insert text here] &raquo;
+  // next text should be "[insert text here] &raquo;"
   .next{
-    background-color: #317ac7;
+    background-color: #98C1D9;
     color: black;
     margin: 10px;
     padding: 10px;
@@ -151,6 +152,9 @@ label {
   background-color:rgba(255, 255, 255, 0.92);
   width: 100%;
   height: 100%;
+  .cm-popup-header {
+    text-align: center;
+  }
   .cm-popup-content {
     background-color: #F4F7FA;
     margin:100px;
@@ -165,6 +169,72 @@ label {
     position: relative;
     top: -10px;
     cursor: pointer;
-    font-size: 50px;
+    font-size: 30px;
+  }
+}
+
+/* Clickable Table */
+.cm-table{
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  background-color: #F4F7FA;
+  border: 1px solid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 1.25rem;
+  user-select: none;
+
+  /* Example of columns */
+  /* Column widths should add to 100%, and padding on first and last columns help make it look nicer */
+  /*
+  .iconCol{
+    width: 5%;
+    padding-left: 10px;
+  }
+  .nameCol{
+    width: 35%;
+  }
+  .tagsCol{
+    width: 20%;
+  }
+  .descriptionCol{
+    width: 40%;
+    padding-right: 10px;
+  }
+  */
+
+  .cm-table-header{
+    display: flex;
+    border-bottom: 2px solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .cm-table-body{
+    .selected div{
+      font-weight: bold;
+      background-color: #98C1D9 !important;
+    }
+    :hover div{
+      font-weight: bold;
+      background-color: #d2d0d0;
+      
+      transition: background-color 250ms;
+    }
+    .cm-table-row{
+      height: 3rem;
+      display: flex;
+      line-height: 1.75rem; // Centers text vertically
+      div{
+        color:#000000;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        float: left;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        white-space: nowrap;
+      }
+    }
   }
 }

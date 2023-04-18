@@ -4,37 +4,51 @@
     <div class="card-body">
       <input  type="text" class="search" placeholder="Search for case.." title="Type in a name">
       <button class="cm-standard-button createCasePopupButton" (click)="openpopup()" >Create New Case</button>
+	  <button class="cm-standard-button deleteCaseButton" (click)= "deleteCases()">Delete Cases</button>
       <!-- Popup for creating new case -->
-      <div class="overlay" *ngIf="showPopup" (click)="closeoverlay($event)">
-            <div class="content" >
-              <div class="close" (click)="closepopup()">
-                &times; <!-- &times; is the X icon -->
-              </div>
-              <h4>Create New Case</h4>
-              <div class="form-group">
-                <label for="name"><span>*</span> Name</label>
-                <input [(ngModel)]="newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
-              </div>
-              <div class="form-group">
-                <label for="description"><span>*</span> Description</label>
-                <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
-              </div>
-              <button class="cm-standard-button" (click)="addNewCase(newCaseName, newCaseDescription)"
-              >Create Case</button>
-              <div [(ngModel)]="successMessage">{{successMessage}}</div>
-              <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
-            </div>
+      <div class="cm-popup" *ngIf="showPopup" (click)="closeoverlay($event)">
+        <div class="cm-popup-content" >
+          <div class="cm-popup-close" (click)="closepopup()">
+            &times; <!-- &times; is the X icon -->
+          </div>
+          <h4>Create New Case</h4>
+          <div class="form-group">
+            <label for="name"><span>*</span> Name</label>
+            <input [(ngModel)]="newCaseName" placeholder="Enter case name" type="text" cols="5" rows="5" name="case name" id="name" aria-required="true" aria-invalid="true" required>
+          </div>
+          <div class="form-group">
+            <label for="description"><span>*</span> Description</label>
+            <textarea [(ngModel)]="newCaseDescription" aria-required="true" placeholder="Add case description" name="myTextBox" cols="55" rows="10"></textarea>
+          </div>
+          <button class="cm-standard-button createCaseSubmitButton" (click)="addNewCase(newCaseName, newCaseDescription)"
+          >Create Case</button>
+
+          <div [(ngModel)]="successMessage">{{successMessage}}</div>
+          <div [(ngModel)]="errorMessage">{{errorMessage}}</div>
+        </div>
       </div>
       <!-- Clickable case rows -->
-      <div class="caseTable">
-        <div *ngFor="let case of this.getCaseInfos()">
-            <div class = "clickableCase" [class.selected]="case === selectedCase" 
+      <div class="cm-table">
+        <div class="cm-table-header">
+          <div class="iconCol"></div>
+          <div class="nameCol"><b>Name</b></div>
+          <div class="tagsCol"><b>Tags</b></div>
+          <div class="descriptionCol"><b>Description</b></div>
+        </div>
+        <div class="cm-table-body">
+          <div *ngFor="let case of this.getCaseInfos()">
+            <div class = "cm-table-row" [class.selected]="case === selectedCase" 
             (click)="onSelectCase(case)" (dblclick)="onDoubleClickCase(case)">
+			  <div class="selectCol">
+				<input type="checkbox" [(ngModel)]="case.selected" (change)="handleCheckboxClick(case)">
+			  </div>
+              <div class="iconCol"><i class="fal fa-folder"></i></div>
               <div class="nameCol">{{ case.name }}</div>
               <div class="tagsCol" *ngIf="(case.tags).length!=0">{{ case.tags }}</div>
               <div class="tagsCol" *ngIf="(case.tags).length==0">None</div>
               <div class="descriptionCol">{{ case.description }}</div>
             </div>
+          </div>
         </div>
       </div>
     </div>

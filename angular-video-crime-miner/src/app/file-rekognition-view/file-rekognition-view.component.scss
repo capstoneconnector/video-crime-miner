@@ -9,35 +9,40 @@
 .page-content::-webkit-scrollbar {
   display: none;
 }
-.videoplayer{
+
+/* Actions and info */
+.actionsAndInfo{
+  width: 100%;
+  height: 15%;
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-columns: 7fr 3fr;
+
+  .quickInfo{
+    grid-row: 1;
+    grid-column: 1;
+  }
+  .sortButtons{
+    grid-row: 1;
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    align-content: center;
+  }
+}
+.labelVisualizer{
   height: 85%;
+  width: 100%;
+}
+/* Video Player */
+.videoplayer{
   width: 70%;
   padding-left: 10px;
   padding-right: 10px;
+  height: 100%;
   float: left;
   position: relative; /* add position relative to allow absolute positioning of the overlay */
-}
-.scrollbox{
-  float: left;
-  width: 30%;
-  height: 85%;
-  padding-left: 10px;
-  overflow:scroll;
-  overflow-x: hidden;
-}
-.clickableLabel{
-  background-color:#b5e5e7;
-  padding: 10px;
-  border: 1px;
-  border-color:#000000;
-  border-style: solid;
-}
-.clickableLabel div{
-  color:#000000;
-}
-.selected{
-  transition: 0.1s ease-in-out;
-  background-color: #1e95d4;
 }
 .init-overlay-text{
   position: absolute;
@@ -53,8 +58,65 @@
   justify-content: center;
 }
 
-.bounding-box-container{
-  border-style:double;
-  position:absolute;
-  border-color:blue;
+/* Table Adjustments */
+.dropdownTable{
+  float: right;
+  margin: 0;
+  width: 30%;
+  height: 100%;
+  overflow-y: scroll;
+  .cm-table{ /* For the nested table in each file/keyword, depending on sort selection by user */
+    width:100%;
+    margin: 0;
+  }
+  border: 1px solid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.dropdownRow{
+  height: 3rem;
+  display: flex;
+  line-height: 1.75rem; // Centers text vertically
+  background-color: #D2D0D0;
+  font-size: 1.25rem;
+  div, i{
+    color:#000000;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    float: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+  }
+  .fileNameCol{
+    width: 90%;
+  }
+  .keywordNameCol{
+    width: 90%;
+  }
+  .dropdownIconCol{
+    float: right;
+  }
+}
+
+/* Label + Time and Confidence columns */
+.nameCol{
+  padding-left: 5px;
+  width: 45%;
+}
+.fileCol{
+  padding-left: 5px;
+  width: 45%;
+}
+.timeCol{
+  width: 25%;
+}
+.confidenceCol{
+  padding-right: 5px;
+  width: 30%;
+  text-align: center;
 }
