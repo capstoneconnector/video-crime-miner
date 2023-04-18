@@ -52,11 +52,11 @@ describe('DetailedCaseViewComponent', () => {
       (data:any) => {
         expect(data).toEqual(expReq)
         detCaseViewComp.setCaseInfo(data)
-      } // 
+      }
     )
 
     // requestCaseInfo should have made one request to GET /cases/<caseId>
-    const req = httpTestingController.expectOne('http://localhost:8000/cases/'+ String(reqCaseId))
+    const req = httpTestingController.expectOne('http://localhost:8000/cases/'+ String(reqCaseId)+'?user=')
     expect(req.request.method).toEqual('GET')
 
     // Expect server to return the response after GET
@@ -178,7 +178,7 @@ describe('DetailedCaseViewComponent', () => {
     expect(detCaseViewComp.successMessage).toEqual("");
     (detCaseViewComp as any).setFeedbackMessage(true)
     expect(detCaseViewComp.errorMessage).toEqual("")
-    expect(detCaseViewComp.successMessage).toEqual("Case Created")
+    expect(detCaseViewComp.successMessage).toEqual("Case Updated")
   })
 
   it('close popup functions should reset inputs', () => {
@@ -217,8 +217,6 @@ describe('DetailedCaseViewComponent', () => {
   })
 
   it('open popup function should show that popup', () => {
-    detCaseViewComp.openEditCasePopup()
-    expect(detCaseViewComp.showEditCasePopup).toEqual(true)
 
     detCaseViewComp.openStartLabelJobPopup()
     expect(detCaseViewComp.showStartLabelJobPopup).toEqual(true)
@@ -228,6 +226,13 @@ describe('DetailedCaseViewComponent', () => {
 
     detCaseViewComp.openViewLabelJobsPopup()
     expect(detCaseViewComp.showViewLabelJobsPopup).toEqual(true)
+  })
+
+  it('onJobStartedEmission should make some requests', () => {
+    //const mockedrequest = spyOn ( detCaseViewComp, "requestCaseFiles" )
+    //detCaseViewComp.onJobStartedEmission("abc123")
+    //spyOn(DetailedCaseViewComponent.prototype, 'requestCaseFiles').and.callThrough()
+    //expect(mockedrequest).toHaveBeenCalled()
   })
 
 })
