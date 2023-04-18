@@ -13,6 +13,7 @@
     "node": ">=12"
   },
   "scripts": {
+	"jest" : "jest --coverage",
     "remakedb": "cd src/interfaces/database/postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
     "create": "npm run build && npm run test",
     "start": "cd out/src/express-routes/ && node ./app.js",
@@ -20,7 +21,7 @@
     "build": "tsc -p .",
     "refresh": "tsc -p . && cd out/src/express-routes/ && node ./app.js",
     "test": "cd test/utils/ && psql -h localhost -p 5432 -U postgres -f db-test.sql && cd ../.. && jest && dropdb -U postgres -f test-video-crime-miner",
-    "cover": "jest --coverage",
+	"cover": "cd test/utils/ && psql -h localhost -p 5432 -U postgres -f db-test.sql && cd ../.. && jest --coverage && dropdb -U postgres -f test-video-crime-miner",
     "lint": "eslint . --ext .ts --fix"
   },
   "repository": {
