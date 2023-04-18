@@ -177,6 +177,37 @@
     </div>
 </div>
 
+<div class="cm-popup playVideoPopup" *ngIf="showPlayVideoPopup">
+    <div class="cm-popup-close" (click)="closePlayVideoPopup()">
+        &times; <!-- &times; is the X icon -->
+    </div>
+    <div class="videoplayer">
+        <vg-player (onPlayerReady)="loadVideoIntoPlayer($event)" id="video-container">
+            <vg-overlay-play></vg-overlay-play>
+            <vg-buffering></vg-buffering>
+          
+            <vg-controls>
+                <vg-play-pause></vg-play-pause>
+                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          
+                <vg-scrub-bar>
+                   <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                   <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                </vg-scrub-bar>
+          
+                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+          
+                <vg-track-selector></vg-track-selector>
+                <vg-mute></vg-mute>
+                <vg-volume></vg-volume>
+          
+                <vg-fullscreen></vg-fullscreen>
+            </vg-controls>
+            <video #media #master [vgMedia]="$any(media)" [src]="currentVideo.src" id="singleVideo" preload="auto"> </video>
+        </vg-player>
+    </div>
+</div>
+
 <!-- Popup for a semi-tutorial for newly created case -->
 <!--
 <div class="cm-popup" *ngIf="showNewCasePopup">

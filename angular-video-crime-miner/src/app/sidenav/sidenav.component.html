@@ -3,7 +3,11 @@
     <div class="logo-container">
         <button class="logo">CM</button>
         <div class="logo-text" @fadeInOut *ngIf="collapsed">Crime Miner</div>
-        <div class="btn-close" (click)="closeSidenav()">&times;</div>
+        <!--
+        <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
+            <i class="fal fa-times close-icon"></i>
+        </button>
+        -->
     </div>
     <!-- Sidenav buttons -->
     <ul class="sidenav-nav">

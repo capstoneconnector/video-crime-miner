@@ -16,20 +16,27 @@ var MockResponse = {
 	}
 
 
-describe("Testing Get /user/verify, should verify user if located in database ", () => {
+describe("Testing Get /user/verify, should verify user if located in database and return true", () => {
 	it("GET /users/verify", async () => {
 		var response = await request(app)
-		.get("/users/verify")
-		.then(() => {
-			return {
-				username: "testUser@test.com",
-				success: true,
-				message: "User: testUser@test.com is logged in"
-			}
-		})
+		.get("/user/verify?username=d6fefc77-df88-4529-9699-8b03a7eb0da0")
+		
+		//console.log("User Response: ", response.body)
 
-		expect(response.success).toBe(true)
-		expect(response.message).toBe(MockResponse.message)
-		expect(response.username).toBe(MockResponse.username)
+		expect(response.body.success).toBe(true)
+		expect(response.body.message).toBe("")
+		expect(response.body.data).toBe(true)
+	})
+} )
+
+describe("Testing Get /user/verify, should verify user if located in database and return true", () => {
+	it("GET /users/verify", async () => {
+		var response = await request(app)
+		.get("/user/verify?username=sampledsub")
+		
+
+		expect(response.body.success).toBe(true)
+		expect(response.body.message).toBe("")
+		expect(response.body.data).toBe(false)
 	})
 } )

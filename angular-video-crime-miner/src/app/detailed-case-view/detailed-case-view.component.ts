@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Observable } from 'rxjs'
 import { FileService } from '../file.service'
 import { CognitoService } from '../cognito.service'
+import { VgApiService } from '@videogular/ngx-videogular/core'
 
 
 @Component({
@@ -309,6 +310,7 @@ export class DetailedCaseViewComponent implements OnInit {
     this.selectedFile = file
   }
 
+
   public onSingleClickFile(file: any) {
 	const fileName = file.title;
 	const downloadUrl = `http://localhost:8000/files/download/${fileName}`;
@@ -325,6 +327,15 @@ export class DetailedCaseViewComponent implements OnInit {
 		link.remove();
 	  })
 	  .catch(error => console.error(error));
+
+	}
+
+ private cloudfrontBaseUrl = 'https://dthqh9b9a8scb.cloudfront.net'
+
+  public onDoubleClickFile(file:any){
+    this.showPlayVideoPopup = true
+    this.setVideoPlayerSrcAndName(`${this.cloudfrontBaseUrl}/${file.storageServiceFileName}`, "video")
+
   }
 
   /* Clickable output methods */
@@ -382,16 +393,44 @@ export class DetailedCaseViewComponent implements OnInit {
     this.showViewLabelJobsPopup = false
   }
 
-    /* Popup for start new label detection job */
-    showStartLabelJobPopup = false
-    openStartLabelJobPopup(){
-      this.showStartLabelJobPopup = true
-    }
-    closeStartLabelJobPopup(){
-      this.resetInputs()
-      this.showStartLabelJobPopup = false
-    }
+  /* Popup for start new label detection job */
+  showStartLabelJobPopup = false
+  openStartLabelJobPopup(){
+    this.showStartLabelJobPopup = true
+  }
+  closeStartLabelJobPopup(){
+    this.resetInputs()
+    this.showStartLabelJobPopup = false
+  }
+  
+  /* Play Video popup */
+  showPlayVideoPopup = false
+  private rawVideoData: VgApiService = new VgApiService
+  public videoAttributes: any =
+  {
+    name: 'video',
+    src: ' ',
+    type: 'video/mp4'
+  }
+  public currentVideo = this.videoAttributes
+  closePlayVideoPopup(){
+    this.resetInputs()
+    this.showPlayVideoPopup = false
+  }
+  loadVideoIntoPlayer(api: VgApiService) {
+    this.rawVideoData = api
+    this.rawVideoData.getDefaultMedia().subscriptions.loadedMetadata.subscribe(this.initVideo.bind(this))
+  }
+  initVideo() {
+    this.rawVideoData.pause()
+    //this.rawVideoData.seekTime(99999999, false)
+  }
+  public setVideoPlayerSrcAndName(newVideoSrc:string, newVideoName:string): void {
+    this.videoAttributes.src = newVideoSrc
+    this.videoAttributes.name = newVideoName
+  }
 
+  /* Edit Case Popup */
 	description: string = ""
 	tags: string = ""
 	notes: string = ""
