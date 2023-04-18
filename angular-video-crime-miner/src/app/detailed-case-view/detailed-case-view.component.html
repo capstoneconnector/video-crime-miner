@@ -5,7 +5,6 @@
             <a [routerLink]="['/view/']">&laquo; Back to Cases</a>
         </div>
     </div>
-	<button class="cm-standard-button deleteFileButton" (click) = "deleteFiles()" >Delete Files</button>
     <h1>Case: {{this.getCaseId()}}</h1>
 
     <!-- Clickable files table -->
@@ -22,7 +21,8 @@
                 <div class="cm-table-body">
                     <div *ngFor="let file of this.getCaseFiles()">
                         <div class="cm-table-row" [class.selected]="file === selectedFile" 
-                        (click)="onSelectFile(file)" (click)="onSingleClickFile(file)">
+						(click)="onSelectFile(file)" (dblclick)="onDoubleClickFile(file)"
+						(click)="onSingleClickFile(file, $event)">
                             <div class="iconCol"><i class="fal fa-video"></i></div>
                             <div class="titleCol">{{ file.title }}</div>
                             <div class="notesCol" *ngIf="(file.notes).length!=0">{{ file.notes }}</div>
