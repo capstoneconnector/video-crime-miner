@@ -21,7 +21,8 @@
                 <div class="cm-table-body">
                     <div *ngFor="let file of this.getCaseFiles()">
                         <div class="cm-table-row" [class.selected]="file === selectedFile" 
-                        (click)="onSelectFile(file)" (dblclick)="onDoubleClickFile(file)">
+						(click)="onSelectFile(file)" (dblclick)="onDoubleClickFile(file)"
+						(click)="onSingleClickFile(file, $event)">
                             <div class="iconCol"><i class="fal fa-video"></i></div>
                             <div class="titleCol">{{ file.title }}</div>
                             <div class="notesCol" *ngIf="(file.notes).length!=0">{{ file.notes }}</div>

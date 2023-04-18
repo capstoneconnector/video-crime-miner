@@ -55,9 +55,12 @@ async function fetchFilesByCaseId (req: Request, res: Response, next: NextFuncti
 
 /* GET file in S3 Bucket by File Name */
 async function fetchFileByName (req: any, res: Response, next: NextFunction) {
+	console.log(req.params.file)
+	let fileName = req.params.file
+	
   try {
     var response = emptyOutput
-    const fileData = await storageService.getObject(bucket, req.params.file)
+    const fileData = await storageService.getObject(bucket, fileName)
     if (fileData instanceof Readable) {
       	fileData.pipe(res)
     }
@@ -71,6 +74,7 @@ async function fetchFileByName (req: any, res: Response, next: NextFunction) {
     response = standardizeResponse(response).convertToJson()
     res.status(500).json(response)
   }
+
 }
 
 /* POST a new file */
