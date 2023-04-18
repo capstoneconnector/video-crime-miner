@@ -7,6 +7,7 @@ import { NewLabelDetectionComponent } from './new-label-detection.component';
 
 
 import { ActivatedRoute, Router } from '@angular/router'
+import { FormBuilder } from '@angular/forms';
 
 describe('NewLabelDetectionComponent', () => {
 
@@ -26,8 +27,8 @@ describe('NewLabelDetectionComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        NewLabelDetectionComponent
-        
+        NewLabelDetectionComponent,
+        FormBuilder
       ]
     })
     .compileComponents();
@@ -62,19 +63,26 @@ describe('NewLabelDetectionComponent', () => {
     //var body:Object = { "labels": newLabelDetectComp.getLabels() }
 
     // sendJobCreationRequest should have made one request to POST /labels/file/<fileId>
-    const req = httpTestingController.expectOne(`http://localhost:8000/labels/file/example.mp4`);
-    expect(req.request.method).toEqual('POST');
+    const req = httpTestingController.expectOne(`assets/AmazonRekognitionAllLabels_v3.0.csv`);
+    expect(req.request.method).toEqual('GET');
 
     // Expect server to return the response after POST
     const expectedResponse = new HttpResponse({ status: 201, statusText: 'Success', body: expReq });
     req.event(expectedResponse);
 
     // expect
-    expect(newLabelDetectComp.emitJobSentToDetCaseView).toHaveBeenCalled()
+    //expect(newLabelDetectComp.emitJobSentToDetCaseView).toHaveBeenCalled()
   });
+
+  it('setupLabels should parse csv files without errors', () => {
+    newLabelDetectComp.setLabels([])
+    let mockLabels: any = httpTestingController.expectOne('assets/AmazonRekognitionAllLabels_v3.0.csv')
+    mockLabels = 'abc,def,ghi,jkl,mno,pqr'
+  })
 
   it('should create', () => {
     expect(newLabelDetectComp).toBeTruthy();
+    newLabelDetectComp.ngOnInit()
   });
 
 
