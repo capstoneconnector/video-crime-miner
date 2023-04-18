@@ -1,8 +1,8 @@
-class user {
+export default class user {
 	_phoneNumber: string
 	_email: string
 
-	constructor({phoneNumber = "", email = ""}) {
+	constructor(phoneNumber:string, email:string) {
 		this._phoneNumber = phoneNumber
 		this._email = email
 	}
