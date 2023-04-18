@@ -18,7 +18,7 @@ interface StorageService {
 const s3 : StorageService = {
 	// I only imported the functions we need for the angular client for now
 	listObjects: function (bucket: string): any {
-		listObjects(bucket);
+		return listObjects(bucket);
 	},
 
 	upload: function (bucket: string, buffer: any, filename: any): any {
@@ -26,7 +26,7 @@ const s3 : StorageService = {
 	},
 
 	getObject: function (bucket: string, fileName: any): any {
-		getObjects(bucket, fileName);
+		return getObjects(bucket, fileName);
 	}
 	,
 	removeObject: function (bucket: string, fileName: any) {

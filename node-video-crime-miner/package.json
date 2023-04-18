@@ -19,7 +19,7 @@
     "cli": "cd out/src/cli/ && node ./main.js",
     "build": "tsc -p .",
     "refresh": "tsc -p . && cd out/src/express-routes/ && node ./app.js",
-    "test": "jest",
+    "test": "cd test/utils/ && psql -h localhost -p 5432 -U postgres -f db-test.sql && cd ../.. && jest && dropdb -U postgres -f test-video-crime-miner",
     "cover": "jest --coverage",
     "lint": "eslint . --ext .ts --fix"
   },
