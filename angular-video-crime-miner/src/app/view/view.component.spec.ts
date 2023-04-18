@@ -39,6 +39,16 @@ describe('DetailedCaseViewComponent', () => {
   } )
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+
+  it('should show popup for openpopup()', () => {
+    component.openpopup()
+    expect(component.showPopup).toEqual(true)
+  })
+
+  it('should close popup for closepopup()', () => {
+    component.closepopup()
+    expect(component.showPopup).toEqual(false)
+  })
+})

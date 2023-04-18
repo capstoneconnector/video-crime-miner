@@ -74,8 +74,15 @@ describe('NewLabelDetectionComponent', () => {
     //expect(newLabelDetectComp.emitJobSentToDetCaseView).toHaveBeenCalled()
   });
 
+  it('setupLabels should parse csv files without errors', () => {
+    newLabelDetectComp.setLabels([])
+    let mockLabels: any = httpTestingController.expectOne('assets/AmazonRekognitionAllLabels_v3.0.csv')
+    mockLabels = 'abc,def,ghi,jkl,mno,pqr'
+  })
+
   it('should create', () => {
     expect(newLabelDetectComp).toBeTruthy();
+    newLabelDetectComp.ngOnInit()
   });
 
 

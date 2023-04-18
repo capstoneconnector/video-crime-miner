@@ -228,11 +228,7 @@ describe('DetailedCaseViewComponent', () => {
     expect(detCaseViewComp.showViewLabelJobsPopup).toEqual(true)
   })
 
-  it('onJobStartedEmission should make some requests', () => {
-    //const mockedrequest = spyOn ( detCaseViewComp, "requestCaseFiles" )
-    //detCaseViewComp.onJobStartedEmission("abc123")
-    //spyOn(DetailedCaseViewComponent.prototype, 'requestCaseFiles').and.callThrough()
-    //expect(mockedrequest).toHaveBeenCalled()
+  it('should create', () => {
+    //expect(detCaseViewComp).toBeTruthy()
   })
-
 })
