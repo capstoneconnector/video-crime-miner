@@ -309,7 +309,7 @@ export class DetailedCaseViewComponent implements OnInit {
     this.selectedFile = file
   }
 
-  public onDoubleClickFile(file: any) {
+  public onSingleClickFile(file: any) {
 	const fileName = file.title;
 	const downloadUrl = `http://localhost:8000/files/download/${fileName}`;
   
