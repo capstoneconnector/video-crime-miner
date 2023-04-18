@@ -35,17 +35,12 @@ describe("Testing-server-routes", () => {
 	it("GET /files", async () => {
 		var response = await request(app)
 		.get("/files")
-		.then(() => {
-			return {
-				status: 200,
-				body: GetMockResponse,
-				success: true,
-			}
-		})
 		
+		//console.log( "Files: ", response.body )
+		//console.log("Files Status: ", response.body.status)
 		expect(response.status).toBe(200)
-		expect(response.body).toEqual(GetMockResponse)
-		expect(response.success).toBe(true)
+		expect(response.body.data).toBeTruthy()
+		expect(response.body.success).toBe(true)
 
 		})
 
@@ -59,17 +54,16 @@ describe("Testing-server-routes", () => {
 	it("GET /files/case/:caseId", async () => {
 		var response = await request(app)
 		.get("/files/case/1")
-		.then(() => {
-			return {
-				status: 200,
-				body: GetMockResponse,
-				success: true,
-			}
-		})
+		
+
+		var expectedResponse = [{
+
+			filename: "[DEMO] Real Crime Video.mp4"
+		}]
 		
 			expect(response.status).toBe(200)
-			expect(response.body).toEqual(GetMockResponse)
-			expect(response.success).toBe(true)
+			expect(response.body.data[0].storageServiceFileName).toEqual(expectedResponse[0].filename)
+			expect(response.body.success).toBe(true)
 		})
 
 	})
@@ -81,17 +75,12 @@ describe("Testing-server-routes", () => {
 	it("GET /files/download/:file", async () => {
 		var response = await request(app)
 		.get("/files/download/file.mp4")
-		.then(() => {
-			return {
-				status: 200,
-				body: GetMockResponse,
-				success: true,
-			}
-		})
+		
+		
 		
 			expect(response.status).toBe(200)
-			expect(response.body).toEqual(GetMockResponse)
-			expect(response.success).toBe(true)
+			expect(response.body).toBeTruthy()
+			expect(response.body.success).toBe(true)
 		})
 	})
 })
