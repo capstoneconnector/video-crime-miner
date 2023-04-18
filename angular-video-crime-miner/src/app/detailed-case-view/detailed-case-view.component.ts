@@ -309,10 +309,46 @@ export class DetailedCaseViewComponent implements OnInit {
   public onSelectFile(file: any){
     this.selectedFile = file
   }
-  private cloudfrontBaseUrl = 'https://dthqh9b9a8scb.cloudfront.net'
+
+  private doubleClickTimeout: any = null;
+  public onSingleClickFile(file: any, event: MouseEvent) {
+	// Check if the double click event was already fired
+	if (this.doubleClickTimeout) {
+	  // If it was fired, cancel the timeout and return
+	  clearTimeout(this.doubleClickTimeout);
+	  this.doubleClickTimeout = null;
+	  return;
+	}
+  
+	// Set a timeout for 300ms to allow for a potential double click event
+	this.doubleClickTimeout = setTimeout(() => {
+	  const fileName = file.title;
+	  const downloadUrl = `http://localhost:8000/files/download/${fileName}`;
+  
+	  fetch(downloadUrl)
+		.then(response => response.blob())
+		.then(blob => {
+		  const url = window.URL.createObjectURL(new Blob([blob]));
+		  const link = document.createElement('a');
+		  link.href = url;
+		  link.setAttribute('download', fileName);
+		  document.body.appendChild(link);
+		  link.click();
+		  link.remove();
+		})
+		.catch(error => console.error(error));
+  
+	  // Reset the double click timeout
+	  this.doubleClickTimeout = null;
+	}, 300);
+  }
+
+ private cloudfrontBaseUrl = 'https://dthqh9b9a8scb.cloudfront.net'
+
   public onDoubleClickFile(file:any){
     this.showPlayVideoPopup = true
     this.setVideoPlayerSrcAndName(`${this.cloudfrontBaseUrl}/${file.storageServiceFileName}`, "video")
+
   }
 
   /* Clickable output methods */
@@ -451,6 +487,10 @@ export class DetailedCaseViewComponent implements OnInit {
 		this.successMessage = ""
 		this.errorMessage = message
 	  }
+	}
+
+	public deleteFiles() {
+		console.log("Delete Button Clicked")
 	}
 
 }

@@ -132,6 +132,17 @@
   border-radius: 50%;
 }
 
+
+.deleteFileButton {
+	float: right;
+ 	margin-right: 20px;
+}
+.downloadFileButton {
+	float: right;
+	margin-right: 20px;
+
+}
+
 /* Video Player Popup */
 .videoplayer{
   width: 71rem;
@@ -145,6 +156,7 @@
   height: 90%;
   padding: 50px;
 }
+
 vg-controls{
-  background-color: #98C1D9;
-}
+	background-color: #98C1D9;
+  }

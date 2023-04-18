@@ -13,6 +13,7 @@
     "node": ">=12"
   },
   "scripts": {
+	"jest" : "jest --coverage",
     "remakedb": "cd src/interfaces/database/postgres/ && psql -h localhost -p 5432 -U postgres -f db.sql",
     "create": "npm run build && npm run test",
     "start": "cd out/src/express-routes/ && node ./app.js",
