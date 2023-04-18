@@ -6,6 +6,9 @@ import { standardizeResponse } from "../../model/APIResponse.js"
 
 /* Service Interface Imports */
 import { databaseService } from '../../interfaces/database/DatabaseService.js'
+import {storageService} from '../../interfaces/video-storage/StorageService.js'
+
+const bucket = process.env['REKOG_BUCKET_NAME'] || 'REKOG BUCKET NAME NOT DEFINED'
 
 const emptyOutput = {
   data: {},
@@ -97,6 +100,7 @@ async function deleteCase(req: Request, res: Response) {
 		var caseNames: string[] = req.body.caseNames.map((item: string) => item.trim())
 
 		caseNames.forEach(async (item) => {
+			await storageService.removeObject(bucket, '');
 			await databaseService.deleteCase(item);
 		  })
 
