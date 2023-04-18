@@ -1,4 +1,4 @@
-class user {
+export default class user {
 	_phoneNumber: string
 	_email: string
 
