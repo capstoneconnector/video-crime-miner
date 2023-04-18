@@ -290,7 +290,7 @@ export class DetailedCaseViewComponent implements OnInit {
     this.requestCaseFiles().subscribe( async res => {
       this.getCaseFiles()
       this.closeUploadFilePopup()
-	  //this.ngOnInit()
+	  this.ngOnInit()
     })
   }
 
