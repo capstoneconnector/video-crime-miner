@@ -28,4 +28,8 @@ export class SignInComponent {
       this.loading = false
     })
   }
+  visible = false;
+  toggle(){
+    this.visible = !this.visible;
+  }
 }
