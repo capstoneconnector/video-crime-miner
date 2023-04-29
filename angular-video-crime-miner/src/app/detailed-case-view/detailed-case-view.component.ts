@@ -24,7 +24,10 @@ export class DetailedCaseViewComponent implements OnInit {
 
   private caseKeywords!: any
 
+
   private finishedKeywords: string[][] = []
+
+  private isPageLoaded: boolean = true
 
   /* Popup */
   showPopup = false
@@ -68,12 +71,14 @@ export class DetailedCaseViewComponent implements OnInit {
           this.caseKeywords.forEach( (keywords:any) => {
 
             /* WANT TO REMOVE THIS I THINK */
-            this.checkTagsJobSatus(keywords.tags).subscribe( (res:any) => {
-                if (res.data === "finished") {
-                  console.log("Adding to Finished Tags: ", keywords.tags)
-                  this.addTagsToFinishedKeywords(keywords.tags)
-                }
-            } )
+            if (!this.finishedKeywords.includes(keywords.tags)) {
+              this.checkTagsJobSatus(keywords.tags).subscribe( (res:any) => {
+                  if (res.data === "finished") {
+                    console.log("Adding to Finished Tags: ", keywords.tags)
+                    this.addTagsToFinishedKeywords(keywords.tags)
+                  }
+              } )
+            }
             /* END */ 
 
 
@@ -87,6 +92,10 @@ export class DetailedCaseViewComponent implements OnInit {
     })
 
     
+  }
+
+  ngOnDestroy() {
+    this.isPageLoaded = false
   }
 
   ngOnInit(): void {
@@ -122,9 +131,15 @@ export class DetailedCaseViewComponent implements OnInit {
 
       })
 
-      // wait 5 seconds and recursively call repeatingTagsJobStatusCheck
-      await new Promise( resolve => setTimeout(resolve, 5000) ) // 5000 milliseconds
-      repeatingTagsJobStatusCheck()
+      if (masterThis.isPageLoaded) {
+
+        // wait 5 seconds and recursively call repeatingTagsJobStatusCheck
+        await new Promise( resolve => setTimeout(resolve, 30000) ) // 30000 milliseconds
+        repeatingTagsJobStatusCheck()
+      }
+      else {
+        return
+      }
 
     } )
     
@@ -227,8 +242,14 @@ export class DetailedCaseViewComponent implements OnInit {
   }
 
   // checks local copy of finished batch jobs for tags Param
-  public checkForTagsInFinished(tags:string[]): boolean {
-    return this.finishedKeywords.includes(tags)
+  public checkForTagsInFinished(tags:string[]): string {
+    if (this.finishedKeywords.includes(tags)) {
+      return "FINISHED"
+    } else if (!this.finishedKeywords.includes(tags)) {
+      return "ANALYZING..."
+    }
+    return ""
+    //return this.finishedKeywords.includes(tags)
   }
 
   public getCaseOutputs(): any {
